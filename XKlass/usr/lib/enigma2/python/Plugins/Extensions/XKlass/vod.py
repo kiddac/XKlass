@@ -1405,7 +1405,7 @@ class XKlass_Vod_Categories(Screen):
                 location = response.headers.getRawHeaders('location')[0]
                 self.downloadCoverFromUrl(location)
         else:
-            self.handleCoverError(f"HTTP error code: {response.code}")
+            self.handleCoverError("HTTP error code: %s" % response.code)
 
     def handleLogoResponse(self, response):
         # print("*** handlelogoresponse ***")
