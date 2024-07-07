@@ -205,10 +205,13 @@ class XKlass_Playlists(Screen):
                     print("Concurrent execution error:", e)
 
             elif hasMultiprocessing:
+                # print("********** trying multiprocessing threadpool *******")
                 try:
                     from multiprocessing.pool import ThreadPool
-                    with ThreadPool(threads) as pool:
-                        results = pool.map_unordered(self.download_url, self.url_list)
+                    pool = ThreadPool(threads)
+                    results = pool.imap_unordered(self.download_url, self.url_list)
+                    pool.close()
+                    pool.join()
                 except Exception as e:
                     print("Multiprocessing execution error:", e)
 
