@@ -22,6 +22,7 @@ from Screens.Console import Console
 from Screens.Screen import Screen
 from enigma import eServiceReference, iPlayableService
 from Components.ServiceEventTracker import ServiceEventTracker
+from Screens.MessageBox import MessageBox
 
 # Local application/library-specific imports
 from . import _
@@ -77,6 +78,8 @@ class XKlass_MainMenu(Screen):
         self.defaultplaylist = cfg.defaultplaylist.value
         self.lastcategory = cfg.lastcategory.value
 
+        glob.active_playlist = []
+
         try:
             glob.currentPlayingServiceRef = self.session.nav.getCurrentlyPlayingServiceReference()
             glob.currentPlayingServiceRefString = self.session.nav.getCurrentlyPlayingServiceReference().toString()
@@ -84,37 +87,6 @@ class XKlass_MainMenu(Screen):
             glob.newPlayingServiceRefString = glob.newPlayingServiceRef.toString()
         except:
             pass
-
-        if self.playlists_all:
-            p = 0
-            exists = False
-            for playlist in self.playlists_all:
-                if str(playlist["playlist_info"]["name"]) == self.defaultplaylist:
-                    glob.active_playlist = playlist
-
-                    glob.current_selection = p
-                    exists = True
-                    break
-                p += 1
-
-            if not exists:
-                cfg.defaultplaylist.setValue(str(self.playlists_all[0]["playlist_info"]["name"]))
-                cfg.save()
-                glob.active_playlist = self.playlists_all[0]
-                glob.current_selection = 0
-
-            self.player_api = glob.active_playlist["playlist_info"]["player_api"]
-
-            self.p_live_categories_url = str(self.player_api) + "&action=get_live_categories"
-            self.p_vod_categories_url = str(self.player_api) + "&action=get_vod_categories"
-            self.p_series_categories_url = str(self.player_api) + "&action=get_series_categories"
-            self.p_live_streams_url = str(self.player_api) + "&action=get_live_streams"
-
-            glob.active_playlist["data"]["live_streams"] = []
-            self.original_active_playlist = glob.active_playlist
-        else:
-            cfg.defaultplaylist.setValue("")
-            cfg.save()
 
         self.tracker = ServiceEventTracker(screen=self, eventmap={
             iPlayableService.evEOF: self.onEOF
@@ -127,8 +99,6 @@ class XKlass_MainMenu(Screen):
         self.setTitle(self.setup_title)
 
     def check_dependencies(self):
-        print("*** check_dependencies ***")
-
         dependencies = True
 
         try:
@@ -151,20 +121,59 @@ class XKlass_MainMenu(Screen):
             self.start()
 
     def start(self, answer=None):
-        # print("*** start ***")
-
         if not self.playlists_all:
             self.addServer()
             self.close()
         else:
-            self.makeUrlList()
+            self.selectplaylist()
 
     def addServer(self):
         from . import server
         self.session.openWithCallback(self.quit, server.XKlass_AddServer)
 
+    def selectplaylist(self):
+        if self.playlists_all:
+            p = 0
+            exists = False
+            for playlist in self.playlists_all:
+                if str(playlist["playlist_info"]["name"]) == self.defaultplaylist:
+                    glob.active_playlist = playlist
+                    glob.current_selection = p
+                    exists = True
+                    break
+
+                p += 1
+
+            if not exists:
+                cfg.defaultplaylist.setValue(str(self.playlists_all[0]["playlist_info"]["name"]))
+                cfg.save()
+                glob.active_playlist = self.playlists_all[0]
+                glob.current_selection = 0
+
+            self.player_api = glob.active_playlist["playlist_info"]["player_api"]
+
+            self.p_live_categories_url = str(self.player_api) + "&action=get_live_categories"
+            self.p_vod_categories_url = str(self.player_api) + "&action=get_vod_categories"
+            self.p_series_categories_url = str(self.player_api) + "&action=get_series_categories"
+            self.p_live_streams_url = str(self.player_api) + "&action=get_live_streams"
+
+            glob.active_playlist["data"]["live_streams"] = []
+            self.original_active_playlist = glob.active_playlist
+        else:
+            cfg.defaultplaylist.setValue("")
+            cfg.save()
+
+        self.makeUrlList()
+
     def makeUrlList(self):
         self.url_list = []
+        glob.active_playlist["data"]["live_categories"] = []
+        glob.active_playlist["data"]["vod_categories"] = []
+        glob.active_playlist["data"]["series_categories"] = []
+        glob.active_playlist["data"]["live_streams"] = []
+        glob.active_playlist["data"]["catchup"] = False
+        glob.active_playlist["data"]["customsids"] = False
+        glob.active_playlist["data"]["data_downloaded"] = False
 
         player_api = str(glob.active_playlist["playlist_info"].get("player_api", ""))
         full_url = str(glob.active_playlist["playlist_info"].get("full_url", ""))
@@ -198,37 +207,24 @@ class XKlass_MainMenu(Screen):
                 # Perform the initial request
                 r = http.get(url[0], headers=hdr, timeout=6, verify=False)
                 r.raise_for_status()
-
                 # Follow redirects manually and check for JSON content
                 if r.history:
                     for resp in r.history:
                         if 'application/json' not in resp.headers.get('Content-Type', ''):
                             print("Redirected to non-JSON content", url)
                             return index, None
+                response = r.json()
 
-                # Check final response for JSON content
-                if 'application/json' in r.headers.get('Content-Type', ''):
-                    try:
-                        response = r.json()
-                    except ValueError as e:
-                        print("Error decoding JSON:", e, url)
-                else:
-                    print("Error: Response is not JSON", url)
-
-            except requests.exceptions.RequestException as e:
-                print("Request error:", e)
             except Exception as e:
                 print("Unexpected error:", e)
+                self.session.open(MessageBox, _("Server not responding."), type=MessageBox.TYPE_INFO, timeout=5)
 
         return index, response
 
     def process_downloads(self):
-        threads = min(len(self.url_list), 10)
+        threads = min(len(self.url_list), 4)
 
         self.retry = 0
-        glob.active_playlist["data"]["live_categories"] = []
-        glob.active_playlist["data"]["vod_categories"] = []
-        glob.active_playlist["data"]["series_categories"] = []
 
         if hasConcurrent or hasMultiprocessing:
             if hasConcurrent:
@@ -286,37 +282,19 @@ class XKlass_MainMenu(Screen):
                     if index == 4:
                         glob.active_playlist["data"]["live_streams"] = response
 
-        for url in self.url_list:
-            result = self.download_url(url)
-            index = result[0]
-            response = result[1]
-            if response:
-                if index == 0:
-                    if "user_info" in response:
-                        glob.active_playlist.update(response)
-                    else:
-                        glob.active_playlist["user_info"] = {}
-                if index == 1:
-                    glob.active_playlist["data"]["live_categories"] = response
-                if index == 2:
-                    glob.active_playlist["data"]["vod_categories"] = response
-                if index == 3:
-                    glob.active_playlist["data"]["series_categories"] = response
-                if index == 4:
-                    glob.active_playlist["data"]["live_streams"] = response
-
         glob.active_playlist["data"]["data_downloaded"] = True
         self.createSetup()
 
     def reload(self, Answer=None):
-        # print("*** call back ***")
+        self["list"].setIndex(0)
+
         if self.original_active_playlist != glob.active_playlist:
+            self.player_api = glob.active_playlist["playlist_info"]["player_api"]
             self.p_live_categories_url = str(self.player_api) + "&action=get_live_categories"
             self.p_vod_categories_url = str(self.player_api) + "&action=get_vod_categories"
             self.p_series_categories_url = str(self.player_api) + "&action=get_series_categories"
             self.p_live_streams_url = str(self.player_api) + "&action=get_live_streams"
 
-            glob.active_playlist["data"]["live_streams"] = []
             self.original_active_playlist = glob.active_playlist
 
             self.makeUrlList()
@@ -324,7 +302,6 @@ class XKlass_MainMenu(Screen):
             self.createSetup()
 
     def createSetup(self):
-        # print("*** create setup ***")
         self.provider = str(glob.active_playlist["playlist_info"]["name"])
         self["provider"].setText(self.provider)
 
@@ -380,6 +357,8 @@ class XKlass_MainMenu(Screen):
             self.index += 1
             self.list.append([self.index, _("Catch Up TV"), 3])
 
+        self.list.append([self.index, _("Switch Playlist"), 6])
+
         self.list.append([self.index, _("Global Settings"), 4])
         self.index += 1
 
@@ -425,6 +404,8 @@ class XKlass_MainMenu(Screen):
                 self.mainSettings()
             elif index == 5:
                 self.downloadManager()
+            elif index == 6:
+                self.showPlaylists()
 
     def showLive(self):
         from . import live
@@ -450,6 +431,10 @@ class XKlass_MainMenu(Screen):
         from . import downloadmanager
         self.session.openWithCallback(self.reload, downloadmanager.XKlass_DownloadManager)
 
+    def showPlaylists(self):
+        from . import playlists
+        self.session.openWithCallback(self.reload, playlists.XKlass_Playlists)
+
     def quit(self, data=None):
         self.playOriginalChannel()
 
@@ -470,7 +455,6 @@ class XKlass_MainMenu(Screen):
         self.session.nav.playService(service)
 
     def onEOF(self):
-        # print("*** end of file ***")
         if cfg.introvideo.value and cfg.introloop.value:
             self["background"].setText("")
             service = self.session.nav.getCurrentService()
