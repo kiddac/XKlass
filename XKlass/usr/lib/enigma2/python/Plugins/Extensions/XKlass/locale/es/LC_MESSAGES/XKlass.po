@@ -2,9 +2,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: XKlass v4.38\n"
-"POT-Creation-Date: 2024-07-07 16:19+0100\n"
-"PO-Revision-Date: 2024-07-07 16:19+0100\n"
+"Project-Id-Version: XKlass v1.03\n"
+"POT-Creation-Date: 2024-07-15 13:47+0100\n"
+"PO-Revision-Date: 2024-07-15 13:48+0100\n"
 "Last-Translator: weeping <a.weeping@gmail.com>\n"
 "Language-Team: weeping <a.weeping@gmail.com>\n"
 "Language: es_ES\n"
@@ -41,7 +41,7 @@ msgstr ""
 "Error: %s\n"
 "Reintentar?"
 
-#: Task.py:328 playlists.py:322 playlists.py:407
+#: Task.py:328 playlists.py:325 playlists.py:410
 msgid "Error"
 msgstr "Error"
 
@@ -68,13 +68,13 @@ msgstr "Categoría Catch-Up"
 
 #: catchup.py:150
 msgid "Catchup TV"
-msgstr ""
+msgstr "Catchup TV"
 
-#: catchup.py:190 catchup.py:655 catchup.py:843 catchup.py:857 catchup.py:996
-#: live.py:205 live.py:760 live.py:961 live.py:975 live.py:1160 series.py:163
-#: series.py:1712 series.py:2039 series.py:2042 series.py:2045 series.py:2055
-#: series.py:2243 series.py:2274 series.py:2292 vod.py:157 vod.py:1290
-#: vod.py:1597 vod.py:1599 vod.py:1609 vod.py:1798
+#: catchup.py:190 catchup.py:658 catchup.py:846 catchup.py:860 catchup.py:999
+#: live.py:205 live.py:763 live.py:964 live.py:978 live.py:1163 series.py:163
+#: series.py:1715 series.py:2042 series.py:2045 series.py:2048 series.py:2058
+#: series.py:2246 series.py:2277 series.py:2295 vod.py:157 vod.py:1293
+#: vod.py:1600 vod.py:1602 vod.py:1612 vod.py:1801
 msgid "Sort: A-Z"
 msgstr "Orden: A-Z"
 
@@ -89,106 +89,106 @@ msgstr "Volver"
 msgid "OK"
 msgstr "Ok"
 
-#: catchup.py:203 catchup.py:658 catchup.py:923 live.py:219 live.py:757
-#: live.py:1072 series.py:177 series.py:1715 series.py:2151 vod.py:170
-#: vod.py:1293 vod.py:1711
+#: catchup.py:203 catchup.py:661 catchup.py:926 live.py:219 live.py:760
+#: live.py:1075 series.py:177 series.py:1718 series.py:2154 vod.py:170
+#: vod.py:1296 vod.py:1714
 msgid "Search"
 msgstr "Buscar"
 
-#: catchup.py:523 live.py:561 series.py:557 vod.py:530
+#: catchup.py:526 live.py:564 series.py:560 vod.py:533
 msgid "ALL"
 msgstr "TODO"
 
-#: catchup.py:615 live.py:681 series.py:998 vod.py:663
+#: catchup.py:618 live.py:684 series.py:1001 vod.py:666
 msgid "Server error or invalid link."
 msgstr "Error en el servidor o enlace no válido."
 
-#: catchup.py:621 catchup.py:646 catchup.py:890 catchup.py:916 live.py:714
-#: live.py:751 live.py:1008 live.py:1065 series.py:1004 series.py:1708
-#: series.py:2097 series.py:2143 vod.py:669 vod.py:1286 vod.py:1644 vod.py:1703
+#: catchup.py:624 catchup.py:649 catchup.py:893 catchup.py:919 live.py:717
+#: live.py:754 live.py:1011 live.py:1068 series.py:1007 series.py:1711
+#: series.py:2100 series.py:2146 vod.py:672 vod.py:1289 vod.py:1647 vod.py:1706
 msgid "Reset Search"
 msgstr "Restablecer búsqueda"
 
-#: catchup.py:651 catchup.py:838 live.py:956
+#: catchup.py:654 catchup.py:841 live.py:959
 msgid "Reverse"
 msgstr "Invertir"
 
-#: catchup.py:676 catchup.py:700 live.py:784 live.py:817 series.py:1070
-#: series.py:1107 vod.py:808 vod.py:836
+#: catchup.py:679 catchup.py:703 live.py:787 live.py:820 series.py:1073
+#: series.py:1110 vod.py:811 vod.py:839
 msgid "Page: "
 msgstr "Página: "
 
-#: catchup.py:843 catchup.py:860 live.py:961 live.py:978 series.py:2039
-#: series.py:2042 series.py:2045 series.py:2058 vod.py:1597 vod.py:1599
-#: vod.py:1612
+#: catchup.py:846 catchup.py:863 live.py:964 live.py:981 series.py:2042
+#: series.py:2045 series.py:2048 series.py:2061 vod.py:1600 vod.py:1602
+#: vod.py:1615
 msgid "Sort: Z-A"
 msgstr "Orden: Z-A"
 
-#: catchup.py:845 catchup.py:847 catchup.py:867 live.py:963 live.py:965
-#: live.py:985 series.py:2039 series.py:2042 series.py:2045 series.py:2067
-#: vod.py:1597 vod.py:1599 vod.py:1621
+#: catchup.py:848 catchup.py:850 catchup.py:870 live.py:966 live.py:968
+#: live.py:988 series.py:2042 series.py:2045 series.py:2048 series.py:2070
+#: vod.py:1600 vod.py:1602 vod.py:1624
 msgid "Sort: Original"
 msgstr "Orden: Original"
 
-#: catchup.py:847 catchup.py:863 live.py:965 live.py:981 series.py:2042
-#: series.py:2045 series.py:2061 vod.py:1599 vod.py:1615
+#: catchup.py:850 catchup.py:866 live.py:968 live.py:984 series.py:2045
+#: series.py:2048 series.py:2064 vod.py:1602 vod.py:1618
 msgid "Sort: Added"
 msgstr "Orden: Nuevas entradas"
 
-#: catchup.py:893 live.py:1015 series.py:2101 vod.py:1651
+#: catchup.py:896 live.py:1018 series.py:2104 vod.py:1654
 msgid "Filter this category..."
 msgstr "Filtrar esta categoría..."
 
-#: catchup.py:909 live.py:1058 series.py:2129 vod.py:1696
+#: catchup.py:912 live.py:1061 series.py:2132 vod.py:1699
 msgid "No results found."
 msgstr "Ningún resultado."
 
-#: catchup.py:942 live.py:1091 series.py:2179 vod.py:1730
+#: catchup.py:945 live.py:1094 series.py:2182 vod.py:1733
 msgid "Incorrect pin code."
 msgstr "Código pin incorrecto."
 
-#: catchup.py:963 live.py:1112 series.py:2200 vod.py:1751
+#: catchup.py:966 live.py:1115 series.py:2203 vod.py:1754
 msgid "all"
 msgstr "todo"
 
-#: catchup.py:972 live.py:1121 series.py:2209 vod.py:1760
+#: catchup.py:975 live.py:1124 series.py:2212 vod.py:1763
 msgid "Please enter the parental control pin code"
 msgstr "Introducir el PIN de control parental"
 
-#: catchup.py:972 hidden.py:29 live.py:1121 series.py:2209 settings.py:35
-#: vod.py:1760
+#: catchup.py:975 hidden.py:29 live.py:1124 series.py:2212 settings.py:35
+#: vod.py:1763
 msgid "Enter pin code"
 msgstr "Introducir el código PIN"
 
-#: catchup.py:1123
+#: catchup.py:1126
 msgid "Catch-up"
 msgstr "Catch-Up"
 
-#: catchup.py:1128 series.py:2445 vod.py:2009
+#: catchup.py:1131 series.py:2448 vod.py:2012
 msgid "Added to download manager"
 msgstr "Añadido al Gestor de Descargas"
 
-#: catchup.py:1128 series.py:2445 vod.py:2009
+#: catchup.py:1131 series.py:2448 vod.py:2012
 msgid "Note recording acts as an open connection."
 msgstr "La grabación utiliza una conexión directa con el servidor."
 
-#: catchup.py:1128 series.py:2445 vod.py:2009
+#: catchup.py:1131 series.py:2448 vod.py:2012
 msgid "Do not record and play streams at the same time."
 msgstr "No grabar y reproducir a la vez."
 
-#: catchup.py:1128 series.py:2445 vod.py:2009
+#: catchup.py:1131 series.py:2448 vod.py:2012
 msgid "Open download manager?"
 msgstr "Abrir Gestor de Descarga?"
 
-#: catchup.py:1131 series.py:2448 vod.py:2012
+#: catchup.py:1134 series.py:2451 vod.py:2015
 msgid "Already added to download manager"
 msgstr "Ya esta añadido en el Gestor de Descargas"
 
-#: catchup.py:1162
+#: catchup.py:1165
 msgid "Catchup error. No data for this slot"
 msgstr "Error de Catch-Up. No hay datos para este slot"
 
-#: catchup.py:1221
+#: catchup.py:1224
 msgid "Catchup currently not available. Missing EPG data"
 msgstr "Catch-Up no disponible. No hay datos de EPG"
 
@@ -211,7 +211,7 @@ msgstr "Error en el Cambio de Resolución"
 
 #: channelmenu.py:51
 msgid "Menu"
-msgstr ""
+msgstr "Menu"
 
 #: channelmenu.py:108 channelmenu.py:142 channelmenu.py:257
 msgid "Manual EPG Update"
@@ -223,31 +223,32 @@ msgstr "Configuración de Listas"
 
 #: channelmenu.py:111 channelmenu.py:146 channelmenu.py:261
 msgid "Show/Hide Channels"
-msgstr ""
+msgstr "Mostrar/Ocultar Canales"
 
 #: channelmenu.py:112 channelmenu.py:148 channelmenu.py:263
 msgid "Account Info"
-msgstr ""
+msgstr "Información de Cuenta"
 
 #: channelmenu.py:114
 msgid "Set As Default Playlist"
-msgstr ""
+msgstr "Seleccionar como lista por defecto"
 
-#: channelmenu.py:116 channelmenu.py:152 channelmenu.py:267
+#: channelmenu.py:116 channelmenu.py:152 channelmenu.py:267 startmenu.py:360
 msgid "Switch Playlist"
-msgstr ""
+msgstr "Cambiar Lista"
 
 #: channelmenu.py:117 channelmenu.py:154 channelmenu.py:269
 msgid "Add New Playlist"
-msgstr ""
+msgstr "Añadir Nueva Lista"
 
-#: channelmenu.py:128 channelmenu.py:156 channelmenu.py:271
+#: channelmenu.py:128 channelmenu.py:156 channelmenu.py:271 startmenu.py:367
 msgid "Download Manager"
 msgstr "Gestor de Descargas"
 
 #: channelmenu.py:129 channelmenu.py:158 channelmenu.py:273 settings.py:68
+#: startmenu.py:362
 msgid "Global Settings"
-msgstr ""
+msgstr "Configuración"
 
 #: channelmenu.py:175
 msgid "Recordings in progress. EPG not downloaded."
@@ -259,19 +260,19 @@ msgstr "Descargando EPG."
 
 #: channelmenu.py:249
 msgid "Live"
-msgstr ""
+msgstr "Canales TV"
 
 #: channelmenu.py:251
 msgid "Vod"
 msgstr "Vod"
 
-#: channelmenu.py:253 series.py:101 series.py:2440
+#: channelmenu.py:253 series.py:101 series.py:2443
 msgid "Series"
 msgstr "Series"
 
 #: channelmenu.py:255
 msgid "Catchup"
-msgstr ""
+msgstr "Catchup"
 
 #: downloadmanager.py:56 downloadmanager.py:402 downloadmanager.py:438
 msgid "Not Started"
@@ -367,33 +368,33 @@ msgstr "Categoría TV"
 
 #: live.py:156
 msgid "Live TV"
-msgstr ""
+msgstr "Canales TV"
 
-#: live.py:559 vod.py:528
+#: live.py:562 vod.py:531
 msgid "FAVOURITES"
 msgstr "FAVORITOS"
 
-#: live.py:560 vod.py:529
+#: live.py:563 vod.py:532
 msgid "RECENTLY WATCHED"
 msgstr "VISTO RECIENTEMENTE"
 
-#: live.py:755 live.py:1011 playlists.py:69 vod.py:1301 vod.py:1647
+#: live.py:758 live.py:1014 playlists.py:69 vod.py:1304 vod.py:1650
 msgid "Delete"
 msgstr "Borrar"
 
-#: live.py:1413 live.py:1468 live.py:1477
+#: live.py:1416 live.py:1471 live.py:1480
 msgid "Next Info"
 msgstr "Siguiente"
 
-#: live.py:1472
+#: live.py:1475
 msgid "Now Info"
 msgstr "Actual"
 
-#: live.py:1677 liveplayer.py:618
+#: live.py:1680 liveplayer.py:618
 msgid "Recording Timer Set."
 msgstr "Temporizador de grabación."
 
-#: live.py:1679 liveplayer.py:620
+#: live.py:1682 liveplayer.py:620
 msgid "Recording Failed."
 msgstr "La grabación ha fallado."
 
@@ -411,37 +412,37 @@ msgstr "Información"
 
 #: playlists.py:106
 msgid "No internet."
-msgstr ""
+msgstr "Sin conexión a Internet."
 
-#: playlists.py:332 playlists.py:409
+#: playlists.py:335 playlists.py:412
 msgid "Not Authorised"
 msgstr "No Autorizado"
 
-#: playlists.py:337 playlists.py:395 serverinfo.py:73
+#: playlists.py:340 playlists.py:398 serverinfo.py:73
 msgid "Active"
 msgstr "Activo"
 
-#: playlists.py:338 playlists.py:401 serverinfo.py:74
+#: playlists.py:341 playlists.py:404 serverinfo.py:74
 msgid "Banned"
 msgstr "Bloqueado"
 
-#: playlists.py:339 playlists.py:405 serverinfo.py:75
+#: playlists.py:342 playlists.py:408 serverinfo.py:75
 msgid "Disabled"
 msgstr "Desactivado"
 
-#: playlists.py:340 playlists.py:403 serverinfo.py:76
+#: playlists.py:343 playlists.py:406 serverinfo.py:76
 msgid "Expired"
 msgstr "Caducado"
 
-#: playlists.py:352
+#: playlists.py:355
 msgid "Active Conn:"
 msgstr "Conex. activas:"
 
-#: playlists.py:360
+#: playlists.py:363
 msgid "Max Conn:"
 msgstr "Conex. Máx.:"
 
-#: playlists.py:388
+#: playlists.py:391
 msgid ""
 "You have dead playlists that are slowing down loading.\n"
 "\n"
@@ -452,11 +453,11 @@ msgstr ""
 "Pulsar el botón Amarillo sobre los servidores inactivos para desactivarlos "
 "de la lista"
 
-#: playlists.py:424
+#: playlists.py:427
 msgid "Delete selected playlist?"
 msgstr "Eliminar servidor de la lista?"
 
-#: playlists.py:445
+#: playlists.py:448
 msgid "Delete providers EPG data?"
 msgstr "Eliminar los datos EPG?"
 
@@ -526,7 +527,7 @@ msgstr "XKlass"
 
 #: plugin.py:358
 msgid "IPTV Xtream Codes playlists player by KiddaC"
-msgstr "Reproductor de listas de código IPTV Xtream, de KiddaC"
+msgstr "Reproductor de listas IPTV Xtream, de KiddaC"
 
 #: record.py:41 serverinfo.py:63
 msgid "Close"
@@ -556,31 +557,31 @@ msgstr "Hora Final"
 msgid "Series Categories"
 msgstr "Categoría Series"
 
-#: series.py:698
+#: series.py:701
 msgid "No series found in this category."
 msgstr "Ninguna serie encontrada en esta categoría."
 
-#: series.py:755 series.py:2539
+#: series.py:758 series.py:2542
 msgid "Season "
 msgstr "Temporada "
 
-#: series.py:1610 vod.py:1240
+#: series.py:1613 vod.py:1243
 msgid "Rating: "
-msgstr ""
+msgstr "Clasificación:"
 
-#: series.py:1683 vod.py:1269
+#: series.py:1686 vod.py:1272
 msgid "Cast:"
 msgstr "Casting:"
 
-#: series.py:1688 vod.py:1274
+#: series.py:1691 vod.py:1277
 msgid "Director:"
 msgstr "Director:"
 
-#: series.py:1693 vod.py:1279
+#: series.py:1696 vod.py:1282
 msgid "Overview"
-msgstr ""
+msgstr "Descripción General"
 
-#: series.py:2045 series.py:2064 vod.py:1599 vod.py:1618
+#: series.py:2048 series.py:2067 vod.py:1602 vod.py:1621
 msgid "Sort: Year"
 msgstr "Orden: Año"
 
@@ -670,7 +671,7 @@ msgstr "Offset servidor:"
 
 #: serverinfo.py:83
 msgid "Unknown"
-msgstr ""
+msgstr "Desconocido"
 
 #: settings.py:119
 msgid ""
@@ -678,6 +679,9 @@ msgid ""
 "\n"
 "Pin cannot be 0000, 111, or 1234"
 msgstr ""
+"Cambia el PIN predeterminado del control parental.\n"
+"\n"
+"El PIN no puede ser 0000, 1111 o 1234"
 
 #: settings.py:136
 msgid "You need to restart the GUI"
@@ -693,7 +697,7 @@ msgstr "Seleccionar skin"
 
 #: settings.py:147
 msgid "Select fake web user-agent"
-msgstr ""
+msgstr "Seleccionar el falso agente web de usuario"
 
 #: settings.py:149
 msgid "playlists.txt location"
@@ -757,11 +761,11 @@ msgstr "Hora de descarga automática de EPG"
 
 #: settings.py:163
 msgid "Show intro video"
-msgstr ""
+msgstr "Mostrar la intro de video"
 
 #: settings.py:164
 msgid "Loop intro video"
-msgstr ""
+msgstr "Bucle de Intro de Video"
 
 #: settings.py:165
 msgid "Show channel picons"
@@ -791,9 +795,19 @@ msgstr "Seleccionar directorio:"
 msgid "Choose directory"
 msgstr "Selezionar directorio"
 
-#: startmenu.py:57
+#: startmenu.py:58
 msgid "Main Menu"
 msgstr "Menú Principal"
+
+#: startmenu.py:220
+#, fuzzy
+#| msgid "Server Not Responding"
+msgid "Server not responding."
+msgstr "El Servidor No Responde"
+
+#: startmenu.py:358
+msgid "Catch Up TV"
+msgstr "Catch-Up TV"
 
 #: vod.py:108
 msgid "Vod Categories"
@@ -801,25 +815,21 @@ msgstr "Categorias Vod"
 
 #: vod.py:113
 msgid "Movies"
-msgstr ""
+msgstr "Peliculas"
 
-#: vod.py:2004
+#: vod.py:2007
 msgid "Movie"
-msgstr "Películas"
+msgstr "Película"
 
-#: vod.py:2034
-#, fuzzy
-#| msgid ""
-#| "The IMDb plugin is not installed!\n"
-#| "Please install it."
+#: vod.py:2037
 msgid ""
 "The TMDB plugin is not installed!\n"
 "Please install it."
 msgstr ""
-"El plugin IMDb no esta instalado!\n"
+"El plugin TMDB no esta instalado!\n"
 "Para usarlo, debe instalarse."
 
-#: vod.py:2044
+#: vod.py:2047
 msgid ""
 "The IMDb plugin is not installed!\n"
 "Please install it."
@@ -833,9 +843,6 @@ msgstr "VOD"
 
 #~ msgid "Playlists.txt location is invalid and has been reset."
 #~ msgstr "Ubicación de Playlists.txt no es válida y se ha restablecido."
-
-#~ msgid "Catch Up TV"
-#~ msgstr "Catch-Up TV"
 
 #, fuzzy
 #~| msgid ""
@@ -881,9 +888,6 @@ msgstr "VOD"
 #~ msgstr ""
 #~ "No hay datos, servidores bloqueados o lista no compatible con el plugin "
 #~ "XKlass."
-
-#~ msgid "Server Not Responding"
-#~ msgstr "El Servidor No Responde"
 
 #~ msgid "Expires: "
 #~ msgstr "Caducidad: "
