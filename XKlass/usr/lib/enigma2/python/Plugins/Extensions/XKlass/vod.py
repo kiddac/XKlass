@@ -332,7 +332,7 @@ class XKlass_Vod_Categories(Screen):
                 self["channel_actions"].setEnabled(True)
                 self["menu_actions"].setEnabled(False)
 
-        if self.original_active_playlist != glob.active_playlist:
+        if self.original_active_playlist["playlist_info"]["full_url"] != glob.active_playlist["playlist_info"]["full_url"]:
             if self.level == 1:
                 self.reset()
             elif self.level == 2:
@@ -341,7 +341,7 @@ class XKlass_Vod_Categories(Screen):
 
         self.initGlobals()
 
-        if self.original_active_playlist != glob.active_playlist:
+        if self.original_active_playlist["playlist_info"]["full_url"] != glob.active_playlist["playlist_info"]["full_url"]:
             if not glob.active_playlist["player_info"]["showvod"]:
                 self.original_active_playlist = glob.active_playlist
                 self.close()

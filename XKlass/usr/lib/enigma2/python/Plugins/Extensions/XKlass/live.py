@@ -311,6 +311,7 @@ class XKlass_Live_Categories(Screen):
         self.p_live_categories_url = str(self.player_api) + "&action=get_live_categories"
         self.p_vod_categories_url = str(self.player_api) + "&action=get_vod_categories"
         self.p_series_categories_url = str(self.player_api) + "&action=get_series_categories"
+        self.p_live_streams_url = str(self.player_api) + "&action=get_live_streams"
 
         epglocation = str(cfg.epglocation.value)
         self.epgfolder = os.path.join(epglocation, str(self.name))
@@ -359,7 +360,7 @@ class XKlass_Live_Categories(Screen):
                 self["channel_actions"].setEnabled(True)
                 self["menu_actions"].setEnabled(False)
 
-        if self.original_active_playlist != glob.active_playlist:
+        if self.original_active_playlist["playlist_info"]["full_url"] != glob.active_playlist["playlist_info"]["full_url"]:
             if self.level == 1:
                 self.reset()
             if self.level == 2:
@@ -369,7 +370,7 @@ class XKlass_Live_Categories(Screen):
 
         self.initGlobals()
 
-        if self.original_active_playlist != glob.active_playlist:
+        if self.original_active_playlist["playlist_info"]["full_url"] != glob.active_playlist["playlist_info"]["full_url"]:
             if not glob.active_playlist["player_info"]["showlive"]:
                 self.original_active_playlist = glob.active_playlist
                 self.close()
@@ -380,6 +381,7 @@ class XKlass_Live_Categories(Screen):
         self.createSetup()
 
     def makeUrlList(self):
+        # print("*** makeurllist ***")
         self.url_list = []
 
         player_api = str(glob.active_playlist["playlist_info"].get("player_api", ""))
@@ -392,10 +394,12 @@ class XKlass_Live_Categories(Screen):
             self.url_list.append([self.p_live_categories_url, 1])
             self.url_list.append([self.p_vod_categories_url, 2])
             self.url_list.append([self.p_series_categories_url, 3])
+            self.url_list.append([self.p_live_streams_url, 4])
 
         self.process_downloads()
 
     def download_url(self, url):
+        # print("*** download url", url)
         import requests
         index = url[1]
         response = None
@@ -436,6 +440,7 @@ class XKlass_Live_Categories(Screen):
         return index, response
 
     def process_downloads(self):
+        # print("*** process downloads ***")
         threads = min(len(self.url_list), 10)
 
         self.retry = 0
@@ -476,6 +481,8 @@ class XKlass_Live_Categories(Screen):
                         glob.active_playlist["data"]["vod_categories"] = response
                     if index == 3:
                         glob.active_playlist["data"]["series_categories"] = response
+                    if index == 4:
+                        glob.active_playlist["data"]["customsids"] = any(item.get("custom_sid", False) for item in response if "custom_sid" in item)
 
         else:
             for url in self.url_list:
@@ -494,12 +501,15 @@ class XKlass_Live_Categories(Screen):
                         glob.active_playlist["data"]["vod_categories"] = response
                     if index == 3:
                         glob.active_playlist["data"]["series_categories"] = response
+                    if index == 4:
+                        glob.active_playlist["data"]["customsids"] = any(item.get("custom_sid", False) for item in response if "custom_sid" in item)
 
         glob.active_playlist["data"]["data_downloaded"] = True
         glob.active_playlist["data"]["live_streams"] = []
         self.writeJsonFile()
 
     def writeJsonFile(self):
+        # print("*** writejsonfile ***")
         with open(playlists_json, "r") as f:
             playlists_all = json.load(f)
 

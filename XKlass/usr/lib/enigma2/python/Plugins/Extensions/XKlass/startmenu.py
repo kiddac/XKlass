@@ -68,7 +68,9 @@ class XKlass_MainMenu(Screen):
             "cancel": self.quit,
             "left": self.goUp,
             "right": self.goDown,
-            "menu": self.mainSettings
+            "menu": self.mainSettings,
+            "help": self.resetData,
+            "blue": self.resetData
         }, -2)
 
         self["version"].setText(version)
@@ -223,7 +225,7 @@ class XKlass_MainMenu(Screen):
 
     def process_downloads(self):
         threads = min(len(self.url_list), 4)
-
+        results = ""
         self.retry = 0
 
         if hasConcurrent or hasMultiprocessing:
@@ -246,41 +248,63 @@ class XKlass_MainMenu(Screen):
                 except Exception as e:
                     print("Multiprocessing execution error:", e)
 
-            for index, response in results:
-                if response:
-                    if index == 0:
-                        if "user_info" in response:
-                            glob.active_playlist.update(response)
-                        else:
-                            glob.active_playlist["user_info"] = {}
-                    if index == 1:
-                        glob.active_playlist["data"]["live_categories"] = response
-                    if index == 2:
-                        glob.active_playlist["data"]["vod_categories"] = response
-                    if index == 3:
-                        glob.active_playlist["data"]["series_categories"] = response
-                    if index == 4:
-                        glob.active_playlist["data"]["live_streams"] = response
+            if results:
+                for index, response in results:
+                    if response:
+                        if index == 0:
+                            if "user_info" in response:
+                                if response["user_info"]["status"] != "Active":
+                                    self.session.openWithCallBack(self.showPlaylists, MessageBox, _("Playlist not active."), type=MessageBox.TYPE_INFO, timeout=5)
+                                    return
+                                else:
+                                    glob.active_playlist.update(response)
+                            else:
+                                glob.active_playlist["user_info"] = {}
+                                self.showPlaylists()
+                                return
+                        if index == 1:
+                            glob.active_playlist["data"]["live_categories"] = response
+                        if index == 2:
+                            glob.active_playlist["data"]["vod_categories"] = response
+                        if index == 3:
+                            glob.active_playlist["data"]["series_categories"] = response
+                        if index == 4:
+                            glob.active_playlist["data"]["live_streams"] = response
+                    else:
+                        self.showPlaylists()
+            else:
+                self.showPlaylists()
         else:
             # print("*** trying sequential ***")
             for url in self.url_list:
                 result = self.download_url(url)
-                index = result[0]
-                response = result[1]
-                if response:
-                    if index == 0:
-                        if "user_info" in response:
-                            glob.active_playlist.update(response)
-                        else:
-                            glob.active_playlist["user_info"] = {}
-                    if index == 1:
-                        glob.active_playlist["data"]["live_categories"] = response
-                    if index == 2:
-                        glob.active_playlist["data"]["vod_categories"] = response
-                    if index == 3:
-                        glob.active_playlist["data"]["series_categories"] = response
-                    if index == 4:
-                        glob.active_playlist["data"]["live_streams"] = response
+                if result:
+                    index = result[0]
+                    response = result[1]
+                    if response:
+                        if index == 0:
+                            if "user_info" in response:
+                                if response["user_info"]["status"] != "Active":
+                                    self.session.openWithCallBack(self.showPlaylists, MessageBox, _("Playlist not active."), type=MessageBox.TYPE_INFO, timeout=5)
+                                    return
+                                else:
+                                    glob.active_playlist.update(response)
+                            else:
+                                glob.active_playlist["user_info"] = {}
+                                self.showPlaylists()
+                                return
+                        if index == 1:
+                            glob.active_playlist["data"]["live_categories"] = response
+                        if index == 2:
+                            glob.active_playlist["data"]["vod_categories"] = response
+                        if index == 3:
+                            glob.active_playlist["data"]["series_categories"] = response
+                        if index == 4:
+                            glob.active_playlist["data"]["live_streams"] = response
+                    else:
+                        self.showPlaylists()
+                else:
+                    self.showPlaylists()
 
         glob.active_playlist["data"]["data_downloaded"] = True
         self.createSetup()
@@ -450,7 +474,8 @@ class XKlass_MainMenu(Screen):
 
     def playVideo(self, result=None):
         self["background"].setText("")
-        self.local_video_path = "/usr/lib/enigma2/python/Plugins/Extensions/XKlass/video/pixel-galaxy2-576p.mp4"
+        # self.local_video_path = "/usr/lib/enigma2/python/Plugins/Extensions/XKlass/video/pixel-galaxy2-576p.mp4"
+        self.local_video_path = cfg.introvideoselection.value
         service = eServiceReference(4097, 0, self.local_video_path)
         self.session.nav.playService(service)
 
@@ -471,6 +496,18 @@ class XKlass_MainMenu(Screen):
     def goDown(self):
         instance = self["list"].master.master.instance
         instance.moveSelection(instance.moveDown)
+
+    def resetData(self, answer=None):
+        if answer is None:
+            self.session.openWithCallback(self.resetData, MessageBox, _("Warning: delete stored json data for all playlists... Settings, favourites etc. \nPlaylists will not be deleted.\nDo you wish to continue?"))
+        elif answer:
+            try:
+                os.remove(playlists_json)
+                with open(playlists_json, "a"):
+                    pass
+            except OSError as e:
+                print("Error deleting or recreating JSON file:", e)
+            self.quit()
 
 
 def buildListEntry(index, title, num):

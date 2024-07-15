@@ -46,6 +46,7 @@ screenwidth = getDesktop(0).size()
 dir_etc = "/etc/enigma2/xklass/"
 dir_tmp = "/tmp/xklass/"
 dir_plugins = "/usr/lib/enigma2/python/Plugins/Extensions/XKlass/"
+dir_videos = "/usr/lib/enigma2/python/Plugins/Extensions/XKlass/video/"
 
 if screenwidth.width() == 2560:
     skin_directory = os.path.join(dir_plugins, "skin/uhd/")
@@ -56,6 +57,12 @@ else:
 
 
 folders = [folder for folder in os.listdir(skin_directory) if folder != "common"]
+
+files = os.listdir(dir_videos)
+
+video_extensions = ('.mp4', '.avi', '.mkv')
+video_files = [file for file in files if file.endswith(video_extensions)]
+video_list = [(os.path.join(dir_videos, file), file) for file in video_files]
 
 languages = [
     ("", "English"),
@@ -160,12 +167,12 @@ cfg.infobarcovers = ConfigYesNo(default=True)
 
 cfg.introvideo = ConfigYesNo(default=True)
 cfg.introloop = ConfigYesNo(default=False)
+cfg.introvideoselection = ConfigSelection(choices=video_list)
 
 cfg.boot = ConfigYesNo(default=False)
 cfg.useragent = ConfigSelection(default="Enigma2 - XKlass Plugin", choices=useragents)
 cfg.defaultplaylist = ConfigText()
 cfg.lastcategory = ConfigText()
-
 
 # Set default file paths
 playlist_file = os.path.join(dir_etc, "playlists.txt")

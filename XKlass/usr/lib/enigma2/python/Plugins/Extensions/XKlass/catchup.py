@@ -322,7 +322,7 @@ class XKlass_Catchup_Categories(Screen):
                 self["channel_actions"].setEnabled(True)
                 self["menu_actions"].setEnabled(False)
 
-        if self.original_active_playlist != glob.active_playlist:
+        if self.original_active_playlist["playlist_info"]["full_url"] != glob.active_playlist["playlist_info"]["full_url"]:
             if self.level == 1:
                 self.reset()
             if self.level == 2:
@@ -332,7 +332,7 @@ class XKlass_Catchup_Categories(Screen):
 
         self.initGlobals()
 
-        if self.original_active_playlist != glob.active_playlist:
+        if self.original_active_playlist["playlist_info"]["full_url"] != glob.active_playlist["playlist_info"]["full_url"]:
             if not glob.active_playlist["player_info"]["showcatchup"]:
                 self.original_active_playlist = glob.active_playlist
                 self.close()

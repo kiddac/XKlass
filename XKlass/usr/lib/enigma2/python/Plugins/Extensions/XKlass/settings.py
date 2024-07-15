@@ -162,6 +162,7 @@ class XKlass_Settings(ConfigListScreen, Screen, ProtectedScreen):
         self.cfg_wakeup = getConfigListEntry(_("Automatic EPG download time") + _(" *Restart GUI Required"), cfg.wakeup)
         self.cfg_introvideo = getConfigListEntry(_("Show intro video"), cfg.introvideo)
         self.cfg_introloop = getConfigListEntry(_("Loop intro video"), cfg.introloop)
+        self.cfg_introvideoselection = getConfigListEntry(_("Intro video selection"), cfg.introvideoselection)
         self.cfg_channelpicons = getConfigListEntry(_("Show channel picons"), cfg.channelpicons)
         self.cfg_channelcovers = getConfigListEntry(_("Show Vod/Series posters"), cfg.channelcovers)
         self.cfg_infobarpicons = getConfigListEntry(_("Show infobar picons"), cfg.infobarpicons)
@@ -197,6 +198,7 @@ class XKlass_Settings(ConfigListScreen, Screen, ProtectedScreen):
             self.cfg_main,
             self.cfg_introvideo,
             self.cfg_introloop if cfg.introvideo.value else None,
+            self.cfg_introvideoselection if cfg.introvideo.value else None,
             self.cfg_channelpicons,
             self.cfg_channelcovers,
             self.cfg_infobarpicons,

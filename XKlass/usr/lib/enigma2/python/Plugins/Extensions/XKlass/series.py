@@ -334,7 +334,7 @@ class XKlass_Series_Categories(Screen):
                 self["channel_actions"].setEnabled(True)
                 self["menu_actions"].setEnabled(False)
 
-        if (self.original_active_playlist != glob.active_playlist) or self.tmdbsetting != cfg.TMDB.value:
+        if (self.original_active_playlist["playlist_info"]["full_url"] != glob.active_playlist["playlist_info"]["full_url"]) or self.tmdbsetting != cfg.TMDB.value:
             if self.level == 1:
                 self.reset()
 
@@ -355,7 +355,7 @@ class XKlass_Series_Categories(Screen):
 
         self.initGlobals()
 
-        if (self.original_active_playlist != glob.active_playlist) or self.tmdbsetting != cfg.TMDB.value:
+        if (self.original_active_playlist["playlist_info"]["full_url"] != glob.active_playlist["playlist_info"]["full_url"]) or self.tmdbsetting != cfg.TMDB.value:
             if not glob.active_playlist["player_info"]["showvod"]:
                 self.original_active_playlist = glob.active_playlist
                 self.tmdbsetting = cfg.TMDB.value
