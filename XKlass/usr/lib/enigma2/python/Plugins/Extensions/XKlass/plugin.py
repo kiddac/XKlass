@@ -89,7 +89,8 @@ languages = [
     ("ar-SA", "العربية"),
     ("bg-BG", "български език"),
     ("el-GR", "ελληνικά"),
-    ("sq-AL", "shqip")
+    ("sq-AL", "shqip"),
+    ("zh-CN", "中文")
 ]
 
 useragents = [

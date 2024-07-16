@@ -227,6 +227,7 @@ class XKlass_MainMenu(Screen):
         threads = min(len(self.url_list), 4)
         results = ""
         self.retry = 0
+        all_failed = True
 
         if hasConcurrent or hasMultiprocessing:
             if hasConcurrent:
@@ -262,18 +263,21 @@ class XKlass_MainMenu(Screen):
                                 glob.active_playlist["user_info"] = {}
                                 self.showPlaylists()
                                 return
-                        if index == 1:
-                            glob.active_playlist["data"]["live_categories"] = response
-                        if index == 2:
-                            glob.active_playlist["data"]["vod_categories"] = response
-                        if index == 3:
-                            glob.active_playlist["data"]["series_categories"] = response
-                        if index == 4:
-                            glob.active_playlist["data"]["live_streams"] = response
-                    else:
-                        self.showPlaylists()
-            else:
-                self.showPlaylists()
+                        elif index in [1, 2, 3, 4]:
+                            all_failed = False
+
+                            if index == 1:
+                                glob.active_playlist["data"]["live_categories"] = response
+
+                            if index == 2:
+                                glob.active_playlist["data"]["vod_categories"] = response
+
+                            if index == 3:
+                                glob.active_playlist["data"]["series_categories"] = response
+
+                            if index == 4:
+                                glob.active_playlist["data"]["live_streams"] = response
+
         else:
             # print("*** trying sequential ***")
             for url in self.url_list:
@@ -293,18 +297,23 @@ class XKlass_MainMenu(Screen):
                                 glob.active_playlist["user_info"] = {}
                                 self.showPlaylists()
                                 return
-                        if index == 1:
-                            glob.active_playlist["data"]["live_categories"] = response
-                        if index == 2:
-                            glob.active_playlist["data"]["vod_categories"] = response
-                        if index == 3:
-                            glob.active_playlist["data"]["series_categories"] = response
-                        if index == 4:
-                            glob.active_playlist["data"]["live_streams"] = response
-                    else:
-                        self.showPlaylists()
-                else:
-                    self.showPlaylists()
+                        elif index in [1, 2, 3, 4]:
+                            all_failed = False
+
+                            if index == 1:
+                                glob.active_playlist["data"]["live_categories"] = response
+
+                            if index == 2:
+                                glob.active_playlist["data"]["vod_categories"] = response
+
+                            if index == 3:
+                                glob.active_playlist["data"]["series_categories"] = response
+
+                            if index == 4:
+                                glob.active_playlist["data"]["live_streams"] = response
+
+        if all_failed:
+            self.showPlaylists()
 
         glob.active_playlist["data"]["data_downloaded"] = True
         self.createSetup()

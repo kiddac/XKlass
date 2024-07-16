@@ -3,8 +3,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: XKlass v4.38\n"
-"POT-Creation-Date: 2024-07-07 16:19+0100\n"
-"PO-Revision-Date: 2024-07-07 16:19+0100\n"
+"POT-Creation-Date: 2024-07-16 16:51+0100\n"
+"PO-Revision-Date: 2024-07-16 16:52+0100\n"
 "Last-Translator: Dario Croci <spaeleus@croci.org>\n"
 "Language-Team: Dario Croci <spaeleus@croci.org>\n"
 "Language: it_IT\n"
@@ -56,14 +56,14 @@ msgstr ""
 "Riprovare?"
 
 #: lib/enigma2/python/Plugins/Extensions/XKlass/Task.py:328
-#: lib/enigma2/python/Plugins/Extensions/XKlass/playlists.py:322
-#: lib/enigma2/python/Plugins/Extensions/XKlass/playlists.py:407
+#: lib/enigma2/python/Plugins/Extensions/XKlass/playlists.py:325
+#: lib/enigma2/python/Plugins/Extensions/XKlass/playlists.py:410
 msgid "Error"
 msgstr "Errore"
 
 #: lib/enigma2/python/Plugins/Extensions/XKlass/Task.py:375
 msgid "An unknown error occurred!"
-msgstr "Si è verificato un errore sconosciuto."
+msgstr "Si è verificato un errore sconosciuto!"
 
 #: lib/enigma2/python/Plugins/Extensions/XKlass/Task.py:400
 #, python-format
@@ -81,37 +81,37 @@ msgstr "Codice errore"
 
 #: lib/enigma2/python/Plugins/Extensions/XKlass/catchup.py:145
 msgid "Catch Up Categories"
-msgstr "Catch-Up categorie"
+msgstr "Catch-Up Categorie"
 
 #: lib/enigma2/python/Plugins/Extensions/XKlass/catchup.py:150
 msgid "Catchup TV"
-msgstr ""
+msgstr "Catchup TV"
 
 #: lib/enigma2/python/Plugins/Extensions/XKlass/catchup.py:190
-#: lib/enigma2/python/Plugins/Extensions/XKlass/catchup.py:655
-#: lib/enigma2/python/Plugins/Extensions/XKlass/catchup.py:843
-#: lib/enigma2/python/Plugins/Extensions/XKlass/catchup.py:857
-#: lib/enigma2/python/Plugins/Extensions/XKlass/catchup.py:996
+#: lib/enigma2/python/Plugins/Extensions/XKlass/catchup.py:658
+#: lib/enigma2/python/Plugins/Extensions/XKlass/catchup.py:846
+#: lib/enigma2/python/Plugins/Extensions/XKlass/catchup.py:860
+#: lib/enigma2/python/Plugins/Extensions/XKlass/catchup.py:999
 #: lib/enigma2/python/Plugins/Extensions/XKlass/live.py:205
-#: lib/enigma2/python/Plugins/Extensions/XKlass/live.py:760
-#: lib/enigma2/python/Plugins/Extensions/XKlass/live.py:961
-#: lib/enigma2/python/Plugins/Extensions/XKlass/live.py:975
-#: lib/enigma2/python/Plugins/Extensions/XKlass/live.py:1160
+#: lib/enigma2/python/Plugins/Extensions/XKlass/live.py:773
+#: lib/enigma2/python/Plugins/Extensions/XKlass/live.py:974
+#: lib/enigma2/python/Plugins/Extensions/XKlass/live.py:988
+#: lib/enigma2/python/Plugins/Extensions/XKlass/live.py:1173
 #: lib/enigma2/python/Plugins/Extensions/XKlass/series.py:163
-#: lib/enigma2/python/Plugins/Extensions/XKlass/series.py:1712
-#: lib/enigma2/python/Plugins/Extensions/XKlass/series.py:2039
+#: lib/enigma2/python/Plugins/Extensions/XKlass/series.py:1715
 #: lib/enigma2/python/Plugins/Extensions/XKlass/series.py:2042
 #: lib/enigma2/python/Plugins/Extensions/XKlass/series.py:2045
-#: lib/enigma2/python/Plugins/Extensions/XKlass/series.py:2055
-#: lib/enigma2/python/Plugins/Extensions/XKlass/series.py:2243
-#: lib/enigma2/python/Plugins/Extensions/XKlass/series.py:2274
-#: lib/enigma2/python/Plugins/Extensions/XKlass/series.py:2292
+#: lib/enigma2/python/Plugins/Extensions/XKlass/series.py:2048
+#: lib/enigma2/python/Plugins/Extensions/XKlass/series.py:2058
+#: lib/enigma2/python/Plugins/Extensions/XKlass/series.py:2246
+#: lib/enigma2/python/Plugins/Extensions/XKlass/series.py:2277
+#: lib/enigma2/python/Plugins/Extensions/XKlass/series.py:2295
 #: lib/enigma2/python/Plugins/Extensions/XKlass/vod.py:157
-#: lib/enigma2/python/Plugins/Extensions/XKlass/vod.py:1290
-#: lib/enigma2/python/Plugins/Extensions/XKlass/vod.py:1597
-#: lib/enigma2/python/Plugins/Extensions/XKlass/vod.py:1599
-#: lib/enigma2/python/Plugins/Extensions/XKlass/vod.py:1609
-#: lib/enigma2/python/Plugins/Extensions/XKlass/vod.py:1798
+#: lib/enigma2/python/Plugins/Extensions/XKlass/vod.py:1293
+#: lib/enigma2/python/Plugins/Extensions/XKlass/vod.py:1600
+#: lib/enigma2/python/Plugins/Extensions/XKlass/vod.py:1602
+#: lib/enigma2/python/Plugins/Extensions/XKlass/vod.py:1612
+#: lib/enigma2/python/Plugins/Extensions/XKlass/vod.py:1801
 msgid "Sort: A-Z"
 msgstr "Ordine: A-Z"
 
@@ -138,195 +138,195 @@ msgid "OK"
 msgstr "Ok"
 
 #: lib/enigma2/python/Plugins/Extensions/XKlass/catchup.py:203
-#: lib/enigma2/python/Plugins/Extensions/XKlass/catchup.py:658
-#: lib/enigma2/python/Plugins/Extensions/XKlass/catchup.py:923
+#: lib/enigma2/python/Plugins/Extensions/XKlass/catchup.py:661
+#: lib/enigma2/python/Plugins/Extensions/XKlass/catchup.py:926
 #: lib/enigma2/python/Plugins/Extensions/XKlass/live.py:219
-#: lib/enigma2/python/Plugins/Extensions/XKlass/live.py:757
-#: lib/enigma2/python/Plugins/Extensions/XKlass/live.py:1072
+#: lib/enigma2/python/Plugins/Extensions/XKlass/live.py:770
+#: lib/enigma2/python/Plugins/Extensions/XKlass/live.py:1085
 #: lib/enigma2/python/Plugins/Extensions/XKlass/series.py:177
-#: lib/enigma2/python/Plugins/Extensions/XKlass/series.py:1715
-#: lib/enigma2/python/Plugins/Extensions/XKlass/series.py:2151
+#: lib/enigma2/python/Plugins/Extensions/XKlass/series.py:1718
+#: lib/enigma2/python/Plugins/Extensions/XKlass/series.py:2154
 #: lib/enigma2/python/Plugins/Extensions/XKlass/vod.py:170
-#: lib/enigma2/python/Plugins/Extensions/XKlass/vod.py:1293
-#: lib/enigma2/python/Plugins/Extensions/XKlass/vod.py:1711
+#: lib/enigma2/python/Plugins/Extensions/XKlass/vod.py:1296
+#: lib/enigma2/python/Plugins/Extensions/XKlass/vod.py:1714
 msgid "Search"
 msgstr "Cercare"
 
-#: lib/enigma2/python/Plugins/Extensions/XKlass/catchup.py:523
-#: lib/enigma2/python/Plugins/Extensions/XKlass/live.py:561
-#: lib/enigma2/python/Plugins/Extensions/XKlass/series.py:557
-#: lib/enigma2/python/Plugins/Extensions/XKlass/vod.py:530
+#: lib/enigma2/python/Plugins/Extensions/XKlass/catchup.py:526
+#: lib/enigma2/python/Plugins/Extensions/XKlass/live.py:574
+#: lib/enigma2/python/Plugins/Extensions/XKlass/series.py:560
+#: lib/enigma2/python/Plugins/Extensions/XKlass/vod.py:533
 msgid "ALL"
 msgstr "TUTTO"
 
-#: lib/enigma2/python/Plugins/Extensions/XKlass/catchup.py:615
-#: lib/enigma2/python/Plugins/Extensions/XKlass/live.py:681
-#: lib/enigma2/python/Plugins/Extensions/XKlass/series.py:998
-#: lib/enigma2/python/Plugins/Extensions/XKlass/vod.py:663
+#: lib/enigma2/python/Plugins/Extensions/XKlass/catchup.py:618
+#: lib/enigma2/python/Plugins/Extensions/XKlass/live.py:694
+#: lib/enigma2/python/Plugins/Extensions/XKlass/series.py:1001
+#: lib/enigma2/python/Plugins/Extensions/XKlass/vod.py:666
 msgid "Server error or invalid link."
-msgstr "Errore server o link non valido."
+msgstr "Errore del server o link non valido."
 
-#: lib/enigma2/python/Plugins/Extensions/XKlass/catchup.py:621
-#: lib/enigma2/python/Plugins/Extensions/XKlass/catchup.py:646
-#: lib/enigma2/python/Plugins/Extensions/XKlass/catchup.py:890
-#: lib/enigma2/python/Plugins/Extensions/XKlass/catchup.py:916
-#: lib/enigma2/python/Plugins/Extensions/XKlass/live.py:714
-#: lib/enigma2/python/Plugins/Extensions/XKlass/live.py:751
-#: lib/enigma2/python/Plugins/Extensions/XKlass/live.py:1008
-#: lib/enigma2/python/Plugins/Extensions/XKlass/live.py:1065
-#: lib/enigma2/python/Plugins/Extensions/XKlass/series.py:1004
-#: lib/enigma2/python/Plugins/Extensions/XKlass/series.py:1708
-#: lib/enigma2/python/Plugins/Extensions/XKlass/series.py:2097
-#: lib/enigma2/python/Plugins/Extensions/XKlass/series.py:2143
-#: lib/enigma2/python/Plugins/Extensions/XKlass/vod.py:669
-#: lib/enigma2/python/Plugins/Extensions/XKlass/vod.py:1286
-#: lib/enigma2/python/Plugins/Extensions/XKlass/vod.py:1644
-#: lib/enigma2/python/Plugins/Extensions/XKlass/vod.py:1703
+#: lib/enigma2/python/Plugins/Extensions/XKlass/catchup.py:624
+#: lib/enigma2/python/Plugins/Extensions/XKlass/catchup.py:649
+#: lib/enigma2/python/Plugins/Extensions/XKlass/catchup.py:893
+#: lib/enigma2/python/Plugins/Extensions/XKlass/catchup.py:919
+#: lib/enigma2/python/Plugins/Extensions/XKlass/live.py:727
+#: lib/enigma2/python/Plugins/Extensions/XKlass/live.py:764
+#: lib/enigma2/python/Plugins/Extensions/XKlass/live.py:1021
+#: lib/enigma2/python/Plugins/Extensions/XKlass/live.py:1078
+#: lib/enigma2/python/Plugins/Extensions/XKlass/series.py:1007
+#: lib/enigma2/python/Plugins/Extensions/XKlass/series.py:1711
+#: lib/enigma2/python/Plugins/Extensions/XKlass/series.py:2100
+#: lib/enigma2/python/Plugins/Extensions/XKlass/series.py:2146
+#: lib/enigma2/python/Plugins/Extensions/XKlass/vod.py:672
+#: lib/enigma2/python/Plugins/Extensions/XKlass/vod.py:1289
+#: lib/enigma2/python/Plugins/Extensions/XKlass/vod.py:1647
+#: lib/enigma2/python/Plugins/Extensions/XKlass/vod.py:1706
 msgid "Reset Search"
 msgstr "Azzerare ricerca"
 
-#: lib/enigma2/python/Plugins/Extensions/XKlass/catchup.py:651
-#: lib/enigma2/python/Plugins/Extensions/XKlass/catchup.py:838
-#: lib/enigma2/python/Plugins/Extensions/XKlass/live.py:956
+#: lib/enigma2/python/Plugins/Extensions/XKlass/catchup.py:654
+#: lib/enigma2/python/Plugins/Extensions/XKlass/catchup.py:841
+#: lib/enigma2/python/Plugins/Extensions/XKlass/live.py:969
 msgid "Reverse"
 msgstr "Invertire"
 
-#: lib/enigma2/python/Plugins/Extensions/XKlass/catchup.py:676
-#: lib/enigma2/python/Plugins/Extensions/XKlass/catchup.py:700
-#: lib/enigma2/python/Plugins/Extensions/XKlass/live.py:784
-#: lib/enigma2/python/Plugins/Extensions/XKlass/live.py:817
-#: lib/enigma2/python/Plugins/Extensions/XKlass/series.py:1070
-#: lib/enigma2/python/Plugins/Extensions/XKlass/series.py:1107
-#: lib/enigma2/python/Plugins/Extensions/XKlass/vod.py:808
-#: lib/enigma2/python/Plugins/Extensions/XKlass/vod.py:836
+#: lib/enigma2/python/Plugins/Extensions/XKlass/catchup.py:679
+#: lib/enigma2/python/Plugins/Extensions/XKlass/catchup.py:703
+#: lib/enigma2/python/Plugins/Extensions/XKlass/live.py:797
+#: lib/enigma2/python/Plugins/Extensions/XKlass/live.py:830
+#: lib/enigma2/python/Plugins/Extensions/XKlass/series.py:1073
+#: lib/enigma2/python/Plugins/Extensions/XKlass/series.py:1110
+#: lib/enigma2/python/Plugins/Extensions/XKlass/vod.py:811
+#: lib/enigma2/python/Plugins/Extensions/XKlass/vod.py:839
 msgid "Page: "
 msgstr "Pagina: "
 
-#: lib/enigma2/python/Plugins/Extensions/XKlass/catchup.py:843
-#: lib/enigma2/python/Plugins/Extensions/XKlass/catchup.py:860
-#: lib/enigma2/python/Plugins/Extensions/XKlass/live.py:961
-#: lib/enigma2/python/Plugins/Extensions/XKlass/live.py:978
-#: lib/enigma2/python/Plugins/Extensions/XKlass/series.py:2039
+#: lib/enigma2/python/Plugins/Extensions/XKlass/catchup.py:846
+#: lib/enigma2/python/Plugins/Extensions/XKlass/catchup.py:863
+#: lib/enigma2/python/Plugins/Extensions/XKlass/live.py:974
+#: lib/enigma2/python/Plugins/Extensions/XKlass/live.py:991
 #: lib/enigma2/python/Plugins/Extensions/XKlass/series.py:2042
 #: lib/enigma2/python/Plugins/Extensions/XKlass/series.py:2045
-#: lib/enigma2/python/Plugins/Extensions/XKlass/series.py:2058
-#: lib/enigma2/python/Plugins/Extensions/XKlass/vod.py:1597
-#: lib/enigma2/python/Plugins/Extensions/XKlass/vod.py:1599
-#: lib/enigma2/python/Plugins/Extensions/XKlass/vod.py:1612
+#: lib/enigma2/python/Plugins/Extensions/XKlass/series.py:2048
+#: lib/enigma2/python/Plugins/Extensions/XKlass/series.py:2061
+#: lib/enigma2/python/Plugins/Extensions/XKlass/vod.py:1600
+#: lib/enigma2/python/Plugins/Extensions/XKlass/vod.py:1602
+#: lib/enigma2/python/Plugins/Extensions/XKlass/vod.py:1615
 msgid "Sort: Z-A"
 msgstr "Ordine: Z-A"
 
-#: lib/enigma2/python/Plugins/Extensions/XKlass/catchup.py:845
-#: lib/enigma2/python/Plugins/Extensions/XKlass/catchup.py:847
-#: lib/enigma2/python/Plugins/Extensions/XKlass/catchup.py:867
-#: lib/enigma2/python/Plugins/Extensions/XKlass/live.py:963
-#: lib/enigma2/python/Plugins/Extensions/XKlass/live.py:965
-#: lib/enigma2/python/Plugins/Extensions/XKlass/live.py:985
-#: lib/enigma2/python/Plugins/Extensions/XKlass/series.py:2039
+#: lib/enigma2/python/Plugins/Extensions/XKlass/catchup.py:848
+#: lib/enigma2/python/Plugins/Extensions/XKlass/catchup.py:850
+#: lib/enigma2/python/Plugins/Extensions/XKlass/catchup.py:870
+#: lib/enigma2/python/Plugins/Extensions/XKlass/live.py:976
+#: lib/enigma2/python/Plugins/Extensions/XKlass/live.py:978
+#: lib/enigma2/python/Plugins/Extensions/XKlass/live.py:998
 #: lib/enigma2/python/Plugins/Extensions/XKlass/series.py:2042
 #: lib/enigma2/python/Plugins/Extensions/XKlass/series.py:2045
-#: lib/enigma2/python/Plugins/Extensions/XKlass/series.py:2067
-#: lib/enigma2/python/Plugins/Extensions/XKlass/vod.py:1597
-#: lib/enigma2/python/Plugins/Extensions/XKlass/vod.py:1599
-#: lib/enigma2/python/Plugins/Extensions/XKlass/vod.py:1621
+#: lib/enigma2/python/Plugins/Extensions/XKlass/series.py:2048
+#: lib/enigma2/python/Plugins/Extensions/XKlass/series.py:2070
+#: lib/enigma2/python/Plugins/Extensions/XKlass/vod.py:1600
+#: lib/enigma2/python/Plugins/Extensions/XKlass/vod.py:1602
+#: lib/enigma2/python/Plugins/Extensions/XKlass/vod.py:1624
 msgid "Sort: Original"
 msgstr "Ordine: Originale"
 
-#: lib/enigma2/python/Plugins/Extensions/XKlass/catchup.py:847
-#: lib/enigma2/python/Plugins/Extensions/XKlass/catchup.py:863
-#: lib/enigma2/python/Plugins/Extensions/XKlass/live.py:965
-#: lib/enigma2/python/Plugins/Extensions/XKlass/live.py:981
-#: lib/enigma2/python/Plugins/Extensions/XKlass/series.py:2042
+#: lib/enigma2/python/Plugins/Extensions/XKlass/catchup.py:850
+#: lib/enigma2/python/Plugins/Extensions/XKlass/catchup.py:866
+#: lib/enigma2/python/Plugins/Extensions/XKlass/live.py:978
+#: lib/enigma2/python/Plugins/Extensions/XKlass/live.py:994
 #: lib/enigma2/python/Plugins/Extensions/XKlass/series.py:2045
-#: lib/enigma2/python/Plugins/Extensions/XKlass/series.py:2061
-#: lib/enigma2/python/Plugins/Extensions/XKlass/vod.py:1599
-#: lib/enigma2/python/Plugins/Extensions/XKlass/vod.py:1615
+#: lib/enigma2/python/Plugins/Extensions/XKlass/series.py:2048
+#: lib/enigma2/python/Plugins/Extensions/XKlass/series.py:2064
+#: lib/enigma2/python/Plugins/Extensions/XKlass/vod.py:1602
+#: lib/enigma2/python/Plugins/Extensions/XKlass/vod.py:1618
 msgid "Sort: Added"
 msgstr "Ordine: Aggiunto"
 
-#: lib/enigma2/python/Plugins/Extensions/XKlass/catchup.py:893
-#: lib/enigma2/python/Plugins/Extensions/XKlass/live.py:1015
-#: lib/enigma2/python/Plugins/Extensions/XKlass/series.py:2101
-#: lib/enigma2/python/Plugins/Extensions/XKlass/vod.py:1651
+#: lib/enigma2/python/Plugins/Extensions/XKlass/catchup.py:896
+#: lib/enigma2/python/Plugins/Extensions/XKlass/live.py:1028
+#: lib/enigma2/python/Plugins/Extensions/XKlass/series.py:2104
+#: lib/enigma2/python/Plugins/Extensions/XKlass/vod.py:1654
 msgid "Filter this category..."
 msgstr "Filtrare questa categoria..."
 
-#: lib/enigma2/python/Plugins/Extensions/XKlass/catchup.py:909
-#: lib/enigma2/python/Plugins/Extensions/XKlass/live.py:1058
-#: lib/enigma2/python/Plugins/Extensions/XKlass/series.py:2129
-#: lib/enigma2/python/Plugins/Extensions/XKlass/vod.py:1696
+#: lib/enigma2/python/Plugins/Extensions/XKlass/catchup.py:912
+#: lib/enigma2/python/Plugins/Extensions/XKlass/live.py:1071
+#: lib/enigma2/python/Plugins/Extensions/XKlass/series.py:2132
+#: lib/enigma2/python/Plugins/Extensions/XKlass/vod.py:1699
 msgid "No results found."
 msgstr "Nessun risultato trovato."
 
-#: lib/enigma2/python/Plugins/Extensions/XKlass/catchup.py:942
-#: lib/enigma2/python/Plugins/Extensions/XKlass/live.py:1091
-#: lib/enigma2/python/Plugins/Extensions/XKlass/series.py:2179
-#: lib/enigma2/python/Plugins/Extensions/XKlass/vod.py:1730
+#: lib/enigma2/python/Plugins/Extensions/XKlass/catchup.py:945
+#: lib/enigma2/python/Plugins/Extensions/XKlass/live.py:1104
+#: lib/enigma2/python/Plugins/Extensions/XKlass/series.py:2182
+#: lib/enigma2/python/Plugins/Extensions/XKlass/vod.py:1733
 msgid "Incorrect pin code."
 msgstr "Codice pin errato."
 
-#: lib/enigma2/python/Plugins/Extensions/XKlass/catchup.py:963
-#: lib/enigma2/python/Plugins/Extensions/XKlass/live.py:1112
-#: lib/enigma2/python/Plugins/Extensions/XKlass/series.py:2200
-#: lib/enigma2/python/Plugins/Extensions/XKlass/vod.py:1751
+#: lib/enigma2/python/Plugins/Extensions/XKlass/catchup.py:966
+#: lib/enigma2/python/Plugins/Extensions/XKlass/live.py:1125
+#: lib/enigma2/python/Plugins/Extensions/XKlass/series.py:2203
+#: lib/enigma2/python/Plugins/Extensions/XKlass/vod.py:1754
 msgid "all"
 msgstr "tutto"
 
-#: lib/enigma2/python/Plugins/Extensions/XKlass/catchup.py:972
-#: lib/enigma2/python/Plugins/Extensions/XKlass/live.py:1121
-#: lib/enigma2/python/Plugins/Extensions/XKlass/series.py:2209
-#: lib/enigma2/python/Plugins/Extensions/XKlass/vod.py:1760
+#: lib/enigma2/python/Plugins/Extensions/XKlass/catchup.py:975
+#: lib/enigma2/python/Plugins/Extensions/XKlass/live.py:1134
+#: lib/enigma2/python/Plugins/Extensions/XKlass/series.py:2212
+#: lib/enigma2/python/Plugins/Extensions/XKlass/vod.py:1763
 msgid "Please enter the parental control pin code"
 msgstr "Inserire il codice PIN del controllo parentale"
 
-#: lib/enigma2/python/Plugins/Extensions/XKlass/catchup.py:972
+#: lib/enigma2/python/Plugins/Extensions/XKlass/catchup.py:975
 #: lib/enigma2/python/Plugins/Extensions/XKlass/hidden.py:29
-#: lib/enigma2/python/Plugins/Extensions/XKlass/live.py:1121
-#: lib/enigma2/python/Plugins/Extensions/XKlass/series.py:2209
+#: lib/enigma2/python/Plugins/Extensions/XKlass/live.py:1134
+#: lib/enigma2/python/Plugins/Extensions/XKlass/series.py:2212
 #: lib/enigma2/python/Plugins/Extensions/XKlass/settings.py:35
-#: lib/enigma2/python/Plugins/Extensions/XKlass/vod.py:1760
+#: lib/enigma2/python/Plugins/Extensions/XKlass/vod.py:1763
 msgid "Enter pin code"
 msgstr "Inserire il codice PIN"
 
-#: lib/enigma2/python/Plugins/Extensions/XKlass/catchup.py:1123
+#: lib/enigma2/python/Plugins/Extensions/XKlass/catchup.py:1126
 msgid "Catch-up"
 msgstr "Catch-Up"
-
-#: lib/enigma2/python/Plugins/Extensions/XKlass/catchup.py:1128
-#: lib/enigma2/python/Plugins/Extensions/XKlass/series.py:2445
-#: lib/enigma2/python/Plugins/Extensions/XKlass/vod.py:2009
-msgid "Added to download manager"
-msgstr "Aggiunto al Download Manager"
-
-#: lib/enigma2/python/Plugins/Extensions/XKlass/catchup.py:1128
-#: lib/enigma2/python/Plugins/Extensions/XKlass/series.py:2445
-#: lib/enigma2/python/Plugins/Extensions/XKlass/vod.py:2009
-msgid "Note recording acts as an open connection."
-msgstr "Nota: una registrazione equivale a una connessione."
-
-#: lib/enigma2/python/Plugins/Extensions/XKlass/catchup.py:1128
-#: lib/enigma2/python/Plugins/Extensions/XKlass/series.py:2445
-#: lib/enigma2/python/Plugins/Extensions/XKlass/vod.py:2009
-msgid "Do not record and play streams at the same time."
-msgstr "Non registrare e riprodurre contemporaneamente."
-
-#: lib/enigma2/python/Plugins/Extensions/XKlass/catchup.py:1128
-#: lib/enigma2/python/Plugins/Extensions/XKlass/series.py:2445
-#: lib/enigma2/python/Plugins/Extensions/XKlass/vod.py:2009
-msgid "Open download manager?"
-msgstr "Aprire Download Manager?"
 
 #: lib/enigma2/python/Plugins/Extensions/XKlass/catchup.py:1131
 #: lib/enigma2/python/Plugins/Extensions/XKlass/series.py:2448
 #: lib/enigma2/python/Plugins/Extensions/XKlass/vod.py:2012
+msgid "Added to download manager"
+msgstr "Aggiunto al Download Manager"
+
+#: lib/enigma2/python/Plugins/Extensions/XKlass/catchup.py:1131
+#: lib/enigma2/python/Plugins/Extensions/XKlass/series.py:2448
+#: lib/enigma2/python/Plugins/Extensions/XKlass/vod.py:2012
+msgid "Note recording acts as an open connection."
+msgstr "Nota: una registrazione equivale a una connessione."
+
+#: lib/enigma2/python/Plugins/Extensions/XKlass/catchup.py:1131
+#: lib/enigma2/python/Plugins/Extensions/XKlass/series.py:2448
+#: lib/enigma2/python/Plugins/Extensions/XKlass/vod.py:2012
+msgid "Do not record and play streams at the same time."
+msgstr "Non registrare e riprodurre contemporaneamente."
+
+#: lib/enigma2/python/Plugins/Extensions/XKlass/catchup.py:1131
+#: lib/enigma2/python/Plugins/Extensions/XKlass/series.py:2448
+#: lib/enigma2/python/Plugins/Extensions/XKlass/vod.py:2012
+msgid "Open download manager?"
+msgstr "Aprire Download Manager?"
+
+#: lib/enigma2/python/Plugins/Extensions/XKlass/catchup.py:1134
+#: lib/enigma2/python/Plugins/Extensions/XKlass/series.py:2451
+#: lib/enigma2/python/Plugins/Extensions/XKlass/vod.py:2015
 msgid "Already added to download manager"
 msgstr "Già presente in Download Manager"
 
-#: lib/enigma2/python/Plugins/Extensions/XKlass/catchup.py:1162
+#: lib/enigma2/python/Plugins/Extensions/XKlass/catchup.py:1165
 msgid "Catchup error. No data for this slot"
 msgstr "Errore Catch-Up. Nessun dato per questo slot"
 
-#: lib/enigma2/python/Plugins/Extensions/XKlass/catchup.py:1221
+#: lib/enigma2/python/Plugins/Extensions/XKlass/catchup.py:1224
 msgid "Catchup currently not available. Missing EPG data"
 msgstr "Catch-Up al momento non disponibile. Dati EPG mancanti"
 
@@ -372,7 +372,7 @@ msgstr "Impostazioni playlist"
 #: lib/enigma2/python/Plugins/Extensions/XKlass/channelmenu.py:146
 #: lib/enigma2/python/Plugins/Extensions/XKlass/channelmenu.py:261
 msgid "Show/Hide Channels"
-msgstr ""
+msgstr "Mostra/Nascondi Canale"
 
 #: lib/enigma2/python/Plugins/Extensions/XKlass/channelmenu.py:112
 #: lib/enigma2/python/Plugins/Extensions/XKlass/channelmenu.py:148
@@ -382,23 +382,25 @@ msgstr ""
 
 #: lib/enigma2/python/Plugins/Extensions/XKlass/channelmenu.py:114
 msgid "Set As Default Playlist"
-msgstr ""
+msgstr "Rendi la Playlist Default"
 
 #: lib/enigma2/python/Plugins/Extensions/XKlass/channelmenu.py:116
 #: lib/enigma2/python/Plugins/Extensions/XKlass/channelmenu.py:152
 #: lib/enigma2/python/Plugins/Extensions/XKlass/channelmenu.py:267
+#: lib/enigma2/python/Plugins/Extensions/XKlass/startmenu.py:393
 msgid "Switch Playlist"
-msgstr ""
+msgstr "Cambia Playlist"
 
 #: lib/enigma2/python/Plugins/Extensions/XKlass/channelmenu.py:117
 #: lib/enigma2/python/Plugins/Extensions/XKlass/channelmenu.py:154
 #: lib/enigma2/python/Plugins/Extensions/XKlass/channelmenu.py:269
 msgid "Add New Playlist"
-msgstr ""
+msgstr "Aggiungi Nuova Playlist"
 
 #: lib/enigma2/python/Plugins/Extensions/XKlass/channelmenu.py:128
 #: lib/enigma2/python/Plugins/Extensions/XKlass/channelmenu.py:156
 #: lib/enigma2/python/Plugins/Extensions/XKlass/channelmenu.py:271
+#: lib/enigma2/python/Plugins/Extensions/XKlass/startmenu.py:400
 msgid "Download Manager"
 msgstr "Download Manager"
 
@@ -406,8 +408,9 @@ msgstr "Download Manager"
 #: lib/enigma2/python/Plugins/Extensions/XKlass/channelmenu.py:158
 #: lib/enigma2/python/Plugins/Extensions/XKlass/channelmenu.py:273
 #: lib/enigma2/python/Plugins/Extensions/XKlass/settings.py:68
+#: lib/enigma2/python/Plugins/Extensions/XKlass/startmenu.py:395
 msgid "Global Settings"
-msgstr ""
+msgstr "Impostazioni Globali"
 
 #: lib/enigma2/python/Plugins/Extensions/XKlass/channelmenu.py:175
 msgid "Recordings in progress. EPG not downloaded."
@@ -427,7 +430,7 @@ msgstr "Vod"
 
 #: lib/enigma2/python/Plugins/Extensions/XKlass/channelmenu.py:253
 #: lib/enigma2/python/Plugins/Extensions/XKlass/series.py:101
-#: lib/enigma2/python/Plugins/Extensions/XKlass/series.py:2440
+#: lib/enigma2/python/Plugins/Extensions/XKlass/series.py:2443
 msgid "Series"
 msgstr "SerieTV"
 
@@ -547,40 +550,40 @@ msgstr "Categorie live"
 msgid "Live TV"
 msgstr ""
 
-#: lib/enigma2/python/Plugins/Extensions/XKlass/live.py:559
-#: lib/enigma2/python/Plugins/Extensions/XKlass/vod.py:528
+#: lib/enigma2/python/Plugins/Extensions/XKlass/live.py:572
+#: lib/enigma2/python/Plugins/Extensions/XKlass/vod.py:531
 msgid "FAVOURITES"
 msgstr "PREFERITI"
 
-#: lib/enigma2/python/Plugins/Extensions/XKlass/live.py:560
-#: lib/enigma2/python/Plugins/Extensions/XKlass/vod.py:529
+#: lib/enigma2/python/Plugins/Extensions/XKlass/live.py:573
+#: lib/enigma2/python/Plugins/Extensions/XKlass/vod.py:532
 msgid "RECENTLY WATCHED"
 msgstr "VISTO RECENTEMENTE"
 
-#: lib/enigma2/python/Plugins/Extensions/XKlass/live.py:755
-#: lib/enigma2/python/Plugins/Extensions/XKlass/live.py:1011
+#: lib/enigma2/python/Plugins/Extensions/XKlass/live.py:768
+#: lib/enigma2/python/Plugins/Extensions/XKlass/live.py:1024
 #: lib/enigma2/python/Plugins/Extensions/XKlass/playlists.py:69
-#: lib/enigma2/python/Plugins/Extensions/XKlass/vod.py:1301
-#: lib/enigma2/python/Plugins/Extensions/XKlass/vod.py:1647
+#: lib/enigma2/python/Plugins/Extensions/XKlass/vod.py:1304
+#: lib/enigma2/python/Plugins/Extensions/XKlass/vod.py:1650
 msgid "Delete"
 msgstr "Rimuovere"
 
-#: lib/enigma2/python/Plugins/Extensions/XKlass/live.py:1413
-#: lib/enigma2/python/Plugins/Extensions/XKlass/live.py:1468
-#: lib/enigma2/python/Plugins/Extensions/XKlass/live.py:1477
+#: lib/enigma2/python/Plugins/Extensions/XKlass/live.py:1426
+#: lib/enigma2/python/Plugins/Extensions/XKlass/live.py:1481
+#: lib/enigma2/python/Plugins/Extensions/XKlass/live.py:1490
 msgid "Next Info"
 msgstr "Info prossimo"
 
-#: lib/enigma2/python/Plugins/Extensions/XKlass/live.py:1472
+#: lib/enigma2/python/Plugins/Extensions/XKlass/live.py:1485
 msgid "Now Info"
 msgstr "Info corrente"
 
-#: lib/enigma2/python/Plugins/Extensions/XKlass/live.py:1677
+#: lib/enigma2/python/Plugins/Extensions/XKlass/live.py:1690
 #: lib/enigma2/python/Plugins/Extensions/XKlass/liveplayer.py:618
 msgid "Recording Timer Set."
 msgstr "Impostare tempo registrazione."
 
-#: lib/enigma2/python/Plugins/Extensions/XKlass/live.py:1679
+#: lib/enigma2/python/Plugins/Extensions/XKlass/live.py:1692
 #: lib/enigma2/python/Plugins/Extensions/XKlass/liveplayer.py:620
 msgid "Recording Failed."
 msgstr "Registrazione fallita."
@@ -601,44 +604,44 @@ msgstr "Info"
 msgid "No internet."
 msgstr ""
 
-#: lib/enigma2/python/Plugins/Extensions/XKlass/playlists.py:332
-#: lib/enigma2/python/Plugins/Extensions/XKlass/playlists.py:409
+#: lib/enigma2/python/Plugins/Extensions/XKlass/playlists.py:335
+#: lib/enigma2/python/Plugins/Extensions/XKlass/playlists.py:412
 msgid "Not Authorised"
 msgstr "Non autorizzato"
 
-#: lib/enigma2/python/Plugins/Extensions/XKlass/playlists.py:337
-#: lib/enigma2/python/Plugins/Extensions/XKlass/playlists.py:395
+#: lib/enigma2/python/Plugins/Extensions/XKlass/playlists.py:340
+#: lib/enigma2/python/Plugins/Extensions/XKlass/playlists.py:398
 #: lib/enigma2/python/Plugins/Extensions/XKlass/serverinfo.py:73
 msgid "Active"
 msgstr "Attivo"
 
-#: lib/enigma2/python/Plugins/Extensions/XKlass/playlists.py:338
-#: lib/enigma2/python/Plugins/Extensions/XKlass/playlists.py:401
+#: lib/enigma2/python/Plugins/Extensions/XKlass/playlists.py:341
+#: lib/enigma2/python/Plugins/Extensions/XKlass/playlists.py:404
 #: lib/enigma2/python/Plugins/Extensions/XKlass/serverinfo.py:74
 msgid "Banned"
 msgstr "Bannato"
 
-#: lib/enigma2/python/Plugins/Extensions/XKlass/playlists.py:339
-#: lib/enigma2/python/Plugins/Extensions/XKlass/playlists.py:405
+#: lib/enigma2/python/Plugins/Extensions/XKlass/playlists.py:342
+#: lib/enigma2/python/Plugins/Extensions/XKlass/playlists.py:408
 #: lib/enigma2/python/Plugins/Extensions/XKlass/serverinfo.py:75
 msgid "Disabled"
 msgstr "Disabilitato"
 
-#: lib/enigma2/python/Plugins/Extensions/XKlass/playlists.py:340
-#: lib/enigma2/python/Plugins/Extensions/XKlass/playlists.py:403
+#: lib/enigma2/python/Plugins/Extensions/XKlass/playlists.py:343
+#: lib/enigma2/python/Plugins/Extensions/XKlass/playlists.py:406
 #: lib/enigma2/python/Plugins/Extensions/XKlass/serverinfo.py:76
 msgid "Expired"
 msgstr "Scaduto"
 
-#: lib/enigma2/python/Plugins/Extensions/XKlass/playlists.py:352
+#: lib/enigma2/python/Plugins/Extensions/XKlass/playlists.py:355
 msgid "Active Conn:"
 msgstr "Conn. attive:"
 
-#: lib/enigma2/python/Plugins/Extensions/XKlass/playlists.py:360
+#: lib/enigma2/python/Plugins/Extensions/XKlass/playlists.py:363
 msgid "Max Conn:"
 msgstr "Conn. max:"
 
-#: lib/enigma2/python/Plugins/Extensions/XKlass/playlists.py:388
+#: lib/enigma2/python/Plugins/Extensions/XKlass/playlists.py:391
 msgid ""
 "You have dead playlists that are slowing down loading.\n"
 "\n"
@@ -648,11 +651,11 @@ msgstr ""
 "\n"
 "Premere il pulsante giallo per eliminare le playlist morte"
 
-#: lib/enigma2/python/Plugins/Extensions/XKlass/playlists.py:424
+#: lib/enigma2/python/Plugins/Extensions/XKlass/playlists.py:427
 msgid "Delete selected playlist?"
 msgstr "Rimuovere la playlist selezionata?"
 
-#: lib/enigma2/python/Plugins/Extensions/XKlass/playlists.py:445
+#: lib/enigma2/python/Plugins/Extensions/XKlass/playlists.py:448
 msgid "Delete providers EPG data?"
 msgstr "Rimuovere i dati EPG provider?"
 
@@ -682,7 +685,7 @@ msgstr "Mostrare la categoria SERIE:"
 
 #: lib/enigma2/python/Plugins/Extensions/XKlass/playsettings.py:143
 msgid "Show CATCHUP category:"
-msgstr "Mostrare la categoria Catch-Up:"
+msgstr "Mostrare la categoria CATCHUP:"
 
 #: lib/enigma2/python/Plugins/Extensions/XKlass/playsettings.py:144
 #: lib/enigma2/python/Plugins/Extensions/XKlass/server.py:121
@@ -722,12 +725,12 @@ msgstr ""
 msgid "Name already used. Please enter a unique name."
 msgstr "Nome già presente. Inserire un nome univoco."
 
-#: lib/enigma2/python/Plugins/Extensions/XKlass/plugin.py:251
-#: lib/enigma2/python/Plugins/Extensions/XKlass/plugin.py:359
+#: lib/enigma2/python/Plugins/Extensions/XKlass/plugin.py:258
+#: lib/enigma2/python/Plugins/Extensions/XKlass/plugin.py:366
 msgid "XKlass"
 msgstr "XKlass"
 
-#: lib/enigma2/python/Plugins/Extensions/XKlass/plugin.py:358
+#: lib/enigma2/python/Plugins/Extensions/XKlass/plugin.py:365
 msgid "IPTV Xtream Codes playlists player by KiddaC"
 msgstr "Player di playlist IPTV Xtream Codes by KiddaC"
 
@@ -760,39 +763,39 @@ msgstr "Ora fine"
 msgid "Series Categories"
 msgstr "Categorie SerieTV"
 
-#: lib/enigma2/python/Plugins/Extensions/XKlass/series.py:698
+#: lib/enigma2/python/Plugins/Extensions/XKlass/series.py:701
 msgid "No series found in this category."
 msgstr "Serie non trovate in questa categoria."
 
-#: lib/enigma2/python/Plugins/Extensions/XKlass/series.py:755
-#: lib/enigma2/python/Plugins/Extensions/XKlass/series.py:2539
+#: lib/enigma2/python/Plugins/Extensions/XKlass/series.py:758
+#: lib/enigma2/python/Plugins/Extensions/XKlass/series.py:2542
 msgid "Season "
 msgstr "Stagione "
 
-#: lib/enigma2/python/Plugins/Extensions/XKlass/series.py:1610
-#: lib/enigma2/python/Plugins/Extensions/XKlass/vod.py:1240
+#: lib/enigma2/python/Plugins/Extensions/XKlass/series.py:1613
+#: lib/enigma2/python/Plugins/Extensions/XKlass/vod.py:1243
 msgid "Rating: "
 msgstr ""
 
-#: lib/enigma2/python/Plugins/Extensions/XKlass/series.py:1683
-#: lib/enigma2/python/Plugins/Extensions/XKlass/vod.py:1269
+#: lib/enigma2/python/Plugins/Extensions/XKlass/series.py:1686
+#: lib/enigma2/python/Plugins/Extensions/XKlass/vod.py:1272
 msgid "Cast:"
 msgstr "Cast:"
 
-#: lib/enigma2/python/Plugins/Extensions/XKlass/series.py:1688
-#: lib/enigma2/python/Plugins/Extensions/XKlass/vod.py:1274
+#: lib/enigma2/python/Plugins/Extensions/XKlass/series.py:1691
+#: lib/enigma2/python/Plugins/Extensions/XKlass/vod.py:1277
 msgid "Director:"
 msgstr "Regista:"
 
-#: lib/enigma2/python/Plugins/Extensions/XKlass/series.py:1693
-#: lib/enigma2/python/Plugins/Extensions/XKlass/vod.py:1279
+#: lib/enigma2/python/Plugins/Extensions/XKlass/series.py:1696
+#: lib/enigma2/python/Plugins/Extensions/XKlass/vod.py:1282
 msgid "Overview"
-msgstr ""
+msgstr "Trama"
 
-#: lib/enigma2/python/Plugins/Extensions/XKlass/series.py:2045
-#: lib/enigma2/python/Plugins/Extensions/XKlass/series.py:2064
-#: lib/enigma2/python/Plugins/Extensions/XKlass/vod.py:1599
-#: lib/enigma2/python/Plugins/Extensions/XKlass/vod.py:1618
+#: lib/enigma2/python/Plugins/Extensions/XKlass/series.py:2048
+#: lib/enigma2/python/Plugins/Extensions/XKlass/series.py:2067
+#: lib/enigma2/python/Plugins/Extensions/XKlass/vod.py:1602
+#: lib/enigma2/python/Plugins/Extensions/XKlass/vod.py:1621
 msgid "Sort: Year"
 msgstr "Ordine: Anno"
 
@@ -854,7 +857,7 @@ msgstr "Creato il:"
 
 #: lib/enigma2/python/Plugins/Extensions/XKlass/serverinfo.py:49
 msgid "Is Trial:"
-msgstr "Tentativo:"
+msgstr "Versione di prova:"
 
 #: lib/enigma2/python/Plugins/Extensions/XKlass/serverinfo.py:50
 msgid "Active Connections:"
@@ -882,7 +885,7 @@ msgstr "Offset server:"
 
 #: lib/enigma2/python/Plugins/Extensions/XKlass/serverinfo.py:83
 msgid "Unknown"
-msgstr ""
+msgstr "Sconosciuto"
 
 #: lib/enigma2/python/Plugins/Extensions/XKlass/settings.py:119
 msgid ""
@@ -914,7 +917,7 @@ msgstr "Percorso playlists.txt"
 #: lib/enigma2/python/Plugins/Extensions/XKlass/settings.py:149
 #: lib/enigma2/python/Plugins/Extensions/XKlass/settings.py:156
 #: lib/enigma2/python/Plugins/Extensions/XKlass/settings.py:162
-#: lib/enigma2/python/Plugins/Extensions/XKlass/settings.py:169
+#: lib/enigma2/python/Plugins/Extensions/XKlass/settings.py:170
 msgid " *Restart GUI Required"
 msgstr " *Riavvio della GUI Richiesto"
 
@@ -972,43 +975,76 @@ msgstr "Ora download automatico EPG"
 
 #: lib/enigma2/python/Plugins/Extensions/XKlass/settings.py:163
 msgid "Show intro video"
-msgstr ""
+msgstr "Mostra video di introduzione"
 
 #: lib/enigma2/python/Plugins/Extensions/XKlass/settings.py:164
 msgid "Loop intro video"
-msgstr ""
+msgstr "Video introduzione in loop"
 
 #: lib/enigma2/python/Plugins/Extensions/XKlass/settings.py:165
+msgid "Intro video selection"
+msgstr ""
+
+#: lib/enigma2/python/Plugins/Extensions/XKlass/settings.py:166
 msgid "Show channel picons"
 msgstr "Mostrare picon canali"
 
-#: lib/enigma2/python/Plugins/Extensions/XKlass/settings.py:166
+#: lib/enigma2/python/Plugins/Extensions/XKlass/settings.py:167
 msgid "Show Vod/Series posters"
 msgstr "Mostrare poster di Vod/Serie"
 
-#: lib/enigma2/python/Plugins/Extensions/XKlass/settings.py:167
+#: lib/enigma2/python/Plugins/Extensions/XKlass/settings.py:168
 msgid "Show infobar picons"
 msgstr "Mostrare picon barra informazioni"
 
-#: lib/enigma2/python/Plugins/Extensions/XKlass/settings.py:168
+#: lib/enigma2/python/Plugins/Extensions/XKlass/settings.py:169
 msgid "Show infobar posters"
 msgstr "Mostrare poster barra informazioni"
 
-#: lib/enigma2/python/Plugins/Extensions/XKlass/settings.py:169
+#: lib/enigma2/python/Plugins/Extensions/XKlass/settings.py:170
 msgid "Auto start XKlass on boot"
 msgstr "Avvio automatico di XKlass al boot"
 
-#: lib/enigma2/python/Plugins/Extensions/XKlass/settings.py:289
+#: lib/enigma2/python/Plugins/Extensions/XKlass/settings.py:291
 msgid "Choose Directory:"
 msgstr "Selezionare la directory:"
 
-#: lib/enigma2/python/Plugins/Extensions/XKlass/settings.py:290
+#: lib/enigma2/python/Plugins/Extensions/XKlass/settings.py:292
 msgid "Choose directory"
 msgstr "Selezionare la directory"
 
-#: lib/enigma2/python/Plugins/Extensions/XKlass/startmenu.py:57
+#: lib/enigma2/python/Plugins/Extensions/XKlass/startmenu.py:58
 msgid "Main Menu"
 msgstr "Menu Principale"
+
+#: lib/enigma2/python/Plugins/Extensions/XKlass/startmenu.py:222
+#, fuzzy
+#| msgid "Server Not Responding"
+msgid "Server not responding."
+msgstr "Il server non risponde"
+
+#: lib/enigma2/python/Plugins/Extensions/XKlass/startmenu.py:258
+#: lib/enigma2/python/Plugins/Extensions/XKlass/startmenu.py:292
+#, fuzzy
+#| msgid "Playlist Settings"
+msgid "Playlist not active."
+msgstr "Impostazioni playlist"
+
+#: lib/enigma2/python/Plugins/Extensions/XKlass/startmenu.py:391
+msgid "Catch Up TV"
+msgstr "Catch-Up TV"
+
+#: lib/enigma2/python/Plugins/Extensions/XKlass/startmenu.py:511
+msgid ""
+"Warning: delete stored json data for all playlists... Settings, favourites "
+"etc. \n"
+"Playlists will not be deleted.\n"
+"Do you wish to continue?"
+msgstr ""
+"Attenzione: verranno rimossi i dati json memorizzati per tutte le playlist "
+"(impostazioni, preferiti ecc) \n"
+"Le playlist non verranno eliminate.\n"
+"Continuare?"
 
 #: lib/enigma2/python/Plugins/Extensions/XKlass/vod.py:108
 msgid "Vod Categories"
@@ -1016,25 +1052,21 @@ msgstr "Categorie Vod"
 
 #: lib/enigma2/python/Plugins/Extensions/XKlass/vod.py:113
 msgid "Movies"
-msgstr ""
+msgstr "Film"
 
-#: lib/enigma2/python/Plugins/Extensions/XKlass/vod.py:2004
+#: lib/enigma2/python/Plugins/Extensions/XKlass/vod.py:2007
 msgid "Movie"
 msgstr "Film"
 
-#: lib/enigma2/python/Plugins/Extensions/XKlass/vod.py:2034
-#, fuzzy
-#| msgid ""
-#| "The IMDb plugin is not installed!\n"
-#| "Please install it."
+#: lib/enigma2/python/Plugins/Extensions/XKlass/vod.py:2037
 msgid ""
 "The TMDB plugin is not installed!\n"
 "Please install it."
 msgstr ""
-"Plugin IMDb non installato.\n"
+"Plugin TMDb non installato.\n"
 "Provvedere all'installazione."
 
-#: lib/enigma2/python/Plugins/Extensions/XKlass/vod.py:2044
+#: lib/enigma2/python/Plugins/Extensions/XKlass/vod.py:2047
 msgid ""
 "The IMDb plugin is not installed!\n"
 "Please install it."
@@ -1048,9 +1080,6 @@ msgstr "VOD"
 
 #~ msgid "Playlists.txt location is invalid and has been reset."
 #~ msgstr "Percorso Playlists.txt non valido: è stato ripristinato."
-
-#~ msgid "Catch Up TV"
-#~ msgstr "Catch-Up TV"
 
 #, fuzzy
 #~| msgid ""
@@ -1081,23 +1110,9 @@ msgstr "VOD"
 #~ msgid "Main Settings"
 #~ msgstr "Impostazioni principali"
 
-#~ msgid ""
-#~ "Warning: delete stored json data for all playlists... Settings, "
-#~ "favourites etc. \n"
-#~ "Playlists will not be deleted.\n"
-#~ "Do you wish to continue?"
-#~ msgstr ""
-#~ "Attenzione: verranno rimossi i dati json memorizzati per tutte le "
-#~ "playlist (impostazioni, preferiti ecc) \n"
-#~ "Le playlist non verranno eliminate.\n"
-#~ "Continuare?"
-
 #~ msgid "No data, blocked or playlist not compatible with XKlass plugin."
 #~ msgstr ""
 #~ "Nessun dato, playlist bloccata o non compatibile con il plugin XKlass."
-
-#~ msgid "Server Not Responding"
-#~ msgstr "Il server non risponde"
 
 #~ msgid "Expires: "
 #~ msgstr "Scadenza: "
