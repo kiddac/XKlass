@@ -1057,6 +1057,16 @@ class XKlass_Series_Categories(Screen):
     def selectionChanged(self):
         # print("*** selectionChanged ***")
         self.tmdbretry = 0
+
+        if self.cover_download_deferred:
+            self.cover_download_deferred.cancel()
+
+        if self.logo_download_deferred:
+            self.logo_download_deferred.cancel()
+
+        if self.backdrop_download_deferred:
+            self.backdrop_download_deferred.cancel()
+
         current_item = self["main_list"].getCurrent()
 
         if current_item:
@@ -2326,9 +2336,16 @@ class XKlass_Series_Categories(Screen):
         except Exception as e:
             print(e)
 
-        self.loadDefaultCover()
-        self.loadDefaultLogo()
-        self.loadDefaultBackdrop()
+        self.timerSeries.stop()
+
+        if self.cover_download_deferred:
+            self.cover_download_deferred.cancel()
+
+        if self.logo_download_deferred:
+            self.logo_download_deferred.cancel()
+
+        if self.backdrop_download_deferred:
+            self.backdrop_download_deferred.cancel()
 
         try:
             del glob.nextlist[-1]
@@ -2353,6 +2370,10 @@ class XKlass_Series_Categories(Screen):
             self["menu_actions"].setEnabled(False)
             self["key_epg"].setText("")
             self.buildLists()
+
+            self.loadDefaultCover()
+            self.loadDefaultLogo()
+            self.loadDefaultBackdrop()
 
     def clearWatched(self):
         if self.level == 4:

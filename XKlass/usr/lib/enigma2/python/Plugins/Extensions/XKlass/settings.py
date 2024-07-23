@@ -151,6 +151,10 @@ class XKlass_Settings(ConfigListScreen, Screen, ProtectedScreen):
         self.cfg_downloadlocation = getConfigListEntry(_("VOD download folder"), cfg.downloadlocation)
         self.cfg_livetype = getConfigListEntry(_("Default LIVE stream type"), cfg.livetype)
         self.cfg_vodtype = getConfigListEntry(_("Default VOD/SERIES stream type"), cfg.vodtype)
+
+        self.cfg_vodcategoryorder = getConfigListEntry(_("Default VOD category sort order"), cfg.vodcategoryorder)
+        self.cfg_vodstreamorder = getConfigListEntry(_("Default VOD stream sort order"), cfg.vodstreamorder)
+
         self.cfg_adult = getConfigListEntry(_("XKlass parental control"), cfg.adult)
         self.cfg_adultpin = getConfigListEntry(_("XKlass parental pin"), cfg.adultpin)
         self.cfg_main = getConfigListEntry(_("Show in main menu") + _(" *Restart GUI Required"), cfg.main)
@@ -187,6 +191,10 @@ class XKlass_Settings(ConfigListScreen, Screen, ProtectedScreen):
             self.cfg_downloadlocation,
             self.cfg_livetype,
             self.cfg_vodtype,
+
+            self.cfg_vodcategoryorder,
+            self.cfg_vodstreamorder,
+
             self.cfg_wakeup,
             self.cfg_TMDB,
             self.cfg_TMDBLanguage2 if cfg.TMDB.value else None,
