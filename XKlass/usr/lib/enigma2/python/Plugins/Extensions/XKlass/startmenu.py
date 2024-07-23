@@ -209,13 +209,14 @@ class XKlass_MainMenu(Screen):
                 # Perform the initial request
                 r = http.get(url[0], headers=hdr, timeout=6, verify=False)
                 r.raise_for_status()
-                # Follow redirects manually and check for JSON content
-                if r.history:
-                    for resp in r.history:
-                        if 'application/json' not in resp.headers.get('Content-Type', ''):
-                            print("Redirected to non-JSON content", url)
-                            return index, None
-                response = r.json()
+
+                if 'application/json' in r.headers.get('Content-Type', ''):
+                    try:
+                        response = r.json()
+                    except ValueError as e:
+                        print("Error decoding JSON:", e, url)
+                else:
+                    print("Error: Response is not JSON", url)
 
             except Exception as e:
                 print("Unexpected error:", e)

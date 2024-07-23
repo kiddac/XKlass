@@ -416,14 +416,6 @@ class XKlass_Live_Categories(Screen):
                 r = http.get(url[0], headers=hdr, timeout=(10, 20), verify=False)
                 r.raise_for_status()
 
-                # Follow redirects manually and check for JSON content
-                if r.history:
-                    for resp in r.history:
-                        if 'application/json' not in resp.headers.get('Content-Type', ''):
-                            print("Redirected to non-JSON content", url)
-                            return index, None
-
-                # Check final response for JSON content
                 if 'application/json' in r.headers.get('Content-Type', ''):
                     try:
                         response = r.json()
