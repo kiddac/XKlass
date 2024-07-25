@@ -91,7 +91,6 @@ class XKlass_Series_Categories(Screen):
         self.session = session
         glob.categoryname = "series"
 
-        contextFactory = BrowserLikePolicyForHTTPS()
         self.agent = Agent(reactor, contextFactory=contextFactory)
         self.cover_download_deferred = None
         self.logo_download_deferred = None

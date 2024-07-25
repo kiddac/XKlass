@@ -102,7 +102,6 @@ class XKlass_Vod_Categories(Screen):
         self.session = session
         glob.categoryname = "vod"
 
-        contextFactory = BrowserLikePolicyForHTTPS()
         self.agent = Agent(reactor, contextFactory=contextFactory)
         self.cover_download_deferred = None
         self.logo_download_deferred = None
