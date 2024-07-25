@@ -898,7 +898,6 @@ class XKlass_Series_Categories(Screen):
                         if "id" in item:
                             stream_id = item["id"]
                         else:
-                            # Skip this item if "id" key is missing
                             continue
 
                         if "title" in item:
@@ -906,9 +905,6 @@ class XKlass_Series_Categories(Screen):
 
                         if "container_extension" in item:
                             container_extension = item["container_extension"]
-
-                        # duration = item.get("info", {}).get("duration", "")
-                        # episode_num = item.get("episode_num", 1)
 
                         if "episode_num" in item:
                             episode_num = item["episode_num"]
@@ -923,6 +919,9 @@ class XKlass_Series_Categories(Screen):
 
                             elif "release_date" in item["info"]:
                                 releasedate = item["info"]["release_date"]
+
+                            elif "air_date" in item["info"]:
+                                releasedate = item["info"]["air_date"]
 
                             if "plot" in item["info"]:
                                 plot = item["info"]["plot"]
@@ -1271,7 +1270,16 @@ class XKlass_Series_Categories(Screen):
 
             if response:
                 self.searchresult = json.loads(response)
-                if "results" not in self.searchresult or not self.searchresult["results"]:
+                if "results" in self.searchresult and self.searchresult["results"]:
+                    resultid = self.searchresult["results"][0].get("id")
+
+                    if not resultid:
+                        self.tmdbresults = ""
+                        self.displayTMDB()
+                        return
+
+                    self.getTMDBDetails(resultid)
+                else:
                     # self.tmdbValid = False
                     self.storedyear = ""
                     self.tmdbretry += 1
@@ -1282,20 +1290,11 @@ class XKlass_Series_Categories(Screen):
                         self.tmdbresults = ""
                         self.displayTMDB()
                         return
-                else:
-                    resultid = self.searchresult["results"][0].get("id")
 
-                    if not resultid:
-                        self.tmdbresults = ""
-                        self.displayTMDB()
-                        return
-
-                    self.getTMDBDetails(resultid)
         except Exception as e:
             print("Error processing TMDB response:", e)
 
     def getTMDBDetails(self, resultid=None):
-        # print(" *** getTMDBDetails ***")
         detailsurl = ""
         languagestr = ""
 
@@ -1374,163 +1373,167 @@ class XKlass_Series_Categories(Screen):
                 self.tmdbdetails = json.loads(response, object_pairs_hook=OrderedDict)
             except Exception as e:
                 print("Error parsing TMDB response:", e)
-            else:
-                if self.tmdbdetails:
-                    self.tmdbresults["name"] = str(self.tmdbdetails.get("name") or "")
 
-                    self.tmdbresults["description"] = str(self.tmdbdetails.get("overview") or self.storeddescription or "")
+            if self.tmdbdetails:
+                self.tmdbresults["name"] = str(self.tmdbdetails.get("name") or "")
 
-                    if "tagline" in self.tmdbdetails and self.tmdbdetails["tagline"].strip():
-                        self.tmdbresults["tagline"] = str(self.tmdbdetails["tagline"])
+                self.tmdbresults["description"] = str(self.tmdbdetails.get("overview") or self.storeddescription or "")
 
-                    rating_str = self.tmdbdetails.get("vote_average", None)
+                if "tagline" in self.tmdbdetails and self.tmdbdetails["tagline"].strip():
+                    self.tmdbresults["tagline"] = str(self.tmdbdetails["tagline"])
 
-                    if rating_str is not None and float(rating_str) != 0:
-                        try:
-                            rating = float(rating_str)
-                            rounded_rating = round(rating, 1)
-                            self.tmdbresults["rating"] = "{:.1f}".format(rounded_rating)
-                        except ValueError:
-                            self.tmdbresults["rating"] = rating_str
+                rating_str = self.tmdbdetails.get("vote_average", None)
+
+                if rating_str is not None and float(rating_str) != 0:
+                    try:
+                        rating = float(rating_str)
+                        rounded_rating = round(rating, 1)
+                        self.tmdbresults["rating"] = "{:.1f}".format(rounded_rating)
+                    except ValueError:
+                        self.tmdbresults["rating"] = rating_str
+                else:
+                    self.tmdbresults["rating"] = 0
+
+                if "credits" in self.tmdbdetails:
+                    if "cast" in self.tmdbdetails["credits"] and self.tmdbdetails["credits"]["cast"]:
+                        cast = ", ".join(actor["name"] for actor in self.tmdbdetails["credits"]["cast"][:10])
+                        self.tmdbresults["cast"] = cast
                     else:
-                        self.tmdbresults["rating"] = 0
+                        cast = self.storedcast
+                        self.tmdbresults["cast"] = cast
 
-                    if "credits" in self.tmdbdetails:
-                        if "cast" in self.tmdbdetails["credits"] and self.tmdbdetails["credits"]["cast"]:
-                            cast = ", ".join(actor["name"] for actor in self.tmdbdetails["credits"]["cast"][:10])
-                            self.tmdbresults["cast"] = cast
-                        else:
-                            cast = self.storedcast
-                            self.tmdbresults["cast"] = cast
+                    if "crew" in self.tmdbdetails["credits"] and self.tmdbdetails["credits"]["crew"]:
+                        director = ", ".join(actor["name"] for actor in self.tmdbdetails["credits"]["crew"] if actor.get("job") == "Director")
+                        self.tmdbresults["director"] = director
+                    else:
+                        director = self.storeddirector
+                        self.tmdbresults["director"] = director
 
-                        if "crew" in self.tmdbdetails["credits"] and self.tmdbdetails["credits"]["crew"]:
-                            director = ", ".join(actor["name"] for actor in self.tmdbdetails["credits"]["crew"] if actor.get("job") == "Director")
-                            self.tmdbresults["director"] = director
-                        else:
-                            director = self.storeddirector
-                            self.tmdbresults["director"] = director
+                def get_certification(data, language_code):
+                    fallback_codes = ["GB", "US"]
 
-                    def get_certification(data, language_code):
-                        fallback_codes = ["GB", "US"]
+                    # First attempt to find the certification with the specified language code
+                    if "content_ratings" in data and "results" in data["content_ratings"]:
+                        for result in data["content_ratings"]["results"]:
+                            if "iso_3166_1" in result and "rating" in result:
+                                if result["iso_3166_1"] == language_code:
+                                    return result["rating"]
 
-                        # First attempt to find the certification with the specified language code
-                        if "content_ratings" in data and "results" in data["content_ratings"]:
+                        # If no match found or language_code is blank, try the fallback codes
+                        for fallback_code in fallback_codes:
                             for result in data["content_ratings"]["results"]:
                                 if "iso_3166_1" in result and "rating" in result:
-                                    if result["iso_3166_1"] == language_code:
+                                    if result["iso_3166_1"] == fallback_code:
                                         return result["rating"]
 
-                            # If no match found or language_code is blank, try the fallback codes
-                            for fallback_code in fallback_codes:
-                                for result in data["content_ratings"]["results"]:
-                                    if "iso_3166_1" in result and "rating" in result:
-                                        if result["iso_3166_1"] == fallback_code:
-                                            return result["rating"]
+                        # If no match found in fallback codes, return None or an appropriate default value
+                    return None
 
-                            # If no match found in fallback codes, return None or an appropriate default value
-                        return None
+                language = cfg.TMDBLanguage2.value
+                if not language:
+                    language = "en-GB"
 
-                    language = cfg.TMDBLanguage2.value
-                    if not language:
-                        language = "en-GB"
+                language = language.split("-")[1]
 
-                    language = language.split("-")[1]
+                certification = get_certification(self.tmdbdetails, language)
 
-                    certification = get_certification(self.tmdbdetails, language)
+                if certification:
+                    self.tmdbresults["certification"] = str(certification)
 
-                    if certification:
-                        self.tmdbresults["certification"] = str(certification)
+                if self.level == 2:
+                    self.tmdbresults["o_name"] = str(self.tmdbdetails.get("original_name") or "")
 
-                    if self.level == 2:
-                        self.tmdbresults["o_name"] = str(self.tmdbdetails.get("original_name") or "")
+                    if "episode_run_time" in self.tmdbdetails and self.tmdbdetails["episode_run_time"]:
+                        runtime = self.tmdbdetails["episode_run_time"][0]
+                    elif "runtime" in self.tmdbdetails:
+                        runtime = self.tmdbdetails["runtime"]
+                    else:
+                        runtime = 0
 
-                        if "episode_run_time" in self.tmdbdetails and self.tmdbdetails["episode_run_time"]:
-                            runtime = self.tmdbdetails["episode_run_time"][0]
-                        elif "runtime" in self.tmdbdetails:
-                            runtime = self.tmdbdetails["runtime"]
-                        else:
-                            runtime = 0
+                    if runtime and runtime != 0:
+                        duration_timedelta = timedelta(minutes=runtime)
+                        formatted_time = "{:0d}h {:02d}m".format(duration_timedelta.seconds // 3600, (duration_timedelta.seconds % 3600) // 60)
+                        self.tmdbresults["duration"] = str(formatted_time)
 
-                        if runtime and runtime != 0:
-                            duration_timedelta = timedelta(minutes=runtime)
-                            formatted_time = "{:0d}h {:02d}m".format(duration_timedelta.seconds // 3600, (duration_timedelta.seconds % 3600) // 60)
-                            self.tmdbresults["duration"] = str(formatted_time)
+                    self.tmdbresults["releaseDate"] = str(self.tmdbdetails.get("first_air_date") or self.storedreleasedate or "")
+                    self.storedreleasedate = self.tmdbresults["releaseDate"]
 
-                        self.tmdbresults["releaseDate"] = str(self.tmdbdetails.get("first_air_date") or self.storedreleasedate or "")
-                        self.storedreleasedate = self.tmdbresults["releaseDate"]
-
-                        if "genres" in self.tmdbdetails and self.tmdbdetails["genres"]:
-                            genre = " / ".join(str(genreitem["name"]) for genreitem in self.tmdbdetails["genres"][:4])
-                            self.tmdbresults["genre"] = genre
-
+                    if "genres" in self.tmdbdetails and self.tmdbdetails["genres"]:
+                        genre = " / ".join(str(genreitem["name"]) for genreitem in self.tmdbdetails["genres"][:4])
                         self.tmdbresults["genre"] = genre
 
-                        self.storedrating = self.tmdbresults["rating"]
-                        self.storeddescription = self.tmdbresults["description"]
-                        self.storedgenre = self.tmdbresults["genre"]
+                    self.tmdbresults["genre"] = genre
 
-                    if self.level != 4:
-                        self.storedcast = self.tmdbresults["cast"]
-                        self.storeddirector = self.tmdbresults["director"]
+                    self.storedrating = self.tmdbresults["rating"]
+                    self.storeddescription = self.tmdbresults["description"]
+                    self.storedgenre = self.tmdbresults["genre"]
 
-                        if "poster_path" in self.tmdbdetails and self.tmdbdetails["poster_path"].strip():
-                            poster_path = self.tmdbdetails["poster_path"]
-                        else:
-                            poster_path = ""
+                if self.level != 4:
+                    self.storedcast = self.tmdbresults["cast"]
+                    self.storeddirector = self.tmdbresults["director"]
 
-                        if "backdrop_path" in self.tmdbdetails and self.tmdbdetails["backdrop_path"].strip():
-                            backdrop_path = self.tmdbdetails.get("backdrop_path", "")
-                        else:
-                            backdrop_path = ""
+                    if "poster_path" in self.tmdbdetails and self.tmdbdetails["poster_path"].strip():
+                        poster_path = self.tmdbdetails["poster_path"]
+                    else:
+                        poster_path = ""
 
-                        if "images" in self.tmdbdetails and "logos" in self.tmdbdetails["images"]:
-                            logos = self.tmdbdetails["images"]["logos"]
-                        else:
-                            logos = ""
+                    if "backdrop_path" in self.tmdbdetails and self.tmdbdetails["backdrop_path"].strip():
+                        backdrop_path = self.tmdbdetails.get("backdrop_path", "")
+                    else:
+                        backdrop_path = ""
 
-                        if logos:
-                            logo_path = logos[0].get("file_path", "")
-                        else:
-                            logo_path = ""
+                    if "images" in self.tmdbdetails and "logos" in self.tmdbdetails["images"]:
+                        logos = self.tmdbdetails["images"]["logos"]
+                    else:
+                        logos = ""
 
+                    if logos:
+                        logo_path = logos[0].get("file_path", "")
+                    else:
+                        logo_path = ""
+
+                    coversize = "w200"
+                    backdropsize = "w1280"
+                    logosize = "w200"
+
+                    if screenwidth.width() <= 1280:
                         coversize = "w200"
                         backdropsize = "w1280"
-                        logosize = "w200"
+                        logosize = "w300"
 
-                        if screenwidth.width() <= 1280:
-                            coversize = "w200"
-                            backdropsize = "w1280"
-                            logosize = "w300"
+                    elif screenwidth.width() <= 1920:
+                        coversize = "w300"
+                        backdropsize = "w1280"
+                        logosize = "w300"
+                    else:
+                        coversize = "w400"
+                        backdropsize = "w1280"
+                        logosize = "w500"
 
-                        elif screenwidth.width() <= 1920:
-                            coversize = "w300"
-                            backdropsize = "w1280"
-                            logosize = "w300"
-                        else:
-                            coversize = "w400"
-                            backdropsize = "w1280"
-                            logosize = "w500"
+                    self.tmdbresults["cover_big"] = "http://image.tmdb.org/t/p/{}{}".format(coversize, poster_path) if poster_path else self.storedcover
 
-                        self.tmdbresults["cover_big"] = "http://image.tmdb.org/t/p/{}{}".format(coversize, poster_path) if poster_path else self.storedcover
+                    self.tmdbresults["backdrop_path"] = "http://image.tmdb.org/t/p/{}{}".format(backdropsize, backdrop_path) if backdrop_path else self.storedbackdrop
 
-                        self.tmdbresults["backdrop_path"] = "http://image.tmdb.org/t/p/{}{}".format(backdropsize, backdrop_path) if backdrop_path else self.storedbackdrop
+                    self.tmdbresults["logo"] = "http://image.tmdb.org/t/p/{}{}".format(logosize, logo_path) if logo_path else self.storedlogo
 
-                        self.tmdbresults["logo"] = "http://image.tmdb.org/t/p/{}{}".format(logosize, logo_path) if logo_path else self.storedlogo
+                if self.level != 2:
+                    self.tmdbresults["releaseDate"] = str(self.tmdbdetails.get("air_date") or self.storedreleasedate or "")
+                    self.storedreleasedate = self.tmdbresults["releaseDate"]
 
-                    if self.level != 2:
-                        self.tmdbresults["releaseDate"] = str(self.tmdbdetails.get("air_date") or self.storedreleasedate or "")
-                        self.storedreleasedate = self.tmdbresults["releaseDate"]
+                if self.level == 4:
+                    if "run_time" in self.tmdbdetails and self.tmdbdetails["run_time"]:
+                        runtime = self.tmdbdetails["run_time"][0]
+                    elif "runtime" in self.tmdbdetails:
+                        runtime = self.tmdbdetails["runtime"]
+                    else:
+                        runtime = 0
 
-                    """
-                    if self.level == 4:
-                        runtime = self.tmdbdetails.get("runtime", "")
-                        if runtime and runtime != 0:
-                            self.tmdbresults["duration"] = str(timedelta(minutes=runtime))
-                        else:
-                            self.tmdbresults["duration"] = ""
-                            """
+                    if runtime and runtime != 0:
+                        duration_timedelta = timedelta(minutes=runtime)
+                        formatted_time = "{:0d}h {:02d}m".format(duration_timedelta.seconds // 3600, (duration_timedelta.seconds % 3600) // 60)
+                        self.tmdbresults["duration"] = str(formatted_time)
 
-                    self.displayTMDB()
+                self.displayTMDB()
 
     def displayTMDB(self):
         # print("*** displayTMDB ***")
@@ -1587,7 +1590,16 @@ class XKlass_Series_Categories(Screen):
                 rating = float(current_item[11])
             except:
                 rating = 0
+
             rating_str = rating
+
+            if self.level == 4:
+                duration = current_item[12]
+                try:
+                    time_obj = datetime.strptime(duration, '%H:%M:%S')
+                    duration = "{:0d}h {:02d}m".format(time_obj.hour, time_obj.minute)
+                except:
+                    pass
 
             # # # # # # # # # # # # # # # # # # # # # # # # #
 
@@ -1600,6 +1612,7 @@ class XKlass_Series_Categories(Screen):
                     rating = 0
 
                 rating_str = info["rating"]
+
                 title = info.get("name") or info.get("o_name")
 
                 for key in ["releaseDate", "release_date", "releasedate"]:
@@ -1611,6 +1624,7 @@ class XKlass_Series_Categories(Screen):
                             pass
 
                 certification = info.get("certification", "").strip().upper()
+
                 if certification:
                     certification = _("Rating: ") + certification
 

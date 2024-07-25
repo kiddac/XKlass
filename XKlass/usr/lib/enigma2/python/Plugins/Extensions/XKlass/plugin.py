@@ -152,7 +152,7 @@ cfg.TMDBLanguage2 = ConfigSelection(default="", choices=languages)
 cfg.catchupstart = ConfigSelectionNumber(0, 30, 1, default=0, wraparound=True)
 cfg.catchupend = ConfigSelectionNumber(0, 30, 1, default=0, wraparound=True)
 cfg.subs = ConfigYesNo(default=False)
-cfg.wakeup = ConfigClock(default=((9 * 60) + 9) * 60)  # 10:09
+cfg.wakeup = ConfigClock(default=((9 * 60) + 30) * 60)  # 10:30
 cfg.adult = ConfigYesNo(default=False)
 cfg.adultpin = ConfigPIN(default=0000)
 cfg.retries = ConfigSubsection()
