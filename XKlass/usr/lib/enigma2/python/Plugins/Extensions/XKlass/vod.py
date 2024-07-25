@@ -30,8 +30,17 @@ import requests
 from PIL import Image
 from requests.adapters import HTTPAdapter, Retry
 from twisted.internet import reactor
-from twisted.web.client import Agent, downloadPage, readBody, BrowserLikePolicyForHTTPS
+from twisted.web.client import Agent, downloadPage, readBody
 from twisted.web.http_headers import Headers
+
+try:
+    # Try to import BrowserLikePolicyForHTTPS
+    from twisted.web.client import BrowserLikePolicyForHTTPS
+    contextFactory = BrowserLikePolicyForHTTPS()
+except ImportError:
+    # Fallback to WebClientContextFactory if BrowserLikePolicyForHTTPS is not available
+    from twisted.web.client import WebClientContextFactory
+    contextFactory = WebClientContextFactory()
 
 # Enigma2 components
 from Components.ActionMap import ActionMap
@@ -1886,16 +1895,17 @@ class XKlass_Vod_Categories(Screen):
         except Exception as e:
             print(e)
 
-        self.timerVOD.stop()
+        if self.level == 2:
+            self.timerVOD.stop()
 
-        if self.cover_download_deferred:
-            self.cover_download_deferred.cancel()
+            if self.cover_download_deferred:
+                self.cover_download_deferred.cancel()
 
-        if self.logo_download_deferred:
-            self.logo_download_deferred.cancel()
+            if self.logo_download_deferred:
+                self.logo_download_deferred.cancel()
 
-        if self.backdrop_download_deferred:
-            self.backdrop_download_deferred.cancel()
+            if self.backdrop_download_deferred:
+                self.backdrop_download_deferred.cancel()
 
         del glob.nextlist[-1]
         glob.current_category = ""
