@@ -94,7 +94,7 @@ def process_files():
         customsids = False
         fail_count = 0
 
-        if not line.startswith("#") and line.startswith("http"):
+        if line.startswith("http"):
             line = line.strip()
             parsed_uri = urlparse(line)
             protocol = parsed_uri.scheme + "://"

@@ -94,6 +94,7 @@ class XKlass_MainMenu(Screen):
             iPlayableService.evEOF: self.onEOF
         })
 
+        self.session.nav.stopService()
         self.onLayoutFinish.append(self.__layoutFinished)
         self.onFirstExecBegin.append(self.check_dependencies)
 
@@ -106,12 +107,12 @@ class XKlass_MainMenu(Screen):
         try:
             import requests
             from PIL import Image
-            print("***** python version *** %s" % pythonFull)
+            # print("***** python version *** %s" % pythonFull)
             if pythonFull < 3.9:
-                print("*** checking multiprocessing ***")
+                # print("*** checking multiprocessing ***")
                 from multiprocessing.pool import ThreadPool
         except Exception as e:
-            print("**** missing dependencies ***")
+            # print("**** missing dependencies ***")
             print(e)
             dependencies = False
 
@@ -416,11 +417,14 @@ class XKlass_MainMenu(Screen):
 
     def __next__(self):
         if cfg.introvideo.value:
+            self.session.nav.stopService()
+            """
             try:
                 if glob.currentPlayingServiceRefString:
                     self.session.nav.playService(eServiceReference(glob.currentPlayingServiceRefString))
             except Exception as e:
                 print(e)
+                """
 
         current_entry = self["list"].getCurrent()
 
@@ -484,7 +488,6 @@ class XKlass_MainMenu(Screen):
 
     def playVideo(self, result=None):
         self["background"].setText("")
-        # self.local_video_path = "/usr/lib/enigma2/python/Plugins/Extensions/XKlass/video/pixel-galaxy2-576p.mp4"
         self.local_video_path = cfg.introvideoselection.value
         service = eServiceReference(4097, 0, self.local_video_path)
         self.session.nav.playService(service)

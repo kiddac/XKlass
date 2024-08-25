@@ -340,12 +340,14 @@ class XKlass_Live_Categories(Screen):
     def refresh(self):
         # print("*** refresh ***")
 
+        """
         self.delayTimer = eTimer()
         try:
             self.delayTimer_conn = self.delayTimer.timeout.connect(self.playOriginalChannel)
         except:
             self.delayTimer.callback.append(self.playOriginalChannel)
         self.delayTimer.start(1000, True)
+        """
 
         self.level = glob.current_level
         self.xmltvdownloaded = False
@@ -624,7 +626,7 @@ class XKlass_Live_Categories(Screen):
                 if epg_channel_id and "&" in epg_channel_id:
                     epg_channel_id = epg_channel_id.replace("&", "&amp;")
 
-                added = str(channel.get("added", ""))
+                added = str(channel.get("added", "0"))
 
                 category_id = str(channel.get("category_id", ""))
                 if self.chosen_category == "all" and str(category_id) in glob.active_playlist["player_info"]["livehidden"]:
@@ -985,7 +987,8 @@ class XKlass_Live_Categories(Screen):
 
         elif current_sort == _("Sort: Added"):
             if self.level != 1:
-                activelist.sort(key=lambda x: x[5], reverse=True)
+                activelist.sort(key=lambda x: x[1].lower(), reverse=False)
+                activelist.sort(key=lambda x: (x[5] or ""), reverse=True)
 
         elif current_sort == _("Sort: Original"):
             activelist.sort(key=lambda x: x[0], reverse=False)

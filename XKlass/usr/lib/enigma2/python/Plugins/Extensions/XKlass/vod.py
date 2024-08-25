@@ -321,12 +321,14 @@ class XKlass_Vod_Categories(Screen):
     def refresh(self):
         # print("*** refresh ***")
 
+        """
         self.delayTimer = eTimer()
         try:
             self.delayTimer_conn = self.delayTimer.timeout.connect(self.playOriginalChannel)
         except:
             self.delayTimer.callback.append(self.playOriginalChannel)
         self.delayTimer.start(1000, True)
+        """
 
         self.level = glob.current_level
 
@@ -529,10 +531,12 @@ class XKlass_Vod_Categories(Screen):
             activelist.sort(key=lambda x: x[1].lower(), reverse=True)
 
         elif current_sort == _("Sort: Added"):
-            activelist.sort(key=lambda x: x[4], reverse=True)
+            activelist.sort(key=lambda x: x[1].lower(), reverse=False)
+            activelist.sort(key=lambda x: (x[4] or ""), reverse=True)
 
         elif current_sort == _("Sort: Year"):
-            activelist.sort(key=lambda x: x[9], reverse=True)
+            activelist.sort(key=lambda x: x[1].lower(), reverse=False)
+            activelist.sort(key=lambda x: (x[9] or ""), reverse=True)
 
         elif current_sort == _("Sort: Original"):
             activelist.sort(key=lambda x: x[0], reverse=False)
@@ -660,7 +664,7 @@ class XKlass_Vod_Categories(Screen):
                 else:
                     cover = ""
 
-                added = str(channel.get("added", ""))
+                added = str(channel.get("added", "0"))
 
                 category_id = str(channel.get("category_id", ""))
                 if self.chosen_category == "all" and str(category_id) in glob.active_playlist["player_info"]["vodhidden"]:
@@ -1312,7 +1316,7 @@ class XKlass_Vod_Categories(Screen):
                 try:
                     stream_format = stream_url.split(".")[-1]
                 except:
-                    pass
+                    stream_format = ""
 
                 facts = self.buildFacts(str(certification), str(release_date), str(genre), str(duration), str(stream_format))
 
@@ -1677,10 +1681,12 @@ class XKlass_Vod_Categories(Screen):
             activelist.sort(key=lambda x: x[1].lower(), reverse=True)
 
         elif current_sort == _("Sort: Added"):
-            activelist.sort(key=lambda x: x[4], reverse=True)
+            activelist.sort(key=lambda x: x[1].lower(), reverse=False)
+            activelist.sort(key=lambda x: (x[4] or ""), reverse=True)
 
         elif current_sort == _("Sort: Year"):
-            activelist.sort(key=lambda x: x[9], reverse=True)
+            activelist.sort(key=lambda x: x[1].lower(), reverse=False)
+            activelist.sort(key=lambda x: (x[9] or ""), reverse=True)
 
         elif current_sort == _("Sort: Original"):
             activelist.sort(key=lambda x: x[0], reverse=False)

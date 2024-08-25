@@ -203,7 +203,7 @@ class XKlass_ChannelMenu(Screen):
         self.closeDialog()
         cfg.defaultplaylist.setValue(str(glob.active_playlist["playlist_info"]["name"]))
         cfg.save()
-        pass
+        self.callback()
 
     def showPlaylists(self):
         self.closeDialog()
