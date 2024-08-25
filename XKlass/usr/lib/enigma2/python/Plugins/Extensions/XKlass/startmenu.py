@@ -28,7 +28,7 @@ from Screens.MessageBox import MessageBox
 from . import _
 from . import xklass_globals as glob
 from . import processfiles as loadfiles
-from .plugin import (cfg, downloads_json, hasConcurrent, hasMultiprocessing, playlists_json, pythonFull, skin_directory, version)
+from .plugin import (cfg, downloads_json, hasConcurrent, hasMultiprocessing, playlists_json, pythonFull, skin_directory, version, InternetSpeedTest_installed, NetSpeedTest_installed)
 from .xStaticText import StaticText
 
 
@@ -61,17 +61,21 @@ class XKlass_MainMenu(Screen):
 
         self["version"] = StaticText()
 
-        self["actions"] = ActionMap(["XKlassActions"], {
+        actions = {
             "red": self.quit,
             "green": self.__next__,
             "ok": self.__next__,
-            "cancel": self.quit,
             "left": self.goUp,
             "right": self.goDown,
             "menu": self.mainSettings,
             "help": self.resetData,
             "blue": self.resetData
-        }, -2)
+        }
+
+        if not cfg.boot.value:
+            actions["cancel"] = self.quit
+
+        self["actions"] = ActionMap(["XKlassActions"], actions, -2)
 
         self["version"].setText(version)
 
@@ -94,7 +98,8 @@ class XKlass_MainMenu(Screen):
             iPlayableService.evEOF: self.onEOF
         })
 
-        self.session.nav.stopService()
+        if not cfg.backgroundsat.value:
+            self.session.nav.stopService()
         self.onLayoutFinish.append(self.__layoutFinished)
         self.onFirstExecBegin.append(self.check_dependencies)
 
@@ -395,11 +400,20 @@ class XKlass_MainMenu(Screen):
         self.list.append([self.index, _("Switch Playlist"), 6])
 
         self.list.append([self.index, _("Global Settings"), 4])
+
         self.index += 1
 
         if downloads_all:
             self.index += 1
             self.list.append([self.index, _("Download Manager"), 5])
+
+        if cfg.boot.value:
+            self.index += 1
+            self.list.append([self.index, _("Reboot GUI"), 7])
+
+        if cfg.speedtest.value and (InternetSpeedTest_installed is True or NetSpeedTest_installed is True):
+            self.index += 1
+            self.list.append([self.index, _("Speed Test"), 8])
 
         self.drawList = [buildListEntry(x[0], x[1], x[2]) for x in self.list]
         self["list"].setList(self.drawList)
@@ -417,14 +431,17 @@ class XKlass_MainMenu(Screen):
 
     def __next__(self):
         if cfg.introvideo.value:
-            self.session.nav.stopService()
-            """
-            try:
-                if glob.currentPlayingServiceRefString:
-                    self.session.nav.playService(eServiceReference(glob.currentPlayingServiceRefString))
-            except Exception as e:
-                print(e)
-                """
+
+            if cfg.backgroundsat.value:
+
+                try:
+                    if glob.currentPlayingServiceRefString:
+                        self.session.nav.playService(eServiceReference(glob.currentPlayingServiceRefString))
+                except Exception as e:
+                    print(e)
+
+            else:
+                self.session.nav.stopService()
 
         current_entry = self["list"].getCurrent()
 
@@ -444,6 +461,22 @@ class XKlass_MainMenu(Screen):
                 self.downloadManager()
             elif index == 6:
                 self.showPlaylists()
+            elif index == 7:
+                self.ExecuteRestart()
+            elif index == 8:
+                self.runSpeedTest()
+
+    def runSpeedTest(self):
+        if InternetSpeedTest_installed:
+            from Plugins.Extensions.InternetSpeedTest.plugin import internetspeedtest
+            self.session.openWithCallback(self.reload, internetspeedtest)
+        elif NetSpeedTest_installed:
+            from Plugins.Extensions.NetSpeedTest.default import NetSpeedTestScreen
+            self.session.openWithCallback(self.reload, NetSpeedTestScreen)
+
+    def ExecuteRestart(self, result=None):
+        from Screens import Standby
+        Standby.quitMainloop(3)
 
     def showLive(self):
         from . import live

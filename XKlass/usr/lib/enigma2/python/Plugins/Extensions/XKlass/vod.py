@@ -321,14 +321,13 @@ class XKlass_Vod_Categories(Screen):
     def refresh(self):
         # print("*** refresh ***")
 
-        """
-        self.delayTimer = eTimer()
-        try:
-            self.delayTimer_conn = self.delayTimer.timeout.connect(self.playOriginalChannel)
-        except:
-            self.delayTimer.callback.append(self.playOriginalChannel)
-        self.delayTimer.start(1000, True)
-        """
+        if cfg.backgroundsat.value:
+            self.delayTimer = eTimer()
+            try:
+                self.delayTimer_conn = self.delayTimer.timeout.connect(self.playOriginalChannel)
+            except:
+                self.delayTimer.callback.append(self.playOriginalChannel)
+            self.delayTimer.start(1000, True)
 
         self.level = glob.current_level
 
@@ -1901,7 +1900,10 @@ class XKlass_Vod_Categories(Screen):
             print(e)
 
         if self.level == 2:
-            self.timerVOD.stop()
+            try:
+                self.timerVOD.stop()
+            except:
+                pass
 
             if self.cover_download_deferred:
                 self.cover_download_deferred.cancel()

@@ -25,7 +25,7 @@ from Tools.BoundFunction import boundFunction
 
 # Local application/library-specific imports
 from . import _
-from .plugin import cfg, skin_directory
+from .plugin import cfg, skin_directory, InternetSpeedTest_installed, NetSpeedTest_installed
 from .xStaticText import StaticText
 
 
@@ -172,6 +172,8 @@ class XKlass_Settings(ConfigListScreen, Screen, ProtectedScreen):
         self.cfg_infobarpicons = getConfigListEntry(_("Show infobar picons"), cfg.infobarpicons)
         self.cfg_infobarcovers = getConfigListEntry(_("Show infobar posters"), cfg.infobarcovers)
         self.cfg_boot = getConfigListEntry(_("Auto start XKlass on boot") + _(" *Restart GUI Required"), cfg.boot)
+        self.cfg_backgroundsat = getConfigListEntry(_("Play satellite channel audio in background"), cfg.backgroundsat)
+        self.cfg_speedtest = getConfigListEntry(_("Add speedtest plugin to main menu"), cfg.speedtest)
 
         self.org_main = cfg.main.value
         self.org_wakeup = cfg.wakeup.value
@@ -211,7 +213,9 @@ class XKlass_Settings(ConfigListScreen, Screen, ProtectedScreen):
             self.cfg_channelcovers,
             self.cfg_infobarpicons,
             self.cfg_infobarcovers,
-            self.cfg_boot
+            self.cfg_boot,
+            self.cfg_backgroundsat,
+            self.cfg_speedtest if InternetSpeedTest_installed == True or NetSpeedTest_installed == True else None
         ]
 
         self.list = [entry for entry in config_entries if entry is not None]

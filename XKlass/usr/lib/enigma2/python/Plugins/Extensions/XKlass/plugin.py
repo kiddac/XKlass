@@ -169,6 +169,8 @@ cfg.infobarcovers = ConfigYesNo(default=True)
 cfg.introvideo = ConfigYesNo(default=True)
 cfg.introloop = ConfigYesNo(default=False)
 cfg.introvideoselection = ConfigSelection(choices=video_list)
+cfg.backgroundsat = ConfigYesNo(default=False)
+cfg.speedtest = ConfigYesNo(default=False)
 
 cfg.boot = ConfigYesNo(default=False)
 cfg.useragent = ConfigSelection(default="Enigma2 - XKlass Plugin", choices=useragents)
@@ -249,6 +251,17 @@ try:
     config.plugins.epgimport.import_onlybouquet.save()
 except Exception as e:
     print(e)
+
+if os.path.isdir("/usr/lib/enigma2/python/Plugins/Extensions/InternetSpeedTest"):
+    InternetSpeedTest_installed = True
+else:
+    InternetSpeedTest_installed = False
+
+
+if os.path.isdir("/usr/lib/enigma2/python/Plugins/Extensions/NetSpeedTest"):
+    NetSpeedTest_installed = True
+else:
+    NetSpeedTest_installed = False
 
 
 def main(session, **kwargs):
