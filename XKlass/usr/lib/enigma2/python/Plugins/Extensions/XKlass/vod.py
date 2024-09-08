@@ -628,10 +628,13 @@ class XKlass_Vod_Categories(Screen):
                         name = parts[0]
 
                 # restyle bouquet markers
-                if "stream_type" in channel and channel["stream_type"] and channel["stream_type"] != "movie":
-                    pattern = re.compile(r"[^\w\s()\[\]]", re.U)
-                    name = re.sub(r"_", "", re.sub(pattern, "", name))
-                    name = "** " + str(name) + " **"
+                # if "stream_type" in channel and channel["stream_type"] and channel["stream_type"] != "movie":
+                #    pattern = re.compile(r"[^\w\s()\[\]]", re.U)
+                #    name = re.sub(r"_", "", re.sub(pattern, "", name))
+                #    name = "** " + str(name) + " **"
+
+                if "stream_type" in channel and channel["stream_type"] and (channel["stream_type"] not in ["movie", "series"]):
+                    continue
 
                 stream_id = channel.get("stream_id", "")
                 if not stream_id:
@@ -699,7 +702,7 @@ class XKlass_Vod_Categories(Screen):
     def downloadApiData(self, url):
         # print("*** downloadapidata ***", url)
         try:
-            retries = Retry(total=3, backoff_factor=1)
+            retries = Retry(total=2, backoff_factor=1)
             adapter = HTTPAdapter(max_retries=retries)
             http = requests.Session()
             http.mount("http://", adapter)
@@ -925,8 +928,14 @@ class XKlass_Vod_Categories(Screen):
             title = self["main_list"].getCurrent()[0]
 
             if self.tmdbresults:
-                title = self.tmdbresults.get("name", self.tmdbresults.get("o_name", title))
-                year = self.tmdbresults.get("releasedate", "")[0:4]
+                if "name" in self.tmdbresults and self.tmdbresults["name"]:
+                    title = self.tmdbresults["name"]
+                elif "o_name" in self.tmdbresults and self.tmdbresults["o_name"]:
+                    title = self.tmdbresults["o_name"]
+
+                if "releasedate" in self.tmdbresults and self.tmdbresults["releasedate"]:
+                    year = self.tmdbresults["releasedate"]
+                    year = year[0:4]
 
                 if "tmdb_id" in self.tmdbresults and self.tmdbresults["tmdb_id"]:
                     if str(self.tmdbresults["tmdb_id"])[:1].isdigit():
@@ -1065,7 +1074,7 @@ class XKlass_Vod_Categories(Screen):
         languagestr = ""
 
         try:
-            os.remove(os.path.join(dir_tmp, "tmdb.txt"))
+            os.remove(os.path.join(dir_tmp, "search.txt"))
         except:
             pass
 
@@ -1080,7 +1089,7 @@ class XKlass_Vod_Categories(Screen):
         if pythonVer == 3:
             detailsurl = detailsurl.encode()
 
-        filepath = os.path.join(dir_tmp, "tmdb.txt")
+        filepath = os.path.join(dir_tmp, "search.txt")
         try:
             downloadPage(detailsurl, filepath, timeout=10).addCallback(self.processTMDBDetails).addErrback(self.failed)
         except Exception as e:
@@ -1093,7 +1102,7 @@ class XKlass_Vod_Categories(Screen):
         director = []
 
         try:
-            with codecs.open(os.path.join(dir_tmp, "tmdb.txt"), "r", encoding="utf-8") as f:
+            with codecs.open(os.path.join(dir_tmp, "search.txt"), "r", encoding="utf-8") as f:
                 response = f.read()
         except Exception as e:
             print("Error reading TMDB response:", e)
@@ -1290,8 +1299,26 @@ class XKlass_Vod_Categories(Screen):
 
                 self["rating_text"].setText(str(rating).strip())
 
-                title = info.get("name") or info.get("o_name")
-                self["x_title"].setText(str(title).strip())
+                if "name" in info:
+                    self["x_title"].setText(str(info["name"]).strip())
+                elif "o_name" in info:
+                    self["x_title"].setText(str(info["o_name"]).strip())
+
+                if "description" in info:
+                    self["x_description"].setText(str(info["description"]).strip())
+                elif "plot" in info:
+                    self["x_description"].setText(str(info["plot"]).strip())
+
+                if self["x_description"].getText() != "":
+                    self["overview"].setText(_("Overview"))
+                else:
+                    self["overview"].setText("")
+
+                if "duration" in info:
+                    duration = str(info["duration"]).strip()
+
+                if "genre" in info:
+                    genre = str(info["genre"]).strip()
 
                 release_date = ""
                 for key in ["releaseDate", "release_date", "releasedate"]:
@@ -1302,15 +1329,32 @@ class XKlass_Vod_Categories(Screen):
                         except Exception:
                             pass
 
+                release_date = str(release_date).strip()
+
+                if "director" in info:
+                    self["vod_director"].setText(str(info["director"]).strip())
+
+                if self["vod_director"].getText() != "":
+                    self["vod_director_label"].setText(_("Director:"))
+                else:
+                    self["vod_director_label"].setText("")
+
+                if "cast" in info:
+                    self["vod_cast"].setText(str(info["cast"]).strip())
+                elif "actors" in info:
+                    self["vod_cast"].setText(str(info["actors"]).strip())
+
+                if self["vod_cast"].getText() != "":
+                    self["vod_cast_label"].setText(_("Cast:"))
+                else:
+                    self["vod_cast_label"].setText("")
+
+                if "tagline" in info:
+                    self["tagline"].setText(str(info["tagline"]).strip())
+
                 certification = info.get("certification", "").strip().upper()
                 if certification:
                     certification = _("Rating: ") + certification
-
-                release_date = str(release_date).strip()
-
-                genre = info.get("genre", "").strip()
-
-                duration = info.get("duration", "").strip()
 
                 try:
                     stream_format = stream_url.split(".")[-1]
@@ -1320,32 +1364,6 @@ class XKlass_Vod_Categories(Screen):
                 facts = self.buildFacts(str(certification), str(release_date), str(genre), str(duration), str(stream_format))
 
                 self["facts"].setText(str(facts))
-
-                self["tagline"].setText(str(info.get("tagline", "")).strip())
-
-                description = info.get("description") or info.get("plot")
-                if not description or description == "None":
-                    description = ""
-                self["x_description"].setText(str(description).strip())
-
-                self["vod_cast"].setText(str(info.get("cast", info.get("actors", ""))).strip())
-
-                self["vod_director"].setText(str(info.get("director", "")).strip())
-
-                if self["vod_cast"].getText() != "":
-                    self["vod_cast_label"].setText(_("Cast:"))
-                else:
-                    self["vod_cast_label"].setText("")
-
-                if self["vod_director"].getText() != "":
-                    self["vod_director_label"].setText(_("Director:"))
-                else:
-                    self["vod_director_label"].setText("")
-
-                if self["x_description"].getText() != "":
-                    self["overview"].setText(_("Overview"))
-                else:
-                    self["overview"].setText("")
 
     def resetButtons(self):
         if glob.nextlist[-1]["filter"]:

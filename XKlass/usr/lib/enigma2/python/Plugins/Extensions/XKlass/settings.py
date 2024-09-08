@@ -215,7 +215,7 @@ class XKlass_Settings(ConfigListScreen, Screen, ProtectedScreen):
             self.cfg_infobarcovers,
             self.cfg_boot,
             self.cfg_backgroundsat,
-            self.cfg_speedtest if InternetSpeedTest_installed == True or NetSpeedTest_installed == True else None
+            self.cfg_speedtest if InternetSpeedTest_installed is True or NetSpeedTest_installed is True else None
         ]
 
         self.list = [entry for entry in config_entries if entry is not None]
