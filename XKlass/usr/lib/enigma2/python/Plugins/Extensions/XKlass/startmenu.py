@@ -141,10 +141,6 @@ class XKlass_MainMenu(Screen):
         else:
             self.selectplaylist()
 
-    def addServer(self):
-        from . import server
-        self.session.openWithCallback(self.quit, server.XKlass_AddServer)
-
     def selectplaylist(self):
         if self.playlists_all:
             p = 0
@@ -439,7 +435,6 @@ class XKlass_MainMenu(Screen):
 
     def __next__(self):
         if cfg.introvideo.value:
-
             if cfg.backgroundsat.value:
 
                 try:
@@ -513,6 +508,10 @@ class XKlass_MainMenu(Screen):
     def showPlaylists(self):
         from . import playlists
         self.session.openWithCallback(self.reload, playlists.XKlass_Playlists)
+
+    def addServer(self):
+        from . import server
+        self.session.openWithCallback(self.quit, server.XKlass_AddServer)
 
     def quit(self, data=None):
         self.playOriginalChannel()
