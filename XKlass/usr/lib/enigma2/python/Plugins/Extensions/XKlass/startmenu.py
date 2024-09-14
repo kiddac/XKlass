@@ -140,9 +140,9 @@ class XKlass_MainMenu(Screen):
             self.addServer()
             self.close()
         else:
-            self.selectplaylist()
+            self.selectdefaultplaylist()
 
-    def selectplaylist(self):
+    def selectdefaultplaylist(self):
         if self.playlists_all:
             p = 0
             exists = False
