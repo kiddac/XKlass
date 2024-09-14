@@ -10,7 +10,7 @@ import twisted.python.runtime
 from os.path import isdir
 
 # Enigma2 components
-from Components.config import config, ConfigSubsection, ConfigSelection, ConfigDirectory, ConfigYesNo, ConfigSelectionNumber, ConfigClock, ConfigPIN, ConfigInteger, ConfigText
+from Components.config import config, ConfigSubsection, ConfigSelection, ConfigDirectory, ConfigYesNo, ConfigSelectionNumber, ConfigClock, ConfigPIN, ConfigInteger, ConfigText, configfile
 from enigma import eTimer, getDesktop, addFont
 from Plugins.Plugin import PluginDescriptor
 
@@ -194,16 +194,19 @@ if location:
         playlist_file = os.path.join(cfg.location.value, "playlists.txt")
         cfg.location_valid.setValue(True)
         cfg.save()
+        configfile.save()
     else:
         os.makedirs(location)  # Create directory if it doesn't exist
         playlist_file = os.path.join(location, "playlists.txt")
 
         cfg.location_valid.setValue(True)
         cfg.save()
+        configfile.save()
 else:
     cfg.location.setValue(dir_etc)
     cfg.location_valid.setValue(False)
     cfg.save()
+    configfile.save()
 
 font_folder = os.path.join(dir_plugins, "fonts/")
 addFont(os.path.join(font_folder, "m-plus-rounded-1c-regular.ttf"), "xklassregular", 100, 0)

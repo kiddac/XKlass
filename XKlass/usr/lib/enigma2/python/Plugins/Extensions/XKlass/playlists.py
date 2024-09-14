@@ -30,6 +30,7 @@ from enigma import eTimer
 from Screens.MessageBox import MessageBox
 from Screens.Screen import Screen
 from Tools.LoadPixmap import LoadPixmap
+from Components.config import configfile
 
 # Local application/library-specific imports
 from . import _
@@ -471,6 +472,7 @@ class XKlass_Playlists(Screen):
         if "user_info" in glob.active_playlist and "auth" in glob.active_playlist["user_info"] and glob.active_playlist["user_info"]["auth"] == 1 and glob.active_playlist["user_info"]["status"] == "Active":
             cfg.lastplaylist.setValue(str(glob.active_playlist["playlist_info"]["name"]))
             cfg.save()
+            configfile.save()
             self.close()
         else:
             glob.current_selection = self.original_current_selection

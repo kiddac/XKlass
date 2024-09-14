@@ -25,6 +25,7 @@ from enigma import eServiceReference, iPlayableService, eTimer
 from Components.ServiceEventTracker import ServiceEventTracker
 from Screens.MessageBox import MessageBox
 from Components.Pixmap import Pixmap
+from Components.config import configfile
 
 # Local application/library-specific imports
 from . import _
@@ -407,6 +408,7 @@ class XKlass_MainMenu(Screen):
                 glob.current_selection = p
                 cfg.lastplaylist.setValue(playlist_name)
                 cfg.save()
+                configfile.save()
                 break
 
         glob.active_playlist["data"]["live_streams"] = []
@@ -416,12 +418,21 @@ class XKlass_MainMenu(Screen):
         text = str(name) + "   Active:" + str(activenum) + " Max:" + str(maxnum)
         return (index, text, str(url))
 
+    def getCurrentEntry(self):
+        print("*** getCurrentEntry ***")
+        if self.list2:
+            glob.current_selection = self["playlists"].getIndex()
+            glob.active_playlist = self.playlists_all[glob.current_selection]
+            cfg.lastplaylist.setValue(glob.active_playlist["playlist_info"]["name"])
+            cfg.save()
+            configfile.save()
+
     def selectlastplaylist(self):
         if self.playlists_all:
             p = 0
             exists = False
             for playlist in self.playlists_all:
-                if str(playlist["playlist_info"]["name"]) == cfg.lastplaylist.value
+                if str(playlist["playlist_info"]["name"]) == cfg.lastplaylist.value:
                     glob.active_playlist = playlist
                     glob.current_selection = p
                     exists = True
@@ -432,6 +443,7 @@ class XKlass_MainMenu(Screen):
             if not exists:
                 cfg.lastplaylist.setValue(str(self.playlists_all[0]["playlist_info"]["name"]))
                 cfg.save()
+                configfile.save()
                 glob.active_playlist = self.playlists_all[0]
                 glob.current_selection = 0
 
@@ -447,6 +459,7 @@ class XKlass_MainMenu(Screen):
         else:
             cfg.lastplaylist.setValue("")
             cfg.save()
+            configfile.save()
 
         self.makeUrlList()
 
@@ -700,11 +713,6 @@ class XKlass_MainMenu(Screen):
 
         with open(playlists_json, "w") as f:
             json.dump(playlists_all, f)
-
-    def getCurrentEntry(self):
-        if self.list2:
-            glob.current_selection = self["playlists"].getIndex()
-            glob.active_playlist = self.playlists_all[glob.current_selection]
 
     def __next__(self):
         if cfg.introvideo.value:
