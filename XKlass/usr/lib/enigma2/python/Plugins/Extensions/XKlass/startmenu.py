@@ -54,11 +54,8 @@ class XKlass_MainMenu(Screen):
         self.drawList = []
         self["list"] = List(self.drawList, enableWrapAround=True)
 
-        self["background"] = StaticText("")
-        # self["background"].hide()
-
         self.setup_title = _("Main Menu")
-
+        self["background"] = StaticText("")
         self["provider"] = StaticText()
 
         self["version"] = StaticText(version)
@@ -77,6 +74,11 @@ class XKlass_MainMenu(Screen):
             actions.update({"red": self.quit, "cancel": self.quit})
 
         self["actions"] = ActionMap(["XKlassActions"], actions, -2)
+
+        self.list2 = []
+        self.drawList2 = []
+        self["playlists"] = List(self.drawList2, enableWrapAround=True)
+        self["playlists"].onSelectionChanged.append(self.getCurrentEntry)
 
         self.playlists_all = loadfiles.process_files()
 
@@ -430,6 +432,11 @@ class XKlass_MainMenu(Screen):
 
         with open(playlists_json, "w") as f:
             json.dump(playlists_all, f)
+
+    def getCurrentEntry(self):
+        if self.list2:
+            glob.current_selection = self["playlists"].getIndex()
+            glob.active_playlist = self.playlists_all[glob.current_selection]
 
     def __next__(self):
         if cfg.introvideo.value:
