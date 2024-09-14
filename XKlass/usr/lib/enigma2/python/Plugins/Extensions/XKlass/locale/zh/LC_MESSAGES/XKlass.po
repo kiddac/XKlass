@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2024-07-24 19:36+0100\n"
-"PO-Revision-Date: 2024-07-24 19:38+0100\n"
+"POT-Creation-Date: 2024-09-14 22:51+0100\n"
+"PO-Revision-Date: 2024-09-14 22:51+0100\n"
 "Last-Translator: 沙鸥 lexlong <804381256@qq.com>\n"
 "Language-Team: 沙鸥\n"
 "Language: zh\n"
@@ -40,7 +40,7 @@ msgstr ""
 "错误: %s\n"
 "重试?"
 
-#: Task.py:328 playlists.py:317 playlists.py:402
+#: Task.py:328 playlists.py:317 playlists.py:401
 msgid "Error"
 msgstr "错误"
 
@@ -69,128 +69,128 @@ msgstr "建筑类别"
 msgid "Catchup TV"
 msgstr ""
 
-#: catchup.py:190 catchup.py:650 catchup.py:838 catchup.py:852 catchup.py:991
-#: live.py:205 live.py:765 live.py:966 live.py:980 live.py:1165 plugin.py:178
-#: plugin.py:179 series.py:163 series.py:1731 series.py:2058 series.py:2061
-#: series.py:2064 series.py:2074 series.py:2262 series.py:2293 series.py:2311
-#: vod.py:505 vod.py:509 vod.py:525 vod.py:1661 vod.py:1663 vod.py:1673
-#: vod.py:1864
+#: catchup.py:190 catchup.py:652 catchup.py:840 catchup.py:854 catchup.py:993
+#: live.py:205 live.py:766 live.py:967 live.py:981 live.py:1167 plugin.py:179
+#: plugin.py:180 series.py:171 series.py:1722 series.py:2049 series.py:2052
+#: series.py:2054 series.py:2065 series.py:2255 series.py:2287 series.py:2305
+#: vod.py:506 vod.py:510 vod.py:526 vod.py:1682 vod.py:1684 vod.py:1694
+#: vod.py:1887
 msgid "Sort: A-Z"
 msgstr "排序:Z-A"
 
 #: catchup.py:200 channelmenu.py:56 downloadmanager.py:180 live.py:216
-#: playlists.py:67 playsettings.py:53 series.py:174 server.py:58 settings.py:75
-#: vod.py:167
+#: playlists.py:68 playsettings.py:53 series.py:182 server.py:57 settings.py:75
+#: vod.py:175
 msgid "Back"
 msgstr "返回"
 
-#: catchup.py:201 channelmenu.py:57 live.py:217 playlists.py:68 series.py:175
-#: vod.py:168
+#: catchup.py:201 channelmenu.py:57 live.py:217 playlists.py:69 series.py:183
+#: vod.py:176
 msgid "OK"
 msgstr "确定"
 
-#: catchup.py:203 catchup.py:653 catchup.py:918 live.py:219 live.py:762
-#: live.py:1077 series.py:177 series.py:1734 series.py:2170 vod.py:170
-#: vod.py:1357 vod.py:1776
+#: catchup.py:203 catchup.py:655 catchup.py:920 live.py:219 live.py:763
+#: live.py:1079 series.py:185 series.py:1725 series.py:2163 vod.py:178
+#: vod.py:1378 vod.py:1799
 msgid "Search"
 msgstr "搜索"
 
-#: catchup.py:518 live.py:566 series.py:552 vod.py:584
+#: catchup.py:520 live.py:567 series.py:561 vod.py:587
 msgid "ALL"
 msgstr "所有"
 
-#: catchup.py:610 live.py:686 series.py:992 vod.py:717
+#: catchup.py:612 live.py:687 series.py:990 vod.py:723
 msgid "Server error or invalid link."
 msgstr "服务器错误或链接无效."
 
-#: catchup.py:616 catchup.py:641 catchup.py:885 catchup.py:911 live.py:719
-#: live.py:756 live.py:1013 live.py:1070 series.py:998 series.py:1727
-#: series.py:2116 series.py:2162 vod.py:723 vod.py:1350 vod.py:1708 vod.py:1768
+#: catchup.py:618 catchup.py:643 catchup.py:887 catchup.py:913 live.py:720
+#: live.py:757 live.py:1015 live.py:1072 series.py:996 series.py:1718
+#: series.py:2109 series.py:2155 vod.py:729 vod.py:1371 vod.py:1731 vod.py:1791
 msgid "Reset Search"
 msgstr "重置搜索"
 
-#: catchup.py:646 catchup.py:833 live.py:961
+#: catchup.py:648 catchup.py:835 live.py:962
 msgid "Reverse"
 msgstr "反向"
 
-#: catchup.py:671 catchup.py:695 live.py:789 live.py:822 series.py:1074
-#: series.py:1111 vod.py:872 vod.py:900
+#: catchup.py:673 catchup.py:697 live.py:790 live.py:823 series.py:1074
+#: series.py:1111 vod.py:878 vod.py:906
 msgid "Page: "
 msgstr "页码:"
 
-#: catchup.py:838 catchup.py:855 live.py:966 live.py:983 plugin.py:178
-#: plugin.py:179 series.py:2058 series.py:2061 series.py:2064 series.py:2077
-#: vod.py:505 vod.py:509 vod.py:528 vod.py:1661 vod.py:1663 vod.py:1676
+#: catchup.py:840 catchup.py:857 live.py:967 live.py:984 plugin.py:179
+#: plugin.py:180 series.py:2049 series.py:2052 series.py:2054 series.py:2068
+#: vod.py:506 vod.py:510 vod.py:529 vod.py:1682 vod.py:1684 vod.py:1697
 msgid "Sort: Z-A"
 msgstr "排序:Z-A"
 
-#: catchup.py:840 catchup.py:842 catchup.py:862 live.py:968 live.py:970
-#: live.py:990 plugin.py:178 plugin.py:179 series.py:2058 series.py:2061
-#: series.py:2064 series.py:2086 vod.py:505 vod.py:509 vod.py:537 vod.py:1661
-#: vod.py:1663 vod.py:1685
+#: catchup.py:842 catchup.py:844 catchup.py:864 live.py:969 live.py:971
+#: live.py:992 plugin.py:179 plugin.py:180 series.py:2049 series.py:2052
+#: series.py:2054 series.py:2079 vod.py:506 vod.py:510 vod.py:540 vod.py:1682
+#: vod.py:1684 vod.py:1708
 msgid "Sort: Original"
 msgstr "排序:原始"
 
-#: catchup.py:842 catchup.py:858 live.py:970 live.py:986 plugin.py:179
-#: series.py:2061 series.py:2064 series.py:2080 vod.py:509 vod.py:531
-#: vod.py:1663 vod.py:1679
+#: catchup.py:844 catchup.py:860 live.py:971 live.py:987 plugin.py:180
+#: series.py:2052 series.py:2054 series.py:2071 vod.py:510 vod.py:532
+#: vod.py:1684 vod.py:1700
 msgid "Sort: Added"
 msgstr "排序:递增"
 
-#: catchup.py:888 live.py:1020 series.py:2120 vod.py:1715
+#: catchup.py:890 live.py:1022 series.py:2113 vod.py:1738
 msgid "Filter this category..."
 msgstr "筛选此类别..."
 
-#: catchup.py:904 live.py:1063 series.py:2148 vod.py:1761
+#: catchup.py:906 live.py:1065 series.py:2141 vod.py:1784
 msgid "No results found."
 msgstr "未找到结果"
 
-#: catchup.py:937 live.py:1096 series.py:2198 vod.py:1796
+#: catchup.py:939 live.py:1098 series.py:2191 vod.py:1819
 msgid "Incorrect pin code."
 msgstr "设置永久 PIN 码"
 
-#: catchup.py:958 live.py:1117 series.py:2219 vod.py:1817
+#: catchup.py:960 live.py:1119 series.py:2212 vod.py:1840
 msgid "all"
 msgstr "所有"
 
-#: catchup.py:967 live.py:1126 series.py:2228 vod.py:1826
+#: catchup.py:969 live.py:1128 series.py:2221 vod.py:1849
 msgid "Please enter the parental control pin code"
 msgstr "请输入正确的 PIN 码"
 
-#: catchup.py:967 hidden.py:29 live.py:1126 series.py:2228 settings.py:35
-#: vod.py:1826
+#: catchup.py:969 hidden.py:29 live.py:1128 series.py:2221 settings.py:35
+#: vod.py:1849
 msgid "Enter pin code"
 msgstr "输入 PIN 码"
 
-#: catchup.py:1118
+#: catchup.py:1120
 msgid "Catch-up"
 msgstr "赶上"
 
-#: catchup.py:1123 series.py:2475 vod.py:2085
+#: catchup.py:1125 series.py:2473 vod.py:2112
 msgid "Added to download manager"
 msgstr "已添加到下载管理器"
 
-#: catchup.py:1123 series.py:2475 vod.py:2085
+#: catchup.py:1125 series.py:2473 vod.py:2112
 msgid "Note recording acts as an open connection."
 msgstr "备注录音充当开放连接."
 
-#: catchup.py:1123 series.py:2475 vod.py:2085
+#: catchup.py:1125 series.py:2473 vod.py:2112
 msgid "Do not record and play streams at the same time."
 msgstr "请勿同时录制和播放流媒体."
 
-#: catchup.py:1123 series.py:2475 vod.py:2085
+#: catchup.py:1125 series.py:2473 vod.py:2112
 msgid "Open download manager?"
 msgstr "打开下载管理器?"
 
-#: catchup.py:1126 series.py:2478 vod.py:2088
+#: catchup.py:1128 series.py:2476 vod.py:2115
 msgid "Already added to download manager"
 msgstr "已添加到下载管理器"
 
-#: catchup.py:1157
+#: catchup.py:1159
 msgid "Catchup error. No data for this slot"
 msgstr "错误：下载数据错误."
 
-#: catchup.py:1216
+#: catchup.py:1218
 msgid "Catchup currently not available. Missing EPG data"
 msgstr "当前不提供补充信息.缺少EPG数据"
 
@@ -215,64 +215,61 @@ msgstr "设置更改失败"
 msgid "Menu"
 msgstr ""
 
-#: channelmenu.py:108 channelmenu.py:142 channelmenu.py:257
+#: channelmenu.py:108 channelmenu.py:140 channelmenu.py:247
 msgid "Manual EPG Update"
 msgstr "手动更新电子节目表"
 
-#: channelmenu.py:109 channelmenu.py:144 channelmenu.py:259 playsettings.py:46
+#: channelmenu.py:109 channelmenu.py:142 channelmenu.py:249 playsettings.py:46
 msgid "Playlist Settings"
 msgstr "播放列表设置"
 
-#: channelmenu.py:111 channelmenu.py:146 channelmenu.py:261
+#: channelmenu.py:111 channelmenu.py:144 channelmenu.py:251
 msgid "Show/Hide Channels"
 msgstr "显示/隐藏频道"
 
-#: channelmenu.py:112 channelmenu.py:148 channelmenu.py:263
+#: channelmenu.py:112 channelmenu.py:146 channelmenu.py:253
 msgid "Account Info"
 msgstr "账户信息"
 
-#: channelmenu.py:114
-msgid "Set As Default Playlist"
+#: channelmenu.py:114 channelmenu.py:148 channelmenu.py:257 playlists.py:63
+#: startmenu.py:582
+msgid "Manage Playlists"
 msgstr ""
 
-#: channelmenu.py:116 channelmenu.py:152 channelmenu.py:267 startmenu.py:394
-msgid "Switch Playlist"
-msgstr "切换播放列表"
-
-#: channelmenu.py:117 channelmenu.py:154 channelmenu.py:269
+#: channelmenu.py:115 channelmenu.py:150 channelmenu.py:259
 msgid "Add New Playlist"
 msgstr "添加新播放列表"
 
-#: channelmenu.py:128 channelmenu.py:156 channelmenu.py:271 startmenu.py:401
+#: channelmenu.py:126 channelmenu.py:152 channelmenu.py:261 startmenu.py:587
 msgid "Download Manager"
 msgstr "下载管理器"
 
-#: channelmenu.py:129 channelmenu.py:158 channelmenu.py:273 settings.py:68
-#: startmenu.py:396
+#: channelmenu.py:127 channelmenu.py:154 channelmenu.py:263 settings.py:68
+#: startmenu.py:584
 msgid "Global Settings"
 msgstr "全局设置"
 
-#: channelmenu.py:175
+#: channelmenu.py:171
 msgid "Recordings in progress. EPG not downloaded."
 msgstr "正在录制,未下载EPG."
 
-#: channelmenu.py:177
+#: channelmenu.py:173
 msgid "EPGs downloading."
 msgstr "EPG下载中."
 
-#: channelmenu.py:249
+#: channelmenu.py:239
 msgid "Live"
 msgstr "直播"
 
-#: channelmenu.py:251
+#: channelmenu.py:241
 msgid "Vod"
 msgstr "视频点播"
 
-#: channelmenu.py:253 series.py:101 series.py:2470
+#: channelmenu.py:243 series.py:109 series.py:2468 startmenu.py:577
 msgid "Series"
 msgstr "电视剧"
 
-#: channelmenu.py:255
+#: channelmenu.py:245
 msgid "Catchup"
 msgstr ""
 
@@ -348,7 +345,7 @@ msgstr "PIN 码输入错误."
 msgid "Hidden Categories"
 msgstr "隐藏网络"
 
-#: hidden.py:79 playsettings.py:54 record.py:42 server.py:59 settings.py:76
+#: hidden.py:79 playsettings.py:54 record.py:42 server.py:58 settings.py:76
 msgid "Save"
 msgstr "保存"
 
@@ -368,35 +365,35 @@ msgstr "错误:所有类别都隐藏.请修改您的选择."
 msgid "Live Categories"
 msgstr "直播分类"
 
-#: live.py:156
+#: live.py:156 startmenu.py:571
 msgid "Live TV"
 msgstr "直播"
 
-#: live.py:564 vod.py:582
+#: live.py:565 vod.py:585
 msgid "FAVOURITES"
 msgstr "收藏夹"
 
-#: live.py:565 vod.py:583
+#: live.py:566 vod.py:586
 msgid "RECENTLY WATCHED"
 msgstr "新近收看"
 
-#: live.py:760 live.py:1016 playlists.py:69 vod.py:1365 vod.py:1711
+#: live.py:761 live.py:1018 playlists.py:70 vod.py:1386 vod.py:1734
 msgid "Delete"
 msgstr "删除"
 
-#: live.py:1418 live.py:1473 live.py:1482
+#: live.py:1420 live.py:1475 live.py:1484
 msgid "Next Info"
 msgstr "稍后"
 
-#: live.py:1477
+#: live.py:1479
 msgid "Now Info"
 msgstr "当前信息"
 
-#: live.py:1682 liveplayer.py:618
+#: live.py:1684 liveplayer.py:618
 msgid "Recording Timer Set."
 msgstr "停止定时录像"
 
-#: live.py:1684 liveplayer.py:620
+#: live.py:1686 liveplayer.py:620
 msgid "Recording Failed."
 msgstr "录制失败."
 
@@ -404,35 +401,31 @@ msgstr "录制失败."
 msgid "TV"
 msgstr "电视"
 
-#: playlists.py:62
-msgid "Select Playlist"
-msgstr "选择播放列表类型"
-
-#: playlists.py:70
+#: playlists.py:71
 msgid "Info"
 msgstr "信息"
 
-#: playlists.py:106
+#: playlists.py:107 startmenu.py:150
 msgid "No internet."
 msgstr ""
 
-#: playlists.py:327 playlists.py:404
+#: playlists.py:327 playlists.py:403
 msgid "Not Authorised"
 msgstr "未授权"
 
-#: playlists.py:332 playlists.py:390 serverinfo.py:73
+#: playlists.py:332 playlists.py:389 serverinfo.py:73
 msgid "Active"
 msgstr "活动"
 
-#: playlists.py:333 playlists.py:396 serverinfo.py:74
+#: playlists.py:333 playlists.py:395 serverinfo.py:74
 msgid "Banned"
 msgstr "禁止"
 
-#: playlists.py:334 playlists.py:400 serverinfo.py:75
+#: playlists.py:334 playlists.py:399 serverinfo.py:75
 msgid "Disabled"
 msgstr "关闭"
 
-#: playlists.py:335 playlists.py:398 serverinfo.py:76
+#: playlists.py:335 playlists.py:397 serverinfo.py:76
 msgid "Expired"
 msgstr "已到期"
 
@@ -444,7 +437,7 @@ msgstr "活动"
 msgid "Max Conn:"
 msgstr "最大值:"
 
-#: playlists.py:383
+#: playlists.py:382 startmenu.py:386
 msgid ""
 "You have dead playlists that are slowing down loading.\n"
 "\n"
@@ -454,19 +447,19 @@ msgstr ""
 "\n"
 "按黄色按钮软删除失效的播放列表"
 
-#: playlists.py:419
+#: playlists.py:418
 msgid "Delete selected playlist?"
 msgstr "是否永久删除所选播放列表？"
 
-#: playlists.py:440
+#: playlists.py:439
 msgid "Delete providers EPG data?"
 msgstr "删除供应商的 EPG 数据？"
 
-#: playsettings.py:83 record.py:75 server.py:88 settings.py:107
+#: playsettings.py:83 record.py:75 server.py:87 settings.py:107
 msgid "Really close without saving settings?"
 msgstr "真的关闭而不保存设置吗？"
 
-#: playsettings.py:139 server.py:115
+#: playsettings.py:139 server.py:114
 msgid "Short name or provider name:"
 msgstr "简称或提供方名称:"
 
@@ -486,7 +479,7 @@ msgstr "显示 电视剧 类别"
 msgid "Show CATCHUP category:"
 msgstr "筛选此类别..."
 
-#: playsettings.py:144 server.py:121
+#: playsettings.py:144 server.py:120
 msgid "Output:"
 msgstr "输出:"
 
@@ -516,32 +509,32 @@ msgid ""
 "characters."
 msgstr "频道组名称不能为空.请输入唯一的花束名称.最少3个字符."
 
-#: playsettings.py:243 server.py:218
+#: playsettings.py:243 server.py:217
 msgid "Name already used. Please enter a unique name."
 msgstr "名称已被使用.请输入唯一的名称."
 
-#: plugin.py:178 plugin.py:179
+#: plugin.py:179 plugin.py:180
 msgid "Original"
 msgstr "原始"
 
-#: plugin.py:179
+#: plugin.py:180
 msgid "Added"
 msgstr "已添加"
 
-#: plugin.py:179 series.py:2064 series.py:2083 vod.py:509 vod.py:534
-#: vod.py:1663 vod.py:1682
+#: plugin.py:180 series.py:2052 series.py:2075 vod.py:510 vod.py:536
+#: vod.py:1684 vod.py:1704
 msgid "Sort: Year"
 msgstr "排序:年份"
 
-#: plugin.py:179
+#: plugin.py:180
 msgid "Year"
 msgstr "年份"
 
-#: plugin.py:262 plugin.py:370
+#: plugin.py:277 plugin.py:385
 msgid "XKlass"
 msgstr "XKlass播放器"
 
-#: plugin.py:369
+#: plugin.py:384
 msgid "IPTV Xtream Codes playlists player by KiddaC"
 msgstr "IPTV播放器  KiddaC-编写"
 
@@ -569,69 +562,69 @@ msgstr "开始时间:"
 msgid "End Time"
 msgstr "結束時間"
 
-#: series.py:97
+#: series.py:105
 msgid "Series Categories"
 msgstr "电视剧类别"
 
-#: series.py:693
+#: series.py:696
 msgid "No series found in this category."
 msgstr "此类别中没有系列..."
 
-#: series.py:750 series.py:2569
+#: series.py:757 series.py:2571
 msgid "Season "
 msgstr "季"
 
-#: series.py:1629 vod.py:1304
+#: series.py:1640 vod.py:1357
 msgid "Rating: "
 msgstr "评级:"
 
-#: series.py:1702 vod.py:1333
+#: series.py:1691 vod.py:1348
 msgid "Cast:"
 msgstr "演员:"
 
-#: series.py:1707 vod.py:1338
+#: series.py:1696 vod.py:1338
 msgid "Director:"
 msgstr "导演:"
 
-#: series.py:1712 vod.py:1343
+#: series.py:1701 vod.py:1313
 msgid "Overview"
 msgstr "概述:"
 
-#: server.py:50
+#: server.py:49
 msgid "Add Playlist"
 msgstr "添加播放列表"
 
-#: server.py:116
+#: server.py:115
 msgid "Protocol:"
 msgstr "协议:"
 
-#: server.py:117
+#: server.py:116
 msgid "Server URL: i.e. domain.xyz"
 msgstr "服务器URL：例如 domain.xyz"
 
-#: server.py:118
+#: server.py:117
 msgid "Port:"
 msgstr "端口:"
 
-#: server.py:119
+#: server.py:118
 msgid "Username:"
 msgstr "用户名:"
 
-#: server.py:120
+#: server.py:119
 msgid "Password:"
 msgstr "密码:"
 
-#: server.py:207
+#: server.py:206
 msgid "Details are not valid or unauthorised"
 msgstr "未找到有效的区域详细信息"
 
-#: server.py:212
+#: server.py:211
 msgid ""
 "Bouquet name cannot be blank. Please enter a unique bouquet name. Minimum 2 "
 "characters."
 msgstr "频道组名称不能为空,请输入唯一的花束名称,最少2个字符."
 
-#: server.py:231
+#: server.py:227
 msgid "Playlist added successfully."
 msgstr "成功添加播放列表."
 
@@ -806,11 +799,19 @@ msgstr "第一信息栏无海报"
 msgid "Auto start XKlass on boot"
 msgstr "启动时自动启动 XKlass"
 
-#: settings.py:299
+#: settings.py:175
+msgid "Play satellite channel audio in background"
+msgstr ""
+
+#: settings.py:176
+msgid "Add speedtest plugin to main menu"
+msgstr ""
+
+#: settings.py:303
 msgid "Choose Directory:"
 msgstr "选择目录："
 
-#: settings.py:300
+#: settings.py:304
 msgid "Choose directory"
 msgstr "选择目录"
 
@@ -818,19 +819,23 @@ msgstr "选择目录"
 msgid "Main Menu"
 msgstr "主菜单"
 
-#: startmenu.py:223
-msgid "Server not responding."
-msgstr ""
+#: startmenu.py:574 vod.py:121
+msgid "Movies"
+msgstr "电影"
 
-#: startmenu.py:259 startmenu.py:293
-msgid "Playlist not active."
-msgstr ""
-
-#: startmenu.py:392
+#: startmenu.py:580
 msgid "Catch Up TV"
 msgstr "追剧"
 
-#: startmenu.py:512
+#: startmenu.py:590
+msgid "Reboot GUI"
+msgstr ""
+
+#: startmenu.py:593
+msgid "Speed Test"
+msgstr ""
+
+#: startmenu.py:734
 msgid ""
 "Warning: delete stored json data for all playlists... Settings, favourites "
 "etc. \n"
@@ -838,25 +843,21 @@ msgid ""
 "Do you wish to continue?"
 msgstr ""
 
-#: vod.py:108
+#: vod.py:116
 msgid "Vod Categories"
 msgstr "视频点播分类"
 
-#: vod.py:113
-msgid "Movies"
-msgstr "电影"
-
-#: vod.py:2080
+#: vod.py:2107
 msgid "Movie"
 msgstr "电影"
 
-#: vod.py:2110
+#: vod.py:2137
 msgid ""
 "The TMDB plugin is not installed!\n"
 "Please install it."
 msgstr ""
 
-#: vod.py:2120
+#: vod.py:2147
 msgid ""
 "The IMDb plugin is not installed!\n"
 "Please install it."
@@ -867,6 +868,9 @@ msgstr ""
 #: vodplayer.py:497
 msgid "VOD"
 msgstr "点播"
+
+#~ msgid "Switch Playlist"
+#~ msgstr "切换播放列表"
 
 #~ msgid "IPTV"
 #~ msgstr "网络电视"

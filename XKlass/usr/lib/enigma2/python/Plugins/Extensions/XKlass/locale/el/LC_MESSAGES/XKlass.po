@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2024-07-07 16:18+0100\n"
-"PO-Revision-Date: 2024-08-23 21:37+0200\n"
+"POT-Creation-Date: 2024-09-14 22:43+0100\n"
+"PO-Revision-Date: 2024-09-14 22:43+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: el_GR\n"
@@ -14,23 +14,23 @@ msgstr ""
 "X-Poedit-Basepath: ../../..\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: Task.py:60 downloadmanager.py:58
+#: XKlass/Task.py:60 XKlass/downloadmanager.py:58
 msgid "Waiting"
 msgstr "Σε αναμονή"
 
-#: Task.py:60 downloadmanager.py:57
+#: XKlass/Task.py:60 XKlass/downloadmanager.py:57
 msgid "In progress"
 msgstr "Σε εξέλιξη"
 
-#: Task.py:60
+#: XKlass/Task.py:60
 msgid "Finished"
 msgstr "Ολοκληρωθηκε"
 
-#: Task.py:60
+#: XKlass/Task.py:60
 msgid "Failed"
 msgstr "Aπέτυχε"
 
-#: Task.py:325
+#: XKlass/Task.py:325
 #, python-format
 msgid ""
 "Error: %s\n"
@@ -39,271 +39,300 @@ msgstr ""
 "Σφάλμα: %s\n"
 "Επανάληψη?"
 
-#: Task.py:328 playlists.py:322 playlists.py:407
+#: XKlass/Task.py:328 XKlass/playlists.py:317 XKlass/playlists.py:401
 msgid "Error"
 msgstr "Σφάλμα"
 
-#: Task.py:375
+#: XKlass/Task.py:375
 msgid "An unknown error occurred!"
 msgstr "Εμφανίστηκε ένα άγνωστο σφάλμα!"
 
-#: Task.py:400
+#: XKlass/Task.py:400
 #, python-format
 msgid "A required tool (%s) was not found."
 msgstr "Δεν βρέθηκε ένα απαιτούμενο εργαλείο (%s)."
 
-#: Task.py:408
+#: XKlass/Task.py:408
 msgid "Cancelled upon user request"
 msgstr "Ακυρώνεται κατόπιν αιτήματος του χρήστη"
 
-#: Task.py:425 Task.py:440
+#: XKlass/Task.py:425 XKlass/Task.py:440
 msgid "Error code"
 msgstr "Λάθους Κωδικός"
 
-#: catchup.py:145
+#: XKlass/catchup.py:145
 msgid "Catch Up Categories"
 msgstr "Κατηγορία Καταγραφης"
 
-#: catchup.py:150
+#: XKlass/catchup.py:150
 msgid "Catchup TV"
 msgstr "Catchup TV"
 
-#: catchup.py:190 catchup.py:655 catchup.py:843 catchup.py:857 catchup.py:996
-#: live.py:205 live.py:760 live.py:961 live.py:975 live.py:1160 series.py:163
-#: series.py:1712 series.py:2039 series.py:2042 series.py:2045 series.py:2055
-#: series.py:2243 series.py:2274 series.py:2292 vod.py:157 vod.py:1290
-#: vod.py:1597 vod.py:1599 vod.py:1609 vod.py:1798
+#: XKlass/catchup.py:190 XKlass/catchup.py:652 XKlass/catchup.py:840
+#: XKlass/catchup.py:854 XKlass/catchup.py:993 XKlass/live.py:205
+#: XKlass/live.py:766 XKlass/live.py:967 XKlass/live.py:981 XKlass/live.py:1167
+#: XKlass/plugin.py:179 XKlass/plugin.py:180 XKlass/series.py:171
+#: XKlass/series.py:1722 XKlass/series.py:2049 XKlass/series.py:2052
+#: XKlass/series.py:2054 XKlass/series.py:2065 XKlass/series.py:2255
+#: XKlass/series.py:2287 XKlass/series.py:2305 XKlass/vod.py:506
+#: XKlass/vod.py:510 XKlass/vod.py:526 XKlass/vod.py:1682 XKlass/vod.py:1684
+#: XKlass/vod.py:1694 XKlass/vod.py:1887
 msgid "Sort: A-Z"
 msgstr "Ταξινόμηση: A-Z"
 
-#: catchup.py:200 channelmenu.py:56 downloadmanager.py:180 live.py:216
-#: playlists.py:67 playsettings.py:53 series.py:174 server.py:58 settings.py:75
-#: vod.py:167
+#: XKlass/catchup.py:200 XKlass/channelmenu.py:56 XKlass/downloadmanager.py:180
+#: XKlass/live.py:216 XKlass/playlists.py:68 XKlass/playsettings.py:53
+#: XKlass/series.py:182 XKlass/server.py:57 XKlass/settings.py:75
+#: XKlass/vod.py:175
 msgid "Back"
 msgstr "Επιστροφή"
 
-#: catchup.py:201 channelmenu.py:57 live.py:217 playlists.py:68 series.py:175
-#: vod.py:168
+#: XKlass/catchup.py:201 XKlass/channelmenu.py:57 XKlass/live.py:217
+#: XKlass/playlists.py:69 XKlass/series.py:183 XKlass/vod.py:176
 msgid "OK"
 msgstr "OK"
 
-#: catchup.py:203 catchup.py:658 catchup.py:923 live.py:219 live.py:757
-#: live.py:1072 series.py:177 series.py:1715 series.py:2151 vod.py:170
-#: vod.py:1293 vod.py:1711
+#: XKlass/catchup.py:203 XKlass/catchup.py:655 XKlass/catchup.py:920
+#: XKlass/live.py:219 XKlass/live.py:763 XKlass/live.py:1079
+#: XKlass/series.py:185 XKlass/series.py:1725 XKlass/series.py:2163
+#: XKlass/vod.py:178 XKlass/vod.py:1378 XKlass/vod.py:1799
 msgid "Search"
 msgstr "Αναζήτηση σε"
 
-#: catchup.py:523 live.py:561 series.py:557 vod.py:530
+#: XKlass/catchup.py:520 XKlass/live.py:567 XKlass/series.py:561
+#: XKlass/vod.py:587
 msgid "ALL"
 msgstr "ΟΛΑ"
 
-#: catchup.py:615 live.py:681 series.py:998 vod.py:663
+#: XKlass/catchup.py:612 XKlass/live.py:687 XKlass/series.py:990
+#: XKlass/vod.py:723
 msgid "Server error or invalid link."
 msgstr "Σφάλμα διακομιστή ή μη έγκυρος σύνδεσμος."
 
-#: catchup.py:621 catchup.py:646 catchup.py:890 catchup.py:916 live.py:714
-#: live.py:751 live.py:1008 live.py:1065 series.py:1004 series.py:1708
-#: series.py:2097 series.py:2143 vod.py:669 vod.py:1286 vod.py:1644 vod.py:1703
+#: XKlass/catchup.py:618 XKlass/catchup.py:643 XKlass/catchup.py:887
+#: XKlass/catchup.py:913 XKlass/live.py:720 XKlass/live.py:757
+#: XKlass/live.py:1015 XKlass/live.py:1072 XKlass/series.py:996
+#: XKlass/series.py:1718 XKlass/series.py:2109 XKlass/series.py:2155
+#: XKlass/vod.py:729 XKlass/vod.py:1371 XKlass/vod.py:1731 XKlass/vod.py:1791
 msgid "Reset Search"
 msgstr "Επαναφορά Αναζήτηση"
 
-#: catchup.py:651 catchup.py:838 live.py:956
+#: XKlass/catchup.py:648 XKlass/catchup.py:835 XKlass/live.py:962
 msgid "Reverse"
 msgstr "Αντίστροφη"
 
-#: catchup.py:676 catchup.py:700 live.py:784 live.py:817 series.py:1070
-#: series.py:1107 vod.py:808 vod.py:836
+#: XKlass/catchup.py:673 XKlass/catchup.py:697 XKlass/live.py:790
+#: XKlass/live.py:823 XKlass/series.py:1074 XKlass/series.py:1111
+#: XKlass/vod.py:878 XKlass/vod.py:906
 msgid "Page: "
 msgstr "Σελίδα: "
 
-#: catchup.py:843 catchup.py:860 live.py:961 live.py:978 series.py:2039
-#: series.py:2042 series.py:2045 series.py:2058 vod.py:1597 vod.py:1599
-#: vod.py:1612
+#: XKlass/catchup.py:840 XKlass/catchup.py:857 XKlass/live.py:967
+#: XKlass/live.py:984 XKlass/plugin.py:179 XKlass/plugin.py:180
+#: XKlass/series.py:2049 XKlass/series.py:2052 XKlass/series.py:2054
+#: XKlass/series.py:2068 XKlass/vod.py:506 XKlass/vod.py:510 XKlass/vod.py:529
+#: XKlass/vod.py:1682 XKlass/vod.py:1684 XKlass/vod.py:1697
 msgid "Sort: Z-A"
 msgstr "Ταξινόμηση: Z-A"
 
-#: catchup.py:845 catchup.py:847 catchup.py:867 live.py:963 live.py:965
-#: live.py:985 series.py:2039 series.py:2042 series.py:2045 series.py:2067
-#: vod.py:1597 vod.py:1599 vod.py:1621
+#: XKlass/catchup.py:842 XKlass/catchup.py:844 XKlass/catchup.py:864
+#: XKlass/live.py:969 XKlass/live.py:971 XKlass/live.py:992
+#: XKlass/plugin.py:179 XKlass/plugin.py:180 XKlass/series.py:2049
+#: XKlass/series.py:2052 XKlass/series.py:2054 XKlass/series.py:2079
+#: XKlass/vod.py:506 XKlass/vod.py:510 XKlass/vod.py:540 XKlass/vod.py:1682
+#: XKlass/vod.py:1684 XKlass/vod.py:1708
 msgid "Sort: Original"
 msgstr "Ταξινόμηση: Αρχική"
 
-#: catchup.py:847 catchup.py:863 live.py:965 live.py:981 series.py:2042
-#: series.py:2045 series.py:2061 vod.py:1599 vod.py:1615
+#: XKlass/catchup.py:844 XKlass/catchup.py:860 XKlass/live.py:971
+#: XKlass/live.py:987 XKlass/plugin.py:180 XKlass/series.py:2052
+#: XKlass/series.py:2054 XKlass/series.py:2071 XKlass/vod.py:510
+#: XKlass/vod.py:532 XKlass/vod.py:1684 XKlass/vod.py:1700
 msgid "Sort: Added"
 msgstr "Ταξινόμηση: Προστέθηκε"
 
-#: catchup.py:893 live.py:1015 series.py:2101 vod.py:1651
+#: XKlass/catchup.py:890 XKlass/live.py:1022 XKlass/series.py:2113
+#: XKlass/vod.py:1738
 msgid "Filter this category..."
 msgstr "Φιλτράρετε αυτή την Kατηγορία..."
 
-#: catchup.py:909 live.py:1058 series.py:2129 vod.py:1696
+#: XKlass/catchup.py:906 XKlass/live.py:1065 XKlass/series.py:2141
+#: XKlass/vod.py:1784
 msgid "No results found."
 msgstr "Δεν βρέθηκαν αποτελέσματα."
 
-#: catchup.py:942 live.py:1091 series.py:2179 vod.py:1730
+#: XKlass/catchup.py:939 XKlass/live.py:1098 XKlass/series.py:2191
+#: XKlass/vod.py:1819
 msgid "Incorrect pin code."
 msgstr "Εσφαλμένος Kωδικός pin."
 
-#: catchup.py:963 live.py:1112 series.py:2200 vod.py:1751
+#: XKlass/catchup.py:960 XKlass/live.py:1119 XKlass/series.py:2212
+#: XKlass/vod.py:1840
 msgid "all"
 msgstr "όλα"
 
-#: catchup.py:972 live.py:1121 series.py:2209 vod.py:1760
+#: XKlass/catchup.py:969 XKlass/live.py:1128 XKlass/series.py:2221
+#: XKlass/vod.py:1849
 msgid "Please enter the parental control pin code"
 msgstr "Πληκτρολογήστε το Kωδικό PIN Γονικού Eλέγχου"
 
-#: catchup.py:972 hidden.py:29 live.py:1121 series.py:2209 settings.py:35
-#: vod.py:1760
+#: XKlass/catchup.py:969 XKlass/hidden.py:29 XKlass/live.py:1128
+#: XKlass/series.py:2221 XKlass/settings.py:35 XKlass/vod.py:1849
 msgid "Enter pin code"
 msgstr "Πληκτρολογήστε τον Kωδικό Pin"
 
-#: catchup.py:1123
+#: XKlass/catchup.py:1120
 msgid "Catch-up"
 msgstr "Catch-up"
 
-#: catchup.py:1128 series.py:2445 vod.py:2009
+#: XKlass/catchup.py:1125 XKlass/series.py:2473 XKlass/vod.py:2112
 msgid "Added to download manager"
 msgstr "Προστέθηκε στον Διαχειριστή Λήψεων"
 
-#: catchup.py:1128 series.py:2445 vod.py:2009
+#: XKlass/catchup.py:1125 XKlass/series.py:2473 XKlass/vod.py:2112
 msgid "Note recording acts as an open connection."
 msgstr "Η εγγραφή σημείωσης λειτουργεί ως ανοικτή σύνδεση."
 
-#: catchup.py:1128 series.py:2445 vod.py:2009
+#: XKlass/catchup.py:1125 XKlass/series.py:2473 XKlass/vod.py:2112
 msgid "Do not record and play streams at the same time."
 msgstr "Μην εγγράφετε και μην αναπαράγετε ροές ταυτόχρονα."
 
-#: catchup.py:1128 series.py:2445 vod.py:2009
+#: XKlass/catchup.py:1125 XKlass/series.py:2473 XKlass/vod.py:2112
 msgid "Open download manager?"
 msgstr "Άνοιγμα Διαχειριστή Λήψης;"
 
-#: catchup.py:1131 series.py:2448 vod.py:2012
+#: XKlass/catchup.py:1128 XKlass/series.py:2476 XKlass/vod.py:2115
 msgid "Already added to download manager"
 msgstr "Έχει ήδη προστεθεί στον Διαχειριστή Λήψεων"
 
-#: catchup.py:1162
+#: XKlass/catchup.py:1159
 msgid "Catchup error. No data for this slot"
 msgstr "Σφάλμα Catchup. Δεν υπάρχουν δεδομένα για αυτήν την υποδοχή"
 
-#: catchup.py:1221
+#: XKlass/catchup.py:1218
 msgid "Catchup currently not available. Missing EPG data"
 msgstr "Το Catchup δεν είναι προς το παρόν διαθέσιμο. Λείπουν δεδομένα EPG"
 
-#: catchupplayer.py:407 vodplayer.py:407
+#: XKlass/catchupplayer.py:407 XKlass/vodplayer.py:407
 msgid "Do you want to resume this playback?"
 msgstr "Θέλετε να Συνεχίσετε την Αναπαραγωγή;"
 
-#: catchupplayer.py:407 vodplayer.py:407
+#: XKlass/catchupplayer.py:407 XKlass/vodplayer.py:407
 #, python-format
 msgid "Resume position at %s"
 msgstr "Συνέχιση της θέσης στο %s"
 
-#: catchupplayer.py:490
+#: XKlass/catchupplayer.py:490
 msgid "Catch Up"
 msgstr "Catch Up"
 
-#: catchupplayer.py:667 liveplayer.py:873 vodplayer.py:759
+#: XKlass/catchupplayer.py:667 XKlass/liveplayer.py:873 XKlass/vodplayer.py:759
 msgid "Resolution Change Failed"
 msgstr "Αλλαγή Ανάλυσης Oθόνης Απέτυχε"
 
-#: channelmenu.py:51
+#: XKlass/channelmenu.py:51
 msgid "Menu"
 msgstr "Μενού"
 
-#: channelmenu.py:108 channelmenu.py:142 channelmenu.py:257
+#: XKlass/channelmenu.py:108 XKlass/channelmenu.py:140
+#: XKlass/channelmenu.py:247
 msgid "Manual EPG Update"
 msgstr "Χειροκίνητη ενημέρωση EPG"
 
-#: channelmenu.py:109 channelmenu.py:144 channelmenu.py:259 playsettings.py:46
+#: XKlass/channelmenu.py:109 XKlass/channelmenu.py:142
+#: XKlass/channelmenu.py:249 XKlass/playsettings.py:46
 msgid "Playlist Settings"
 msgstr "Ρυθμίσεις Λίστας Αναπαραγωγής"
 
-#: channelmenu.py:111 channelmenu.py:146 channelmenu.py:261
+#: XKlass/channelmenu.py:111 XKlass/channelmenu.py:144
+#: XKlass/channelmenu.py:251
 msgid "Show/Hide Channels"
 msgstr "Εμφάνιση/Απόκρυψη Kαναλιών"
 
-#: channelmenu.py:112 channelmenu.py:148 channelmenu.py:263
+#: XKlass/channelmenu.py:112 XKlass/channelmenu.py:146
+#: XKlass/channelmenu.py:253
 msgid "Account Info"
 msgstr "Στοιχεία Λογαριασμού"
 
-#: channelmenu.py:114
-msgid "Set As Default Playlist"
-msgstr "Ορίστε ως προεπιλεγμένη Λίστα Αναπαραγωγής"
+#: XKlass/channelmenu.py:114 XKlass/channelmenu.py:148
+#: XKlass/channelmenu.py:257 XKlass/playlists.py:63 XKlass/startmenu.py:582
+msgid "Manage Playlists"
+msgstr ""
 
-#: channelmenu.py:116 channelmenu.py:152 channelmenu.py:267
-msgid "Switch Playlist"
-msgstr "ΠΑΡΟΧΟΣ"
-
-#: channelmenu.py:117 channelmenu.py:154 channelmenu.py:269
+#: XKlass/channelmenu.py:115 XKlass/channelmenu.py:150
+#: XKlass/channelmenu.py:259
 msgid "Add New Playlist"
 msgstr "Προσθήκη νέας λίστας αναπαραγωγής "
 
-#: channelmenu.py:128 channelmenu.py:156 channelmenu.py:271
+#: XKlass/channelmenu.py:126 XKlass/channelmenu.py:152
+#: XKlass/channelmenu.py:261 XKlass/startmenu.py:587
 msgid "Download Manager"
 msgstr "Διαχείριση λήψης "
 
-#: channelmenu.py:129 channelmenu.py:158 channelmenu.py:273 settings.py:68
+#: XKlass/channelmenu.py:127 XKlass/channelmenu.py:154
+#: XKlass/channelmenu.py:263 XKlass/settings.py:68 XKlass/startmenu.py:584
 msgid "Global Settings"
 msgstr "ΡΥΘΜΙΣΕΙΣ"
 
-#: channelmenu.py:175
+#: XKlass/channelmenu.py:171
 msgid "Recordings in progress. EPG not downloaded."
 msgstr "Ηχογραφήσεις σε εξέλιξη. Το EPG δεν έχει ληφθεί."
 
-#: channelmenu.py:177
+#: XKlass/channelmenu.py:173
 msgid "EPGs downloading."
 msgstr "Λήψη προγραμμάτων EPG."
 
-#: channelmenu.py:249
+#: XKlass/channelmenu.py:239
 msgid "Live"
 msgstr "Ζωντανή"
 
-#: channelmenu.py:251
+#: XKlass/channelmenu.py:241
 msgid "Vod"
 msgstr "Βίντεο κατ' Aπαίτηση"
 
-#: channelmenu.py:253 series.py:101 series.py:2440
+#: XKlass/channelmenu.py:243 XKlass/series.py:109 XKlass/series.py:2468
+#: XKlass/startmenu.py:577
 msgid "Series"
 msgstr "ΣΕΙΡΕΣ"
 
-#: channelmenu.py:255
+#: XKlass/channelmenu.py:245
 msgid "Catchup"
 msgstr "Καταγραφη"
 
-#: downloadmanager.py:56 downloadmanager.py:402 downloadmanager.py:438
+#: XKlass/downloadmanager.py:56 XKlass/downloadmanager.py:402
+#: XKlass/downloadmanager.py:438
 msgid "Not Started"
 msgstr "Δεν ξεκίνησε"
 
-#: downloadmanager.py:161
+#: XKlass/downloadmanager.py:161
 msgid "VOD Download Manager"
 msgstr "Διαχειριστής λήψης VOD"
 
-#: downloadmanager.py:181 downloadmanager.py:406
+#: XKlass/downloadmanager.py:181 XKlass/downloadmanager.py:406
 msgid "Download"
 msgstr "Λήψη"
 
-#: downloadmanager.py:182 downloadmanager.py:407
+#: XKlass/downloadmanager.py:182 XKlass/downloadmanager.py:407
 msgid "Remove"
 msgstr "Αφαίρεση"
 
-#: downloadmanager.py:238 downloadmanager.py:241
+#: XKlass/downloadmanager.py:238 XKlass/downloadmanager.py:241
 msgid "Free Space:"
 msgstr "Ελεύθερος χώρος:"
 
-#: downloadmanager.py:238 downloadmanager.py:241
+#: XKlass/downloadmanager.py:238 XKlass/downloadmanager.py:241
 msgid "of"
 msgstr "του"
 
-#: downloadmanager.py:403 hidden.py:78
+#: XKlass/downloadmanager.py:403 XKlass/hidden.py:78
 msgid "Cancel"
 msgstr "Ακύρωση"
 
-#: downloadmanager.py:417
+#: XKlass/downloadmanager.py:417
 msgid "Please set download folder in Main Settings."
 msgstr "Ορίστε το φάκελο λήψης στις Κύριες ρυθμίσεις."
 
-#: downloadmanager.py:417
+#: XKlass/downloadmanager.py:417
 msgid ""
 "Vod Download folder location does not exist.\n"
 "\n"
@@ -311,7 +340,7 @@ msgstr ""
 "Η θέση του φακέλου των Λήψεων Βίντεο κατ' Aπαίτηση δεν υπάρχει.\n"
 "\n"
 
-#: downloadmanager.py:457 downloadmanager.py:463
+#: XKlass/downloadmanager.py:457 XKlass/downloadmanager.py:463
 msgid ""
 "Please update your wget library to download https lines\n"
 "\n"
@@ -323,125 +352,123 @@ msgstr ""
 "ενημέρωση opkg\n"
 "opkg install wget"
 
-#: downloadmanager.py:484
+#: XKlass/downloadmanager.py:484
 msgid "Cancel this download?"
 msgstr "Ακύρωση αυτής της λήψης;"
 
-#: downloadmanager.py:517
+#: XKlass/downloadmanager.py:517
 msgid "Delete this entry?"
 msgstr "Να διαγράψω αυτή την καταχώρηση;"
 
-#: hidden.py:29 settings.py:35
+#: XKlass/hidden.py:29 XKlass/settings.py:35
 msgid "Please enter the correct pin code"
 msgstr "Παρακαλώ εισάγετε το σωστό κωδικό pin"
 
-#: hidden.py:38 settings.py:44
+#: XKlass/hidden.py:38 XKlass/settings.py:44
 msgid "The pin code you entered is wrong."
 msgstr "Ο κωδικός pin που καταχωρήσατε είναι λάθος."
 
-#: hidden.py:64 hidden.py:66 hidden.py:69
+#: XKlass/hidden.py:64 XKlass/hidden.py:66 XKlass/hidden.py:69
 msgid "Hidden Categories"
 msgstr "Κρυμμένες κατηγορίες"
 
-#: hidden.py:79 playsettings.py:54 record.py:42 server.py:59 settings.py:76
+#: XKlass/hidden.py:79 XKlass/playsettings.py:54 XKlass/record.py:42
+#: XKlass/server.py:58 XKlass/settings.py:76
 msgid "Save"
 msgstr "Αποθήκευση"
 
-#: hidden.py:80
+#: XKlass/hidden.py:80
 msgid "Invert"
 msgstr "Αντιστροφή"
 
-#: hidden.py:81
+#: XKlass/hidden.py:81
 msgid "Reset"
 msgstr "Επαναφορά"
 
-#: hidden.py:170
+#: XKlass/hidden.py:170
 msgid "Error: All categories hidden. Please amend your selection."
 msgstr ""
 "Σφάλμα: Όλες οι κατηγορίες είναι κρυμμένες. \n"
 "Παρακαλούμε τροποποιήστε την επιλογή σας."
 
-#: live.py:151
+#: XKlass/live.py:151
 msgid "Live Categories"
 msgstr "Live Κατηγορίες"
 
-#: live.py:156
+#: XKlass/live.py:156 XKlass/startmenu.py:571
 msgid "Live TV"
 msgstr "TV"
 
-#: live.py:559 vod.py:528
+#: XKlass/live.py:565 XKlass/vod.py:585
 msgid "FAVOURITES"
 msgstr "Αγαπημένα"
 
-#: live.py:560 vod.py:529
+#: XKlass/live.py:566 XKlass/vod.py:586
 msgid "RECENTLY WATCHED"
 msgstr "Παρακολουθήσατε πρόσφατα"
 
-#: live.py:755 live.py:1011 playlists.py:69 vod.py:1301 vod.py:1647
+#: XKlass/live.py:761 XKlass/live.py:1018 XKlass/playlists.py:70
+#: XKlass/vod.py:1386 XKlass/vod.py:1734
 msgid "Delete"
 msgstr "Διαγραφή"
 
-#: live.py:1413 live.py:1468 live.py:1477
+#: XKlass/live.py:1420 XKlass/live.py:1475 XKlass/live.py:1484
 msgid "Next Info"
 msgstr "Επόμενη ένδειξη"
 
-#: live.py:1472
+#: XKlass/live.py:1479
 msgid "Now Info"
 msgstr "Ενημέρωση τώρα"
 
-#: live.py:1677 liveplayer.py:618
+#: XKlass/live.py:1684 XKlass/liveplayer.py:618
 msgid "Recording Timer Set."
 msgstr "Ορισμός χρονοδιακόπτη εγγραφής."
 
-#: live.py:1679 liveplayer.py:620
+#: XKlass/live.py:1686 XKlass/liveplayer.py:620
 msgid "Recording Failed."
 msgstr "Η εγγραφή απέτυχε."
 
-#: liveplayer.py:429
+#: XKlass/liveplayer.py:429
 msgid "TV"
 msgstr "TV"
 
-#: playlists.py:62
-msgid "Select Playlist"
-msgstr "Διαλέξτε Πάροχο"
-
-#: playlists.py:70
+#: XKlass/playlists.py:71
 msgid "Info"
 msgstr "Πληροφορίες"
 
-#: playlists.py:106
+#: XKlass/playlists.py:107 XKlass/startmenu.py:150
 msgid "No internet."
 msgstr "Χωρίς internet."
 
-#: playlists.py:332 playlists.py:409
+#: XKlass/playlists.py:327 XKlass/playlists.py:403
 msgid "Not Authorised"
 msgstr "Μη εξουσιοδοτημένο"
 
-#: playlists.py:337 playlists.py:395 serverinfo.py:73
+#: XKlass/playlists.py:332 XKlass/playlists.py:389 XKlass/serverinfo.py:73
 msgid "Active"
 msgstr "Ενεργή"
 
-#: playlists.py:338 playlists.py:401 serverinfo.py:74
+#: XKlass/playlists.py:333 XKlass/playlists.py:395 XKlass/serverinfo.py:74
 msgid "Banned"
 msgstr "Αποκλεισμός"
 
-#: playlists.py:339 playlists.py:405 serverinfo.py:75
+#: XKlass/playlists.py:334 XKlass/playlists.py:399 XKlass/serverinfo.py:75
 msgid "Disabled"
 msgstr "Απενεργοποιημένο"
 
-#: playlists.py:340 playlists.py:403 serverinfo.py:76
+#: XKlass/playlists.py:335 XKlass/playlists.py:397 XKlass/serverinfo.py:76
 msgid "Expired"
 msgstr "Έληξε"
 
-#: playlists.py:352
+#: XKlass/playlists.py:347
 msgid "Active Conn:"
 msgstr "Ενεργό Conn:"
 
-#: playlists.py:360
+#: XKlass/playlists.py:355
 msgid "Max Conn:"
 msgstr "Μέγιστο Conn:"
 
-#: playlists.py:388
+#: XKlass/playlists.py:382 XKlass/startmenu.py:386
 msgid ""
 "You have dead playlists that are slowing down loading.\n"
 "\n"
@@ -451,63 +478,64 @@ msgstr ""
 "\n"
 "Πατήστε το κίτρινο κουμπί για να διαγράψετε τις νεκρές λίστες αναπαραγωγής."
 
-#: playlists.py:424
+#: XKlass/playlists.py:418
 msgid "Delete selected playlist?"
 msgstr "Διαγραφή της επιλεγμένης λίστας αναπαραγωγής;"
 
-#: playlists.py:445
+#: XKlass/playlists.py:439
 msgid "Delete providers EPG data?"
 msgstr "Διαγραφή δεδομένων EPG παρόχου;"
 
-#: playsettings.py:83 record.py:75 server.py:88 settings.py:107
+#: XKlass/playsettings.py:83 XKlass/record.py:75 XKlass/server.py:87
+#: XKlass/settings.py:107
 msgid "Really close without saving settings?"
 msgstr "Πραγματικό κλείσιμο χωρίς αποθήκευση των ρυθμίσεων;"
 
-#: playsettings.py:139 server.py:115
+#: XKlass/playsettings.py:139 XKlass/server.py:114
 msgid "Short name or provider name:"
 msgstr "Σύντομο όνομα ή όνομα παρόχου:"
 
-#: playsettings.py:140
+#: XKlass/playsettings.py:140
 msgid "Show LIVE category:"
 msgstr "Προβολή κατηγορίας LIVE:"
 
-#: playsettings.py:141
+#: XKlass/playsettings.py:141
 msgid "Show VOD category:"
 msgstr "Προβολή κατηγορίας Βίντεο κατ' απαίτηση:"
 
-#: playsettings.py:142
+#: XKlass/playsettings.py:142
 msgid "Show SERIES category:"
 msgstr "Προβολή κατηγορίας σειρές:"
 
-#: playsettings.py:143
+#: XKlass/playsettings.py:143
 msgid "Show CATCHUP category:"
 msgstr "Προβολή της κατηγορίας CATCHUP:"
 
-#: playsettings.py:144 server.py:121
+#: XKlass/playsettings.py:144 XKlass/server.py:120
 msgid "Output:"
 msgstr "Εξοδος:"
 
-#: playsettings.py:148
+#: XKlass/playsettings.py:148
 msgid "Stream Type LIVE:"
 msgstr "Τύπος μετάδοσης LIVE:"
 
-#: playsettings.py:151
+#: XKlass/playsettings.py:151
 msgid "Stream Type VOD/SERIES:"
 msgstr "Τύπος μετάδοσης Βίντεο κατ' απαίτηση/σειρές ;"
 
-#: playsettings.py:154
+#: XKlass/playsettings.py:154
 msgid "EPG offset:"
 msgstr "Μετατόπιση EPG:"
 
-#: playsettings.py:155
+#: XKlass/playsettings.py:155
 msgid "Use alternative EPG url:"
 msgstr "Χρήση εναλλακτικής διεύθυνσης του EPG:"
 
-#: playsettings.py:159
+#: XKlass/playsettings.py:159
 msgid "Alternative EPG url:"
 msgstr "Εναλλακτική διεύθυνση EPG:"
 
-#: playsettings.py:237
+#: XKlass/playsettings.py:237
 msgid ""
 "Bouquet name cannot be blank. Please enter a unique bouquet name. Minimum 3 "
 "characters."
@@ -515,105 +543,118 @@ msgstr ""
 "Το όνομα του μπουκέτου δεν μπορεί να είναι κενό. \n"
 "Παρακαλούμε εισάγετε ένα μοναδικό όνομα μπουκέτου. Ελάχιστο 3 χαρακτήρες."
 
-#: playsettings.py:243 server.py:218
+#: XKlass/playsettings.py:243 XKlass/server.py:217
 msgid "Name already used. Please enter a unique name."
 msgstr ""
 "Το όνομα χρησιμοποιείται ήδη. \n"
 "Παρακαλώ εισάγετε ένα μοναδικό όνομα."
 
-#: plugin.py:251 plugin.py:359
-msgid "XKlass"
-msgstr "XKlass"
+#: XKlass/plugin.py:179 XKlass/plugin.py:180
+msgid "Original"
+msgstr ""
 
-#: plugin.py:358
-msgid "IPTV Xtream Codes playlists player by KiddaC"
-msgstr "Διαδικτυακός τηλεοπτικός αναπαραγωγός πρωτοκόλλου από τον KiddaC"
+#: XKlass/plugin.py:180
+msgid "Added"
+msgstr ""
 
-#: record.py:41 serverinfo.py:63
-msgid "Close"
-msgstr "Κλείσιµο"
-
-#: record.py:55
-msgid "Please enter recording time"
-msgstr "Παρακαλώ εισάγετε το χρόνο εγγραφής"
-
-#: record.py:58
-msgid "Please enter recording end time"
-msgstr "Παρακαλώ εισάγετε την ώρα λήξης της εγγραφής"
-
-#: record.py:94
-msgid "Name"
-msgstr "Όνομα"
-
-#: record.py:96
-msgid "Start Time"
-msgstr "Χρόνος έναρξης"
-
-#: record.py:98
-msgid "End Time"
-msgstr "Τέλος χρόνου"
-
-#: series.py:97
-msgid "Series Categories"
-msgstr "Κατηγορίες Σειρών"
-
-#: series.py:698
-msgid "No series found in this category."
-msgstr "Δεν βρέθηκαν σειρές στην κατηγορία αυτή."
-
-#: series.py:755 series.py:2539
-msgid "Season "
-msgstr "Σεζόν"
-
-#: series.py:1610 vod.py:1240
-msgid "Rating: "
-msgstr "Βαθμολογία:"
-
-#: series.py:1683 vod.py:1269
-msgid "Cast:"
-msgstr "Ηθοποιοί:"
-
-#: series.py:1688 vod.py:1274
-msgid "Director:"
-msgstr "Σκηνοθέτης:"
-
-#: series.py:1693 vod.py:1279
-msgid "Overview"
-msgstr "Σύνοψη"
-
-#: series.py:2045 series.py:2064 vod.py:1599 vod.py:1618
+#: XKlass/plugin.py:180 XKlass/series.py:2052 XKlass/series.py:2075
+#: XKlass/vod.py:510 XKlass/vod.py:536 XKlass/vod.py:1684 XKlass/vod.py:1704
 msgid "Sort: Year"
 msgstr "Ταξινόμηση: Έτος"
 
-#: server.py:50
+#: XKlass/plugin.py:180
+msgid "Year"
+msgstr ""
+
+#: XKlass/plugin.py:277 XKlass/plugin.py:385
+msgid "XKlass"
+msgstr "XKlass"
+
+#: XKlass/plugin.py:384
+msgid "IPTV Xtream Codes playlists player by KiddaC"
+msgstr "Διαδικτυακός τηλεοπτικός αναπαραγωγός πρωτοκόλλου από τον KiddaC"
+
+#: XKlass/record.py:41 XKlass/serverinfo.py:63
+msgid "Close"
+msgstr "Κλείσιµο"
+
+#: XKlass/record.py:55
+msgid "Please enter recording time"
+msgstr "Παρακαλώ εισάγετε το χρόνο εγγραφής"
+
+#: XKlass/record.py:58
+msgid "Please enter recording end time"
+msgstr "Παρακαλώ εισάγετε την ώρα λήξης της εγγραφής"
+
+#: XKlass/record.py:94
+msgid "Name"
+msgstr "Όνομα"
+
+#: XKlass/record.py:96
+msgid "Start Time"
+msgstr "Χρόνος έναρξης"
+
+#: XKlass/record.py:98
+msgid "End Time"
+msgstr "Τέλος χρόνου"
+
+#: XKlass/series.py:105
+msgid "Series Categories"
+msgstr "Κατηγορίες Σειρών"
+
+#: XKlass/series.py:696
+msgid "No series found in this category."
+msgstr "Δεν βρέθηκαν σειρές στην κατηγορία αυτή."
+
+#: XKlass/series.py:757 XKlass/series.py:2571
+msgid "Season "
+msgstr "Σεζόν"
+
+#: XKlass/series.py:1640 XKlass/vod.py:1357
+msgid "Rating: "
+msgstr "Βαθμολογία:"
+
+#: XKlass/series.py:1691 XKlass/vod.py:1348
+msgid "Cast:"
+msgstr "Ηθοποιοί:"
+
+#: XKlass/series.py:1696 XKlass/vod.py:1338
+msgid "Director:"
+msgstr "Σκηνοθέτης:"
+
+#: XKlass/series.py:1701 XKlass/vod.py:1313
+msgid "Overview"
+msgstr "Σύνοψη"
+
+#: XKlass/server.py:49
 msgid "Add Playlist"
 msgstr "Προσθήκη λίστας Aναπαραγωγής"
 
-#: server.py:116
+#: XKlass/server.py:115
 msgid "Protocol:"
 msgstr "Πρωτόκολλο:"
 
-#: server.py:117
+#: XKlass/server.py:116
 msgid "Server URL: i.e. domain.xyz"
 msgstr "Διεύθυνση URL διακομιστή: π.χ. domain.xyz"
 
-#: server.py:118
+#: XKlass/server.py:117
 msgid "Port:"
 msgstr "Θύρα:"
 
-#: server.py:119
+#: XKlass/server.py:118
 msgid "Username:"
 msgstr "Όνομα χρήστη:"
 
-#: server.py:120
+#: XKlass/server.py:119
 msgid "Password:"
 msgstr "Συνθηματικό:"
 
-#: server.py:207
+#: XKlass/server.py:206
 msgid "Details are not valid or unauthorised"
 msgstr "Τα στοιχεία δεν είναι έγκυρα ή μη εξουσιοδοτημένα"
 
-#: server.py:212
+#: XKlass/server.py:211
 msgid ""
 "Bouquet name cannot be blank. Please enter a unique bouquet name. Minimum 2 "
 "characters."
@@ -621,59 +662,59 @@ msgstr ""
 "Το όνομα του μπουκέτου δεν μπορεί να είναι κενό. Παρακαλούμε εισάγετε ένα "
 "μοναδικό όνομα μπουκέτου. Ελάχιστο 2 χαρακτήρες."
 
-#: server.py:231
+#: XKlass/server.py:227
 msgid "Playlist added successfully."
 msgstr "Η λίστα αναπαραγωγής προστέθηκε επιτυχώς."
 
-#: serverinfo.py:33
+#: XKlass/serverinfo.py:33
 msgid "User Information"
 msgstr "Πληροφορίες χρήστη"
 
-#: serverinfo.py:46
+#: XKlass/serverinfo.py:46
 msgid "Status:"
 msgstr "Kατάσταση "
 
-#: serverinfo.py:47
+#: XKlass/serverinfo.py:47
 msgid "Expiry Date:"
 msgstr "Ημερομηνία λήξης:"
 
-#: serverinfo.py:48
+#: XKlass/serverinfo.py:48
 msgid "Created At:"
 msgstr "Δημιουργήθηκε στις:"
 
-#: serverinfo.py:49
+#: XKlass/serverinfo.py:49
 msgid "Is Trial:"
 msgstr "Είναι δοκιμαστική:"
 
-#: serverinfo.py:50
+#: XKlass/serverinfo.py:50
 msgid "Active Connections:"
 msgstr "Ενεργές συνδέσεις:"
 
-#: serverinfo.py:51
+#: XKlass/serverinfo.py:51
 msgid "Max Connections:"
 msgstr "Ανώτατες συνδέσεις:"
 
-#: serverinfo.py:52
+#: XKlass/serverinfo.py:52
 msgid "Allowed Output Formats:"
 msgstr "Επιτρεπτές μορφές εξόδου:"
 
-#: serverinfo.py:53
+#: XKlass/serverinfo.py:53
 msgid "Real URL:"
 msgstr "Πραγματική διεύθυνση URL:"
 
-#: serverinfo.py:54
+#: XKlass/serverinfo.py:54
 msgid "Timezone:"
 msgstr "Χρονική ζώνη:"
 
-#: serverinfo.py:55
+#: XKlass/serverinfo.py:55
 msgid "Server Offset:"
 msgstr "Μετατόπιση διακομιστή:"
 
-#: serverinfo.py:83
+#: XKlass/serverinfo.py:83
 msgid "Unknown"
 msgstr "Άγνωστο"
 
-#: settings.py:119
+#: XKlass/settings.py:119
 msgid ""
 "Please change default parental pin.\n"
 "\n"
@@ -683,135 +724,176 @@ msgstr ""
 "\n"
 "Το pin δεν μπορεί να είναι 0000, 111 ή 1234"
 
-#: settings.py:136
+#: XKlass/settings.py:136
 msgid "You need to restart the GUI"
 msgstr "Πρέπει να επανεκκινήσετε το GUI"
 
-#: settings.py:136
+#: XKlass/settings.py:136
 msgid "Do you want to restart now?"
 msgstr "Θέλετε να επανεκκινήσετε τώρα;"
 
-#: settings.py:146
+#: XKlass/settings.py:146
 msgid "Select skin"
 msgstr "Επιλέξτε Γραφικό περιβάλλον "
 
-#: settings.py:147
+#: XKlass/settings.py:147
 msgid "Select fake web user-agent"
 msgstr "Επιλέξτε ψεύτικο διαδικτυακό πράκτορα χρήστη.(user-Agent)"
 
-#: settings.py:149
+#: XKlass/settings.py:149
 msgid "playlists.txt location"
 msgstr "Τοποθεσία Λίστα αναπαραγωγής.txt "
 
-#: settings.py:149 settings.py:156 settings.py:162 settings.py:169
+#: XKlass/settings.py:149 XKlass/settings.py:160 XKlass/settings.py:166
+#: XKlass/settings.py:174
 msgid " *Restart GUI Required"
 msgstr "* Απαιτείται επανεκκίνηση GUI"
 
-#: settings.py:150
+#: XKlass/settings.py:150
 msgid "EPG download location"
 msgstr "Τοποθεσία λήψης EPG"
 
-#: settings.py:151
+#: XKlass/settings.py:151
 msgid "VOD download folder"
 msgstr "Φάκελος λήψης βίντεο κατόπιν αιτήματος"
 
-#: settings.py:152
+#: XKlass/settings.py:152
 msgid "Default LIVE stream type"
 msgstr "Προεπιλεγμένος τύπος ροής LIVE"
 
-#: settings.py:153
+#: XKlass/settings.py:153
 msgid "Default VOD/SERIES stream type"
 msgstr "Προκαθορισμένος τύπος ροής VOD/SERIES"
 
-#: settings.py:154
+#: XKlass/settings.py:155
+msgid "Default VOD category sort order"
+msgstr ""
+
+#: XKlass/settings.py:156
+msgid "Default VOD stream sort order"
+msgstr ""
+
+#: XKlass/settings.py:158
 msgid "XKlass parental control"
 msgstr "Γονικός έλεγχος του XKlass"
 
-#: settings.py:155
+#: XKlass/settings.py:159
 msgid "XKlass parental pin"
 msgstr "XKlass κωδικός γονικού ελέγχου"
 
-#: settings.py:156
+#: XKlass/settings.py:160
 msgid "Show in main menu"
 msgstr "Προβολή στο κύριο μενού"
 
-#: settings.py:157
+#: XKlass/settings.py:161
 msgid "Use Movie Database(TMDB) for VOD & Series"
 msgstr "Χρησιμοποιήστε τη βάση δεδομένων ταινιών(TMDB) για VOD & σειρές"
 
-#: settings.py:158
+#: XKlass/settings.py:162
 msgid "Movie Database language"
 msgstr "Γλώσσα βάσης δεδομένων ταινιών"
 
-#: settings.py:159
+#: XKlass/settings.py:163
 msgid "Margin before catchup (mins)"
 msgstr "Περιθώριο πριν από την αναπλήρωση (λεπτά)"
 
-#: settings.py:160
+#: XKlass/settings.py:164
 msgid "Margin after catchup (mins)"
 msgstr "Περιθώριο μετά την αναπλήρωση (λεπτά)"
 
-#: settings.py:161
+#: XKlass/settings.py:165
 msgid "Allow SubsSupport plugin in VOD"
 msgstr "Επιτρέψτε την προσθήκη SubsSupport στο VOD"
 
-#: settings.py:162
+#: XKlass/settings.py:166
 msgid "Automatic EPG download time"
 msgstr "Χρόνος αυτόματης λήψης EPG"
 
-#: settings.py:163
+#: XKlass/settings.py:167
 msgid "Show intro video"
 msgstr "Εμφάνιση βίντεο εισαγωγής"
 
-#: settings.py:164
+#: XKlass/settings.py:168
 msgid "Loop intro video"
 msgstr "Βρόχος βίντεο εισαγωγής"
 
-#: settings.py:165
+#: XKlass/settings.py:169
+msgid "Intro video selection"
+msgstr ""
+
+#: XKlass/settings.py:170
 msgid "Show channel picons"
 msgstr "Εμφάνιση picons του καναλιού"
 
-#: settings.py:166
+#: XKlass/settings.py:171
 msgid "Show Vod/Series posters"
 msgstr "Εμφάνιση αφισών Vod/σειρών"
 
-#: settings.py:167
+#: XKlass/settings.py:172
 msgid "Show infobar picons"
 msgstr "Εμφάνιση infobar picons"
 
-#: settings.py:168
+#: XKlass/settings.py:173
 msgid "Show infobar posters"
 msgstr "Εμφάνιση αφισών infobar"
 
-#: settings.py:169
+#: XKlass/settings.py:174
 msgid "Auto start XKlass on boot"
 msgstr "Αυτόματη εκκίνηση του XKlass κατά την εκκίνηση"
 
-#: settings.py:289
+#: XKlass/settings.py:175
+msgid "Play satellite channel audio in background"
+msgstr ""
+
+#: XKlass/settings.py:176
+msgid "Add speedtest plugin to main menu"
+msgstr ""
+
+#: XKlass/settings.py:303
 msgid "Choose Directory:"
 msgstr "Επιλέξτε κατάλογο:"
 
-#: settings.py:290
+#: XKlass/settings.py:304
 msgid "Choose directory"
 msgstr "Choose directory"
 
-#: startmenu.py:57
+#: XKlass/startmenu.py:58
 msgid "Main Menu"
 msgstr "Κύριο μενού"
 
-#: vod.py:108
-msgid "Vod Categories"
-msgstr "Κατηγορίες βίντεο κατά απαίτηση"
-
-#: vod.py:113
+#: XKlass/startmenu.py:574 XKlass/vod.py:121
 msgid "Movies"
 msgstr "ΤΑΙΝΙΕΣ"
 
-#: vod.py:2004
+#: XKlass/startmenu.py:580
+msgid "Catch Up TV"
+msgstr ""
+
+#: XKlass/startmenu.py:590
+msgid "Reboot GUI"
+msgstr ""
+
+#: XKlass/startmenu.py:593
+msgid "Speed Test"
+msgstr ""
+
+#: XKlass/startmenu.py:734
+msgid ""
+"Warning: delete stored json data for all playlists... Settings, favourites "
+"etc. \n"
+"Playlists will not be deleted.\n"
+"Do you wish to continue?"
+msgstr ""
+
+#: XKlass/vod.py:116
+msgid "Vod Categories"
+msgstr "Κατηγορίες βίντεο κατά απαίτηση"
+
+#: XKlass/vod.py:2107
 msgid "Movie"
 msgstr "Ταινία"
 
-#: vod.py:2034
+#: XKlass/vod.py:2137
 msgid ""
 "The TMDB plugin is not installed!\n"
 "Please install it."
@@ -819,7 +901,7 @@ msgstr ""
 "Το πρόσθετο TMDB δεν είναι εγκατεστημένο!\n"
 "Παρακαλώ εγκαταστήστε το."
 
-#: vod.py:2044
+#: XKlass/vod.py:2147
 msgid ""
 "The IMDb plugin is not installed!\n"
 "Please install it."
@@ -827,18 +909,15 @@ msgstr ""
 "Το πρόσθετο IMDb δεν είναι εγκατεστημένο!\n"
 "Παρακαλώ εγκαταστήστε το."
 
-#: vodplayer.py:497
+#: XKlass/vodplayer.py:497
 msgid "VOD"
 msgstr "Βίντεο κατ' απαίτηση"
 
-#: startmenu.py:396
-msgid "SpeedTest"
-msgstr "ΤΕΣΤ ΤΑΧΥΤΗΤΑΣ"
+#~ msgid "Set As Default Playlist"
+#~ msgstr "Ορίστε ως προεπιλεγμένη Λίστα Αναπαραγωγής"
 
-#: startmenu.py:398
-msgid "Exit"
-msgstr "ΕΞΟΔΟΣ"
+#~ msgid "Switch Playlist"
+#~ msgstr "ΠΑΡΟΧΟΣ"
 
-#: startmenu.py:397
-msgid "Reboot"
-msgstr "ΕΠΑΝΕΚΚΙΝΗΣΗ"
+#~ msgid "Exit"
+#~ msgstr "ΕΞΟΔΟΣ"
