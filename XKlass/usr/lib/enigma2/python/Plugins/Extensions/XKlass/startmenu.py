@@ -102,6 +102,7 @@ class XKlass_MainMenu(Screen):
 
         if not cfg.backgroundsat.value:
             self.session.nav.stopService()
+
         self.onLayoutFinish.append(self.__layoutFinished)
         self.onFirstExecBegin.append(self.check_dependencies)
 
@@ -358,6 +359,7 @@ class XKlass_MainMenu(Screen):
         self.list = []
         self.index = 0
         downloads_all = []
+
         if os.path.isfile(downloads_json) and os.stat(downloads_json).st_size > 0:
             try:
                 with open(downloads_json, "r") as f:
@@ -384,40 +386,37 @@ class XKlass_MainMenu(Screen):
             glob.active_playlist["data"]["catchup"] = True
 
         if show_live:
-            add_category_to_list("Live TV", "live_categories", 0)
+            self.list.append(["", _("Live TV"), 0])
 
         if show_vod:
-            add_category_to_list("Movies", "vod_categories", 1)
+            self.list.append(["", _("Movies"), 1])
 
         if show_series:
-            add_category_to_list("Series", "series_categories", 2)
+            self.list.append(["", _("Series"), 2])
 
         if show_catchup and glob.active_playlist["data"]["catchup"]:
-            self.index += 1
-            self.list.append([self.index, _("Catch Up TV"), 3])
+            self.list.append(["", _("Catch Up TV"), 3])
 
-        self.list.append([self.index, _("Switch Playlist"), 6])
+        self.list.append(["", _("Manage Playlists"), 6])
 
-        self.list.append([self.index, _("Global Settings"), 4])
-
-        self.index += 1
+        self.list.append(["", _("Global Settings"), 4])
 
         if downloads_all:
-            self.index += 1
-            self.list.append([self.index, _("Download Manager"), 5])
+            self.list.append(["", _("Download Manager"), 5])
 
         if cfg.boot.value:
-            self.index += 1
-            self.list.append([self.index, _("Reboot GUI"), 7])
+            self.list.append(["", _("Reboot GUI"), 7])
 
         if cfg.speedtest.value and (InternetSpeedTest_installed is True or NetSpeedTest_installed is True):
-            self.index += 1
-            self.list.append([self.index, _("Speed Test"), 8])
+            self.list.append(["", _("Speed Test"), 8])
 
-        self.drawList = [buildListEntry(x[0], x[1], x[2]) for x in self.list]
+        self.drawList = [self.buildListEntry(x[0], x[1], x[2]) for x in self.list]
         self["list"].setList(self.drawList)
 
         self.writeJsonFile()
+
+    def buildListEntry(self, index, title, num):
+        return index, str(title), num
 
     def writeJsonFile(self):
         with open(playlists_json, "r") as f:
@@ -569,7 +568,3 @@ class XKlass_MainMenu(Screen):
             except OSError as e:
                 print("Error deleting or recreating JSON file:", e)
             self.quit()
-
-
-def buildListEntry(index, title, num):
-    return index, str(title), num
