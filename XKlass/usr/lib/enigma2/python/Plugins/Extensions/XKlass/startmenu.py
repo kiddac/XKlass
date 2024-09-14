@@ -4,6 +4,7 @@
 # Standard library imports
 import json
 import os
+from datetime import datetime
 
 try:
     from http.client import HTTPConnection
@@ -13,6 +14,7 @@ except ImportError:
     HTTPConnection.debuglevel = 0
 
 # Third-party imports
+import requests
 from requests.adapters import HTTPAdapter, Retry
 
 # Enigma2 components
@@ -20,9 +22,10 @@ from Components.ActionMap import ActionMap
 from Components.Sources.List import List
 from Screens.Console import Console
 from Screens.Screen import Screen
-from enigma import eServiceReference, iPlayableService
+from enigma import eServiceReference, iPlayableService, eTimer
 from Components.ServiceEventTracker import ServiceEventTracker
 from Screens.MessageBox import MessageBox
+from Components.Pixmap import Pixmap
 
 # Local application/library-specific imports
 from . import _
