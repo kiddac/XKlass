@@ -543,12 +543,20 @@ class XKlass_MainMenu(Screen):
             self["background"].setText("True")
 
     def goUp(self):
-        instance = self["list"].master.master.instance
-        instance.moveSelection(instance.moveUp)
+        instance1 = self["list"].master.master.instance
+        instance2 = self["playlists"].master.master.instance
+        if self.toggle is False:
+            instance1.moveSelection(instance1.moveUp)
+        else:
+            instance2.moveSelection(instance2.moveUp)
 
     def goDown(self):
-        instance = self["list"].master.master.instance
-        instance.moveSelection(instance.moveDown)
+        instance1 = self["list"].master.master.instance
+        instance2 = self["playlists"].master.master.instance
+        if self.toggle is False:
+            instance1.moveSelection(instance1.moveDown)
+        else:
+            instance2.moveSelection(instance2.moveDown)
 
     def resetData(self, answer=None):
         if answer is None:
