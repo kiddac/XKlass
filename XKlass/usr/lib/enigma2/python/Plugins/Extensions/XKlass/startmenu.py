@@ -107,26 +107,17 @@ class XKlass_MainMenu(Screen):
         self.setTitle(self.setup_title)
 
     def check_dependencies(self):
-        dependencies = True
-
         try:
             import requests
             from PIL import Image
-            # print("***** python version *** %s" % pythonFull)
             if pythonFull < 3.9:
-                # print("*** checking multiprocessing ***")
                 from multiprocessing.pool import ThreadPool
-        except Exception as e:
-            # print("**** missing dependencies ***")
-            print(e)
-            dependencies = False
-
-        if dependencies is False:
-            os.chmod("/usr/lib/enigma2/python/Plugins/Extensions/XKlass/dependencies.sh", 0o0755)
-            cmd1 = ". /usr/lib/enigma2/python/Plugins/Extensions/XKlass/dependencies.sh"
-            self.session.openWithCallback(self.start, Console, title="Checking Python Dependencies", cmdlist=[cmd1], closeOnSuccess=False)
-        else:
             self.start()
+        except Exception as e:
+            print(e)
+            os.chmod("/usr/lib/enigma2/python/Plugins/Extensions/XKlass/dependencies.sh", 0o0755)
+            cmd = ". /usr/lib/enigma2/python/Plugins/Extensions/XKlass/dependencies.sh"
+            self.session.openWithCallback(self.start, Console, title="Checking Python Dependencies", cmdlist=[cmd], closeOnSuccess=False)
 
     def start(self, answer=None):
         if not checkinternet.check_internet():
