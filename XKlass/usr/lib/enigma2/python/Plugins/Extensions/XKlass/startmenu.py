@@ -163,10 +163,10 @@ class XKlass_MainMenu(Screen):
 
             self.player_api = glob.active_playlist["playlist_info"]["player_api"]
 
-            self.p_live_categories_url = str(self.player_api) + "&action=get_live_categories"
-            self.p_vod_categories_url = str(self.player_api) + "&action=get_vod_categories"
-            self.p_series_categories_url = str(self.player_api) + "&action=get_series_categories"
-            self.p_live_streams_url = str(self.player_api) + "&action=get_live_streams"
+            self.active_live_categories_url = str(self.player_api) + "&action=get_live_categories"
+            self.active_vod_categories_url = str(self.player_api) + "&action=get_vod_categories"
+            self.active_series_categories_url = str(self.player_api) + "&action=get_series_categories"
+            self.active_live_streams_url = str(self.player_api) + "&action=get_live_streams"
 
             glob.active_playlist["data"]["live_streams"] = []
             self.original_active_playlist = glob.active_playlist
@@ -193,12 +193,12 @@ class XKlass_MainMenu(Screen):
         password = str(glob.active_playlist["playlist_info"].get("password", ""))
         if "get.php" in full_url and domain and username and password:
             self.url_list.append([player_api, 0])
-            self.url_list.append([self.p_live_categories_url, 1])
-            self.url_list.append([self.p_vod_categories_url, 2])
-            self.url_list.append([self.p_series_categories_url, 3])
+            self.url_list.append([self.active_live_categories_url, 1])
+            self.url_list.append([self.active_vod_categories_url, 2])
+            self.url_list.append([self.active_series_categories_url, 3])
 
             if glob.active_playlist["data"]["data_downloaded"] is False:
-                self.url_list.append([self.p_live_streams_url, 4])
+                self.url_list.append([self.active_live_streams_url, 4])
 
         self.process_downloads()
 
@@ -333,10 +333,10 @@ class XKlass_MainMenu(Screen):
 
         if self.original_active_playlist != glob.active_playlist:
             self.player_api = glob.active_playlist["playlist_info"]["player_api"]
-            self.p_live_categories_url = str(self.player_api) + "&action=get_live_categories"
-            self.p_vod_categories_url = str(self.player_api) + "&action=get_vod_categories"
-            self.p_series_categories_url = str(self.player_api) + "&action=get_series_categories"
-            self.p_live_streams_url = str(self.player_api) + "&action=get_live_streams"
+            self.active_live_categories_url = str(self.player_api) + "&action=get_live_categories"
+            self.active_vod_categories_url = str(self.player_api) + "&action=get_vod_categories"
+            self.active_series_categories_url = str(self.player_api) + "&action=get_series_categories"
+            self.active_live_streams_url = str(self.player_api) + "&action=get_live_streams"
 
             self.original_active_playlist = glob.active_playlist
 
