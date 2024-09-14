@@ -59,7 +59,7 @@ class XKlass_Playlists(Screen):
         with open(skin, "r") as f:
             self.skin = f.read()
 
-        self.setup_title = _("Select Playlist")
+        self.setup_title = _("Manage Playlists")
 
         self.original_current_selection = glob.current_selection
         self.original_active_playlist = glob.active_playlist
@@ -68,7 +68,7 @@ class XKlass_Playlists(Screen):
         self["key_green"] = StaticText(_("OK"))
         self["key_yellow"] = StaticText(_("Delete"))
         self["key_blue"] = StaticText(_("Info"))
-        self["version"] = StaticText()
+        self["version"] = StaticText(version)
 
         self.list = []
         self.drawList = []
@@ -104,7 +104,6 @@ class XKlass_Playlists(Screen):
         self.checkinternet = checkinternet.check_internet()
         if not self.checkinternet:
             self.session.openWithCallback(self.quit, MessageBox, _("No internet."), type=MessageBox.TYPE_ERROR, timeout=5)
-        self["version"].setText(version)
 
         if epgimporter:
             self.epgimportcleanup()
@@ -471,6 +470,8 @@ class XKlass_Playlists(Screen):
 
     def closePlaylists(self):
         if "user_info" in glob.active_playlist and "auth" in glob.active_playlist["user_info"] and glob.active_playlist["user_info"]["auth"] == 1 and glob.active_playlist["user_info"]["status"] == "Active":
+            cfg.defaultplaylist.setValue(str(glob.active_playlist["playlist_info"]["name"]))
+            cfg.save()
             self.close()
         else:
             glob.current_selection = self.original_current_selection

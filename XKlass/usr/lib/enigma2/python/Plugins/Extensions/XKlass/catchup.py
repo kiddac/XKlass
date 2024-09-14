@@ -454,7 +454,7 @@ class XKlass_Catchup_Categories(Screen):
                     if index == 3:
                         glob.active_playlist["data"]["series_categories"] = response
 
-        glob.active_playlist["data"]["data_downloaded"] = True
+        # glob.active_playlist["data"]["data_downloaded"] = True
         glob.active_playlist["data"]["live_streams"] = []
         self.writeJsonFile()
 

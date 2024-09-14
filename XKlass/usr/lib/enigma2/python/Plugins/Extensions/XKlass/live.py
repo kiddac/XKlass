@@ -497,7 +497,7 @@ class XKlass_Live_Categories(Screen):
                     if index == 4:
                         glob.active_playlist["data"]["customsids"] = any(item.get("custom_sid", False) for item in response if "custom_sid" in item)
 
-        glob.active_playlist["data"]["data_downloaded"] = True
+        # glob.active_playlist["data"]["data_downloaded"] = True
         glob.active_playlist["data"]["live_streams"] = []
         self.writeJsonFile()
 
