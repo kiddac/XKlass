@@ -83,7 +83,6 @@ class XKlass_MainMenu(Screen):
         self.playlists_all = loadfiles.process_files()
 
         self.defaultplaylist = cfg.defaultplaylist.value
-        self.lastcategory = cfg.lastcategory.value
 
         glob.active_playlist = []
 
