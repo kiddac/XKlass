@@ -82,7 +82,6 @@ class XKlass_MainMenu(Screen):
         self.list2 = []
         self.drawList2 = []
         self["playlists"] = List(self.drawList2, enableWrapAround=True)
-        self["playlists"].onSelectionChanged.append(self.getCurrentEntry)
 
         self.toggle = False
 
@@ -117,6 +116,7 @@ class XKlass_MainMenu(Screen):
         instance2 = self["playlists"].master.master.instance
         instance1.setSelectionEnable(1 if not self.toggle else 0)
         instance2.setSelectionEnable(0 if not self.toggle else 1)
+        self.getCurrentEntry()
 
     def check_dependencies(self):
         try:
@@ -379,22 +379,21 @@ class XKlass_MainMenu(Screen):
                     json.dump(self.playlists_all, f)
 
         self.drawList2 = [self.buildPlalyistListEntry(x[0], x[1], x[2], x[3], x[4]) for x in self.list2]
-        self["playlists"].setList(self.drawList2)
 
         self.set_last_playlist()
+
+        self["playlists"].setList(self.drawList2)
+        self["playlists"].setIndex(glob.current_selection)
+
         # self.makeUrlCategoryList()
 
     def set_last_playlist(self):
-        print("*** set_last_playlist ***")
-
         for p, playlist in enumerate(self.playlists_all):
             playlist_name = playlist["playlist_info"]["name"]
-
             # Check if playlist matches the default
-            if playlist_name == cfg.lastplaylist.value and playlist_name in self.list2:
+            if playlist_name == cfg.lastplaylist.value and any(playlist_name == item[1] for item in self.list2):
                 glob.active_playlist = playlist
                 glob.current_selection = p
-                self["playlists"].setIndex(p)
                 glob.active_playlist["data"]["live_streams"] = []
                 self.original_active_playlist = glob.active_playlist
                 return
