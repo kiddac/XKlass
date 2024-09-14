@@ -66,7 +66,9 @@ class XKlass_MainMenu(Screen):
             "right": self.goDown,
             "menu": self.mainSettings,
             "help": self.resetData,
-            "blue": self.resetData
+            "blue": self.resetData,
+            "up": self.switchList,
+            "down": self.switchList,
         }
 
         if not cfg.boot.value:
@@ -79,8 +81,9 @@ class XKlass_MainMenu(Screen):
         self["playlists"] = List(self.drawList2, enableWrapAround=True)
         self["playlists"].onSelectionChanged.append(self.getCurrentEntry)
 
-        self.playlists_all = loadfiles.process_files()
+        self.toggle = False
 
+        self.playlists_all = loadfiles.process_files()
         self.defaultplaylist = cfg.defaultplaylist.value
 
         glob.active_playlist = []
@@ -105,6 +108,13 @@ class XKlass_MainMenu(Screen):
     def __layoutFinished(self):
         self.setTitle(self.setup_title)
 
+    def switchList(self):
+        self.toggle = not self.toggle
+        instance1 = self["list"].master.master.instance
+        instance2 = self["playlists"].master.master.instance
+        instance1.setSelectionEnable(1 if not self.toggle else 0)
+        instance2.setSelectionEnable(0 if not self.toggle else 1)
+
     def check_dependencies(self):
         try:
             import requests
@@ -119,8 +129,11 @@ class XKlass_MainMenu(Screen):
             self.session.openWithCallback(self.start, Console, title="Checking Python Dependencies", cmdlist=[cmd], closeOnSuccess=False)
 
     def start(self, answer=None):
+        print("*** start ***")
         if not checkinternet.check_internet():
             self.session.openWithCallback(self.quit, MessageBox, _("No internet."), type=MessageBox.TYPE_ERROR, timeout=5)
+
+        self["playlists"].master.master.instance.setSelectionEnable(0)
 
         if not self.playlists_all:
             self.addServer()
