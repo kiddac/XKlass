@@ -64,7 +64,6 @@ class XKlass_MainMenu(Screen):
         self["version"] = StaticText()
 
         actions = {
-            "red": self.quit,
             "green": self.__next__,
             "ok": self.__next__,
             "left": self.goUp,
@@ -75,7 +74,7 @@ class XKlass_MainMenu(Screen):
         }
 
         if not cfg.boot.value:
-            actions["cancel"] = self.quit
+            actions.update({"red": self.quit, "cancel": self.quit})
 
         self["actions"] = ActionMap(["XKlassActions"], actions, -2)
 
