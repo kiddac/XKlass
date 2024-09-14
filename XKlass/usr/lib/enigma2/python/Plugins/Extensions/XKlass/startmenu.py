@@ -56,7 +56,6 @@ class XKlass_MainMenu(Screen):
 
         self.setup_title = _("Main Menu")
         self["background"] = StaticText("")
-        self["provider"] = StaticText()
 
         self["version"] = StaticText(version)
 
@@ -336,9 +335,6 @@ class XKlass_MainMenu(Screen):
             self.createSetup()
 
     def createSetup(self):
-        self.provider = str(glob.active_playlist["playlist_info"]["name"])
-        self["provider"].setText(self.provider)
-
         if cfg.introvideo.value:
             self.playVideo()
         else:
