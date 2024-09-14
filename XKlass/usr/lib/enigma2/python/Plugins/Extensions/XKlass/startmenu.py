@@ -62,6 +62,12 @@ class XKlass_MainMenu(Screen):
         self["background"] = StaticText("")
         self["version"] = StaticText(version)
 
+        self["list1-bg"] = Pixmap()
+        self["list2-bg"] = Pixmap()
+
+        self["list1-bg"].show()
+        self["list2-bg"].hide()
+
         actions = {
             "green": self.__next__,
             "ok": self.__next__,
@@ -114,9 +120,16 @@ class XKlass_MainMenu(Screen):
         self.toggle = not self.toggle
         instance1 = self["list"].master.master.instance
         instance2 = self["playlists"].master.master.instance
-        instance1.setSelectionEnable(1 if not self.toggle else 0)
-        instance2.setSelectionEnable(0 if not self.toggle else 1)
-        self.getCurrentEntry()
+        if not self.toggle:
+            instance1.setSelectionEnable(1)
+            instance2.setSelectionEnable(0)
+            self["list1-bg"].show()
+            self["list2-bg"].hide()
+        else:
+            instance1.setSelectionEnable(0)
+            instance2.setSelectionEnable(1)
+            self["list1-bg"].hide()
+            self["list2-bg"].show()
 
     def check_dependencies(self):
         try:
@@ -143,7 +156,6 @@ class XKlass_MainMenu(Screen):
             self.close()
         else:
             self.delayedDownload()
-            # self.selectlastplaylist()
 
     def delayedDownload(self):
         print("*** delayed download ***")
@@ -216,8 +228,8 @@ class XKlass_MainMenu(Screen):
             self.update_playlists_with_results(results)
 
     def downloadUrl(self, url):
-        import requests
         print("*** downloadUrl ***", url)
+        import requests
         index = url[1]
         retries = Retry(total=2, backoff_factor=1)
         adapter = HTTPAdapter(max_retries=retries)
@@ -320,10 +332,10 @@ class XKlass_MainMenu(Screen):
 
             playlists.pop("available_channels", None)
 
-        self.writeJsonFile_1()
+        self.writeJsonFile()
         self.createSetupPlaylists()
 
-    def writeJsonFile_1(self):
+    def writeJsonFile(self):
         print("*** writeJsonFile ***")
         with open(playlists_json, "w") as f:
             json.dump(self.playlists_all, f)
@@ -367,9 +379,8 @@ class XKlass_MainMenu(Screen):
                         except:
                             maxnum = 0
 
-            if user_status == "Active":
-                self.list2.append([index, name, url, activenum, maxnum])
-                index += 1
+                        self.list2.append([index, name, url, activenum, maxnum])
+                        index += 1
 
             if playlist.get("data", {}).get("fail_count", 0) > 5:
                 self.session.open(MessageBox, _("You have dead playlists that are slowing down loading.\n\nPress Yellow button to soft delete dead playlists"), MessageBox.TYPE_WARNING)
@@ -385,9 +396,10 @@ class XKlass_MainMenu(Screen):
         self["playlists"].setList(self.drawList2)
         self["playlists"].setIndex(glob.current_selection)
 
-        # self.makeUrlCategoryList()
+        self.makeUrlCategoryList()
 
     def set_last_playlist(self):
+        print("*** set_last_playlist ***")
         for p, playlist in enumerate(self.playlists_all):
             playlist_name = playlist["playlist_info"]["name"]
             # Check if playlist matches the default
@@ -422,47 +434,13 @@ class XKlass_MainMenu(Screen):
         if self.list2:
             glob.current_selection = self["playlists"].getIndex()
             glob.active_playlist = self.playlists_all[glob.current_selection]
+            self.original_active_playlist = glob.active_playlist
             cfg.lastplaylist.setValue(glob.active_playlist["playlist_info"]["name"])
             cfg.save()
             configfile.save()
 
-    def selectlastplaylist(self):
-        if self.playlists_all:
-            p = 0
-            exists = False
-            for playlist in self.playlists_all:
-                if str(playlist["playlist_info"]["name"]) == cfg.lastplaylist.value:
-                    glob.active_playlist = playlist
-                    glob.current_selection = p
-                    exists = True
-                    break
-
-                p += 1
-
-            if not exists:
-                cfg.lastplaylist.setValue(str(self.playlists_all[0]["playlist_info"]["name"]))
-                cfg.save()
-                configfile.save()
-                glob.active_playlist = self.playlists_all[0]
-                glob.current_selection = 0
-
-            self.player_api = glob.active_playlist["playlist_info"]["player_api"]
-
-            self.active_live_categories_url = str(self.player_api) + "&action=get_live_categories"
-            self.active_vod_categories_url = str(self.player_api) + "&action=get_vod_categories"
-            self.active_series_categories_url = str(self.player_api) + "&action=get_series_categories"
-            self.active_live_streams_url = str(self.player_api) + "&action=get_live_streams"
-
-            glob.active_playlist["data"]["live_streams"] = []
-            self.original_active_playlist = glob.active_playlist
-        else:
-            cfg.lastplaylist.setValue("")
-            cfg.save()
-            configfile.save()
-
-        self.makeUrlList()
-
-    def makeUrlList(self):
+    def makeUrlCategoryList(self):
+        print("*** makeUrlCategoryList ***")
         self.url_list = []
         glob.active_playlist["data"]["live_categories"] = []
         glob.active_playlist["data"]["vod_categories"] = []
@@ -470,178 +448,96 @@ class XKlass_MainMenu(Screen):
         glob.active_playlist["data"]["live_streams"] = []
         glob.active_playlist["data"]["catchup"] = False
         glob.active_playlist["data"]["customsids"] = False
-        glob.active_playlist["data"]["data_downloaded"] = False
 
-        player_api = str(glob.active_playlist["playlist_info"].get("player_api", ""))
+        self.active_player_api = glob.active_playlist["playlist_info"]["player_api"]
+        self.active_live_categories_url = str(self.active_player_api) + "&action=get_live_categories"
+        self.active_vod_categories_url = str(self.active_player_api) + "&action=get_vod_categories"
+        self.active_series_categories_url = str(self.active_player_api) + "&action=get_series_categories"
+        self.active_live_streams_url = str(self.active_player_api) + "&action=get_live_streams"
+
+        show_live = glob.active_playlist["player_info"].get("showlive", False)
+        show_vod = glob.active_playlist["player_info"].get("showvod", False)
+        show_series = glob.active_playlist["player_info"].get("showseries", False)
+        show_catchup = glob.active_playlist["player_info"].get("showcatchup", False)
+
         full_url = str(glob.active_playlist["playlist_info"].get("full_url", ""))
         domain = str(glob.active_playlist["playlist_info"].get("domain", ""))
         username = str(glob.active_playlist["playlist_info"].get("username", ""))
         password = str(glob.active_playlist["playlist_info"].get("password", ""))
-        if "get.php" in full_url and domain and username and password:
-            self.url_list.append([player_api, 0])
-            self.url_list.append([self.active_live_categories_url, 1])
-            self.url_list.append([self.active_vod_categories_url, 2])
-            self.url_list.append([self.active_series_categories_url, 3])
 
-            if glob.active_playlist["data"]["data_downloaded"] is False:
+        if "get.php" in full_url and domain and username and password:
+            if show_live:
+                self.url_list.append([self.active_live_categories_url, 1])
+            if show_vod:
+                self.url_list.append([self.active_vod_categories_url, 2])
+            if show_series:
+                self.url_list.append([self.active_series_categories_url, 3])
+            if show_catchup:
                 self.url_list.append([self.active_live_streams_url, 4])
 
-        self.process_downloads()
+        self.processApiDownloads()
 
-    def download_url(self, url):
-        import requests
-        index = url[1]
-        response = None
-
-        retries = Retry(total=2, backoff_factor=1)
-        adapter = HTTPAdapter(max_retries=retries)
-
-        with requests.Session() as http:
-            http.mount("http://", adapter)
-            http.mount("https://", adapter)
-
-            try:
-                # Perform the initial request
-                r = http.get(url[0], headers=hdr, timeout=6, verify=False)
-                r.raise_for_status()
-
-                if 'application/json' in r.headers.get('Content-Type', ''):
-                    try:
-                        response = r.json()
-                    except ValueError as e:
-                        print("Error decoding JSON:", e, url)
-                else:
-                    print("Error: Response is not JSON", url)
-
-            except Exception as e:
-                print("Unexpected error:", e)
-                self.session.open(MessageBox, _("Server not responding."), type=MessageBox.TYPE_INFO, timeout=5)
-
-        return index, response
-
-    def process_downloads(self):
+    def processApiDownloads(self):
+        print("*** processApiDownloads ***")
         threads = min(len(self.url_list), 4)
-        results = ""
-        self.retry = 0
-        all_failed = True
 
-        if hasConcurrent or hasMultiprocessing:
-            if hasConcurrent:
-                try:
-                    from concurrent.futures import ThreadPoolExecutor
-                    with ThreadPoolExecutor(max_workers=threads) as executor:
-                        results = list(executor.map(self.download_url, self.url_list))
-                except Exception as e:
-                    print("Concurrent execution error:", e)
+        if hasConcurrent:
+            self.concurrent_api_download(threads)
 
-            elif hasMultiprocessing:
-                # print("********** trying multiprocessing threadpool *******")
-                try:
-                    from multiprocessing.pool import ThreadPool
-                    pool = ThreadPool(threads)
-                    results = pool.imap_unordered(self.download_url, self.url_list)
-                    pool.close()
-                    pool.join()
-                except Exception as e:
-                    print("Multiprocessing execution error:", e)
-
-            if results:
-                for index, response in results:
-                    if response:
-                        if index == 0:
-                            if "user_info" in response:
-                                if response["user_info"]["status"] != "Active":
-                                    self.session.openWithCallBack(self.showPlaylists, MessageBox, _("Playlist not active."), type=MessageBox.TYPE_INFO, timeout=5)
-                                    return
-                                else:
-                                    glob.active_playlist.update(response)
-                            else:
-                                glob.active_playlist["user_info"] = {}
-                                self.showPlaylists()
-                                return
-                        elif index in [1, 2, 3, 4]:
-                            all_failed = False
-
-                            if index == 1:
-                                glob.active_playlist["data"]["live_categories"] = response
-
-                            if index == 2:
-                                glob.active_playlist["data"]["vod_categories"] = response
-
-                            if index == 3:
-                                glob.active_playlist["data"]["series_categories"] = response
-
-                            if index == 4:
-                                glob.active_playlist["data"]["live_streams"] = response
+        elif hasMultiprocessing:
+            self.multiprocessing_api_download(threads)
 
         else:
-            # print("*** trying sequential ***")
-            for url in self.url_list:
-                result = self.download_url(url)
-                if result:
-                    index = result[0]
-                    response = result[1]
-                    if response:
-                        if index == 0:
-                            if "user_info" in response:
-                                if response["user_info"]["status"] != "Active":
-                                    self.session.openWithCallBack(self.showPlaylists, MessageBox, _("Playlist not active."), type=MessageBox.TYPE_INFO, timeout=5)
-                                    return
-                                else:
-                                    glob.active_playlist.update(response)
-                            else:
-                                glob.active_playlist["user_info"] = {}
-                                self.showPlaylists()
-                                return
-                        elif index in [1, 2, 3, 4]:
-                            all_failed = False
+            self.sequential_api_download()
 
-                            if index == 1:
-                                glob.active_playlist["data"]["live_categories"] = response
+        self.createSetupOptions()
 
-                            if index == 2:
-                                glob.active_playlist["data"]["vod_categories"] = response
+    def concurrent_api_download(self, threads):
+        print("*** concurrent_api_download ***")
+        from concurrent.futures import ThreadPoolExecutor
+        try:
+            with ThreadPoolExecutor(max_workers=threads) as executor:
+                results = list(executor.map(self.downloadUrl, self.url_list))
+            self.update_playlists_with_api_results(results)
+        except Exception as e:
+            print("Concurrent execution error:", e)
 
-                            if index == 3:
-                                glob.active_playlist["data"]["series_categories"] = response
+    def multiprocessing_api_download(self, threads):
+        print("*** multiprocessing_api_download ***")
+        from multiprocessing.pool import ThreadPool
+        try:
+            with ThreadPool(threads) as pool:
+                results = pool.imap_unordered(self.downloadUrl, self.url_list)
+                pool.close()
+                pool.join()
+            self.update_playlists_with_api_results(results)
+        except Exception as e:
+            print("Multiprocessing execution error:", e)
 
-                            if index == 4:
-                                glob.active_playlist["data"]["live_streams"] = response
+    def sequential_api_download(self):
+        print("*** sequential_api_download ***")
+        for url in self.url_list:
+            results = self.downloadUrl(url)
+            self.update_playlists_with_api_results(results)
 
-        if all_failed:
-            self.showPlaylists()
+    def update_playlists_with_api_results(self, results):
+        print("*** update 2 ***")
+        for index, response in results:
+            if response:
+                if index == 1:
+                    glob.active_playlist["data"]["live_categories"] = response
 
-        glob.active_playlist["data"]["data_downloaded"] = True
-        self.createSetup()
+                if index == 2:
+                    glob.active_playlist["data"]["vod_categories"] = response
 
-    def reload(self, Answer=None):
-        self["list"].setIndex(0)
+                if index == 3:
+                    glob.active_playlist["data"]["series_categories"] = response
 
-        if self.original_active_playlist != glob.active_playlist:
-            self.player_api = glob.active_playlist["playlist_info"]["player_api"]
-            self.active_live_categories_url = str(self.player_api) + "&action=get_live_categories"
-            self.active_vod_categories_url = str(self.player_api) + "&action=get_vod_categories"
-            self.active_series_categories_url = str(self.player_api) + "&action=get_series_categories"
-            self.active_live_streams_url = str(self.player_api) + "&action=get_live_streams"
+                if index == 4:
+                    glob.active_playlist["data"]["live_streams"] = response
 
-            self.original_active_playlist = glob.active_playlist
-
-            self.makeUrlList()
-        else:
-            self.createSetup()
-
-    def createSetup(self):
-        if cfg.introvideo.value:
-            self.playVideo()
-        else:
-            self["background"].setText("True")
-
-        def add_category_to_list(title, category_type, index):
-            if category_type in glob.active_playlist["data"] and glob.active_playlist["data"][category_type]:
-                if "category_id" in glob.active_playlist["data"][category_type][0] and "user_info" not in glob.active_playlist["data"][category_type]:
-                    self.index += 1
-                    self.list.append([self.index, _(title), index])
-
+    def createSetupOptions(self):
+        print("*** createSetupOptions ***")
         self.list = []
         self.index = 0
         downloads_all = []
@@ -699,19 +595,12 @@ class XKlass_MainMenu(Screen):
         self.drawList = [self.buildListEntry(x[0], x[1], x[2]) for x in self.list]
         self["list"].setList(self.drawList)
 
+        self.playlists_all[glob.current_selection] = glob.active_playlist
+
         self.writeJsonFile()
 
     def buildListEntry(self, index, title, num):
         return index, str(title), num
-
-    def writeJsonFile(self):
-        with open(playlists_json, "r") as f:
-            playlists_all = json.load(f)
-
-        playlists_all[glob.current_selection] = glob.active_playlist
-
-        with open(playlists_json, "w") as f:
-            json.dump(playlists_all, f)
 
     def __next__(self):
         if cfg.introvideo.value:
@@ -829,6 +718,7 @@ class XKlass_MainMenu(Screen):
             instance1.moveSelection(instance1.moveUp)
         else:
             instance2.moveSelection(instance2.moveUp)
+            self.getCurrentEntry()
 
     def goDown(self):
         instance1 = self["list"].master.master.instance
@@ -837,6 +727,7 @@ class XKlass_MainMenu(Screen):
             instance1.moveSelection(instance1.moveDown)
         else:
             instance2.moveSelection(instance2.moveDown)
+            self.getCurrentEntry()
 
     def resetData(self, answer=None):
         if answer is None:
@@ -849,3 +740,17 @@ class XKlass_MainMenu(Screen):
             except OSError as e:
                 print("Error deleting or recreating JSON file:", e)
             self.quit()
+
+    def reload(self, Answer=None):
+        self["list"].setIndex(0)
+
+        if cfg.introvideo.value:
+            self.playVideo()
+        else:
+            self["background"].setText("True")
+
+        if self.original_active_playlist != glob.active_playlist:
+            self.original_active_playlist = glob.active_playlist
+            self.createSetupPlaylists()
+        else:
+            self.createSetupOptions()
