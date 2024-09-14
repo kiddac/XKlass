@@ -61,7 +61,7 @@ class XKlass_MainMenu(Screen):
 
         self["provider"] = StaticText()
 
-        self["version"] = StaticText()
+        self["version"] = StaticText(version)
 
         actions = {
             "green": self.__next__,
@@ -77,8 +77,6 @@ class XKlass_MainMenu(Screen):
             actions.update({"red": self.quit, "cancel": self.quit})
 
         self["actions"] = ActionMap(["XKlassActions"], actions, -2)
-
-        self["version"].setText(version)
 
         self.playlists_all = loadfiles.process_files()
 
