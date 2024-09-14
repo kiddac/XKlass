@@ -14,7 +14,6 @@ except ImportError:
     HTTPConnection.debuglevel = 0
 
 # Third-party imports
-import requests
 from requests.adapters import HTTPAdapter, Retry
 
 # Enigma2 components
@@ -33,7 +32,7 @@ from . import xklass_globals as glob
 from . import processfiles as loadfiles
 from .plugin import (cfg, downloads_json, hasConcurrent, hasMultiprocessing, playlists_json, pythonFull, skin_directory, version, InternetSpeedTest_installed, NetSpeedTest_installed)
 from .xStaticText import StaticText
-
+from . import checkinternet
 
 hdr = {'User-Agent': str(cfg.useragent.value)}
 
@@ -132,6 +131,9 @@ class XKlass_MainMenu(Screen):
             self.start()
 
     def start(self, answer=None):
+        if not checkinternet.check_internet():
+            self.session.openWithCallback(self.quit, MessageBox, _("No internet."), type=MessageBox.TYPE_ERROR, timeout=5)
+
         if not self.playlists_all:
             self.addServer()
             self.close()
