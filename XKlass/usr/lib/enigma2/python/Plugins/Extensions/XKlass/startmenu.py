@@ -55,8 +55,10 @@ class XKlass_MainMenu(Screen):
         self["list"] = List(self.drawList, enableWrapAround=True)
 
         self.setup_title = _("Main Menu")
-        self["background"] = StaticText("")
 
+        self["splash"] = Pixmap()
+        self["splash"].show()
+        self["background"] = StaticText("")
         self["version"] = StaticText(version)
 
         actions = {
@@ -140,7 +142,280 @@ class XKlass_MainMenu(Screen):
             self.addServer()
             self.close()
         else:
-            self.selectdefaultplaylist()
+            self.delayedDownload()
+            # self.selectdefaultplaylist()
+
+    def delayedDownload(self):
+        print("*** delayed download ***")
+        self.timer = eTimer()
+        try:
+            self.timer_conn = self.timer.timeout.connect(self.makePlaylistUrlList)
+        except:
+            try:
+                self.timer.callback.append(self.makePlaylistUrlList)
+            except:
+                self.makeUrlList()
+        self.timer.start(20, True)
+
+    def makePlaylistUrlList(self):
+        print("*** makeplaylisturllist ***")
+        self.url_list = []
+        for index, playlists in enumerate(self.playlists_all):
+            player_api = str(playlists["playlist_info"].get("player_api", ""))
+            full_url = str(playlists["playlist_info"].get("full_url", ""))
+            domain = str(playlists["playlist_info"].get("domain", ""))
+            username = str(playlists["playlist_info"].get("username", ""))
+            password = str(playlists["playlist_info"].get("password", ""))
+            if "get.php" in full_url and domain and username and password:
+                self.url_list.append([player_api, index])
+
+        if self.url_list:
+            self.processPlaylistDownloads()
+
+    def processPlaylistDownloads(self):
+        print("*** processplaylistsDownloads ***")
+        threads = min(len(self.url_list), 20)
+
+        if hasConcurrent:
+            self.concurrent_download(threads)
+
+        elif hasMultiprocessing:
+            self.multiprocessing_download(threads)
+
+        else:
+            self.sequential_download()
+
+        self.buildPlaylistList()
+
+    def concurrent_download(self, threads):
+        print("*** concurrentdownloads ***")
+        from concurrent.futures import ThreadPoolExecutor
+        try:
+            with ThreadPoolExecutor(max_workers=threads) as executor:
+                results = list(executor.map(self.downloadUrl, self.url_list))
+            self.update_playlists_with_results(results)
+        except Exception as e:
+            print("Concurrent execution error:", e)
+
+    def multiprocessing_download(self, threads):
+        print("*** multiprocessing_download ***")
+        from multiprocessing.pool import ThreadPool
+        try:
+            with ThreadPool(threads) as pool:
+                results = pool.imap_unordered(self.downloadUrl, self.url_list)
+                pool.close()
+                pool.join()
+            self.update_playlists_with_results(results)
+        except Exception as e:
+            print("Multiprocessing execution error:", e)
+
+    def sequential_download(self):
+        print("*** sequential_download ***")
+        for url in self.url_list:
+            results = self.downloadUrl(url)
+            self.update_playlists_with_results(results)
+
+    def downloadUrl(self, url):
+        import requests
+        print("*** downloadUrl ***", url)
+        index = url[1]
+        retries = Retry(total=2, backoff_factor=1)
+        adapter = HTTPAdapter(max_retries=retries)
+
+        with requests.Session() as http:
+            http.mount("http://", adapter)
+            http.mount("https://", adapter)
+
+            try:
+                response = http.get(url[0], headers=hdr, timeout=6, verify=False)
+                response.raise_for_status()
+
+                if response.headers.get('Content-Type', '').startswith('application/json'):
+                    return index, response.json()
+            except requests.exceptions.RequestException as e:
+                print("Request error:", e)
+            except Exception as e:
+                print("Unexpected error:", e)
+
+        return index, None
+
+    def update_playlists_with_results(self, results):
+        print("*** update 1 ***")
+        for index, response in results:
+            if response:
+                self.playlists_all[index].update(response)
+            else:
+                self.playlists_all[index]["user_info"] = {}
+
+    def buildPlaylistList(self):
+        print("*** buildPlaylistList ***")
+        for playlists in self.playlists_all:
+            if "user_info" in playlists:
+                user_info = playlists["user_info"]
+
+                if "message" in user_info:
+                    del user_info["message"]
+
+                server_info = playlists.get("server_info", {})
+                if "https_port" in server_info:
+                    del server_info["https_port"]
+                if "rtmp_port" in server_info:
+                    del server_info["rtmp_port"]
+
+                if "time_now" in server_info:
+                    time_formats = ["%Y-%m-%d %H:%M:%S", "%Y-%m-%d %H-%M-%S", "%Y-%m-%d-%H:%M:%S", "%Y- %m-%d %H:%M:%S"]
+
+                    for time_format in time_formats:
+                        try:
+                            time_now_datestamp = datetime.strptime(str(server_info["time_now"]), time_format)
+                            offset = datetime.now().hour - time_now_datestamp.hour
+                            # print("*** offset ***", offset)
+                            playlists["player_info"]["serveroffset"] = offset
+                            break
+                        except ValueError:
+                            pass
+
+                if "timestamp_now" in server_info:
+                    timestamp = server_info["timestamp_now"]
+                    timestamp_dt = datetime.utcfromtimestamp(timestamp)
+
+                    # Get the current system time
+                    current_dt = datetime.now()
+
+                    # Calculate the difference
+                    time_difference = current_dt - timestamp_dt
+                    hour_difference = int(time_difference.total_seconds() / 3600)
+                    catchupoffset = hour_difference
+                    # print("hour_difference:", hour_difference)
+                    playlists["player_info"]["catchupoffset"] = catchupoffset
+
+                auth = user_info.get("auth", 1)
+                if not isinstance(auth, int):
+                    user_info["auth"] = 1
+
+                if "status" in user_info:
+                    valid_statuses = {"Active", "Banned", "Disabled", "Expired"}
+                    if user_info["status"] not in valid_statuses:
+                        user_info["status"] = "Active"
+
+                    if user_info["status"] == "Active":
+                        playlists["data"]["fail_count"] = 0
+                    else:
+                        playlists["data"]["fail_count"] += 1
+
+                if "active_cons" in user_info and not user_info["active_cons"]:
+                    user_info["active_cons"] = 0
+
+                if "max_connections" in user_info and not user_info["max_connections"]:
+                    user_info["max_connections"] = 0
+
+                if 'allowed_output_formats' in user_info:
+                    allowed_formats = user_info['allowed_output_formats']
+                    output_format = playlists["playlist_info"]["output"]
+                    if output_format not in allowed_formats:
+                        playlists["playlist_info"]["output"] = str(allowed_formats[0]) if allowed_formats else "ts"
+
+            else:
+                playlists["data"]["fail_count"] += 1
+
+            playlists.pop("available_channels", None)
+
+        self.writeJsonFile_1()
+        self.createSetupPlaylists()
+
+    def writeJsonFile_1(self):
+        print("*** writeJsonFile ***")
+        with open(playlists_json, "w") as f:
+            json.dump(self.playlists_all, f)
+
+    def createSetupPlaylists(self):
+        print("*** createSetupPlaylists ***")
+        if cfg.introvideo.value:
+            self.playVideo()
+        else:
+            self["background"].setText("True")
+
+        self["splash"].hide()
+
+        self.list2 = []
+        index = 0
+
+        for playlist in self.playlists_all:
+            name = playlist["playlist_info"].get("name", playlist["playlist_info"].get("domain", ""))
+            url = playlist["playlist_info"].get("host", "")
+            activenum = ""
+            maxnum = ""
+
+            user_info = playlist.get("user_info", {})
+            if "auth" in user_info:
+
+                if str(user_info["auth"]) == "1":
+                    user_status = user_info.get("status", "")
+
+                    if user_status == "Active":
+                        activenum = playlist["user_info"]["active_cons"]
+
+                        try:
+                            activenum = int(activenum)
+                        except:
+                            activenum = 0
+
+                        maxnum = playlist["user_info"]["max_connections"]
+
+                        try:
+                            maxnum = int(maxnum)
+                        except:
+                            maxnum = 0
+
+            if user_status == "Active":
+                self.list2.append([index, name, url, activenum, maxnum])
+                index += 1
+
+            if playlist.get("data", {}).get("fail_count", 0) > 5:
+                self.session.open(MessageBox, _("You have dead playlists that are slowing down loading.\n\nPress Yellow button to soft delete dead playlists"), MessageBox.TYPE_WARNING)
+                for playlist in self.playlists_all:
+                    playlist["data"]["fail_count"] = 0
+                with open(playlists_json, "w") as f:
+                    json.dump(self.playlists_all, f)
+
+        self.drawList2 = [self.buildPlalyistListEntry(x[0], x[1], x[2], x[3], x[4]) for x in self.list2]
+        self["playlists"].setList(self.drawList2)
+
+        self.set_default_playlist()
+        # self.makeUrlCategoryList()
+
+    def set_default_playlist(self):
+        print("*** set_default_playlist ***")
+
+        for p, playlist in enumerate(self.playlists_all):
+            playlist_name = playlist["playlist_info"]["name"]
+
+            # Check if playlist matches the default
+            if playlist_name == cfg.defaultplaylist.value and playlist_name in self.list2:
+                glob.active_playlist = playlist
+                glob.current_selection = p
+                self["playlists"].setIndex(p)
+                glob.active_playlist["data"]["live_streams"] = []
+                self.original_active_playlist = glob.active_playlist
+                return
+
+        # If no match found, fall back to the first playlist in list2
+        fallback_playlist_name = self.list2[0][1]
+        for p, playlist in enumerate(self.playlists_all):
+            playlist_name = playlist["playlist_info"]["name"]
+            if playlist_name == fallback_playlist_name:
+                glob.active_playlist = playlist
+                glob.current_selection = p
+                cfg.defaultplaylist.setValue(playlist_name)
+                cfg.save()
+                break
+
+        glob.active_playlist["data"]["live_streams"] = []
+        self.original_active_playlist = glob.active_playlist
+
+    def buildPlalyistListEntry(self, index, name, url, activenum, maxnum):
+        text = str(name) + "   Active:" + str(activenum) + " Max:" + str(maxnum)
+        return (index, text, str(url))
 
     def selectdefaultplaylist(self):
         if self.playlists_all:
