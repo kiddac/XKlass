@@ -86,7 +86,6 @@ class XKlass_MainMenu(Screen):
         self.toggle = False
 
         self.playlists_all = loadfiles.process_files()
-        self.defaultplaylist = cfg.defaultplaylist.value
 
         glob.active_playlist = []
 
@@ -143,7 +142,7 @@ class XKlass_MainMenu(Screen):
             self.close()
         else:
             self.delayedDownload()
-            # self.selectdefaultplaylist()
+            # self.selectlastplaylist()
 
     def delayedDownload(self):
         print("*** delayed download ***")
@@ -381,17 +380,17 @@ class XKlass_MainMenu(Screen):
         self.drawList2 = [self.buildPlalyistListEntry(x[0], x[1], x[2], x[3], x[4]) for x in self.list2]
         self["playlists"].setList(self.drawList2)
 
-        self.set_default_playlist()
+        self.set_last_playlist()
         # self.makeUrlCategoryList()
 
-    def set_default_playlist(self):
-        print("*** set_default_playlist ***")
+    def set_last_playlist(self):
+        print("*** set_last_playlist ***")
 
         for p, playlist in enumerate(self.playlists_all):
             playlist_name = playlist["playlist_info"]["name"]
 
             # Check if playlist matches the default
-            if playlist_name == cfg.defaultplaylist.value and playlist_name in self.list2:
+            if playlist_name == cfg.lastplaylist.value and playlist_name in self.list2:
                 glob.active_playlist = playlist
                 glob.current_selection = p
                 self["playlists"].setIndex(p)
@@ -406,7 +405,7 @@ class XKlass_MainMenu(Screen):
             if playlist_name == fallback_playlist_name:
                 glob.active_playlist = playlist
                 glob.current_selection = p
-                cfg.defaultplaylist.setValue(playlist_name)
+                cfg.lastplaylist.setValue(playlist_name)
                 cfg.save()
                 break
 
@@ -417,12 +416,12 @@ class XKlass_MainMenu(Screen):
         text = str(name) + "   Active:" + str(activenum) + " Max:" + str(maxnum)
         return (index, text, str(url))
 
-    def selectdefaultplaylist(self):
+    def selectlastplaylist(self):
         if self.playlists_all:
             p = 0
             exists = False
             for playlist in self.playlists_all:
-                if str(playlist["playlist_info"]["name"]) == self.defaultplaylist:
+                if str(playlist["playlist_info"]["name"]) == cfg.lastplaylist.value
                     glob.active_playlist = playlist
                     glob.current_selection = p
                     exists = True
@@ -431,7 +430,7 @@ class XKlass_MainMenu(Screen):
                 p += 1
 
             if not exists:
-                cfg.defaultplaylist.setValue(str(self.playlists_all[0]["playlist_info"]["name"]))
+                cfg.lastplaylist.setValue(str(self.playlists_all[0]["playlist_info"]["name"]))
                 cfg.save()
                 glob.active_playlist = self.playlists_all[0]
                 glob.current_selection = 0
@@ -446,7 +445,7 @@ class XKlass_MainMenu(Screen):
             glob.active_playlist["data"]["live_streams"] = []
             self.original_active_playlist = glob.active_playlist
         else:
-            cfg.defaultplaylist.setValue("")
+            cfg.lastplaylist.setValue("")
             cfg.save()
 
         self.makeUrlList()

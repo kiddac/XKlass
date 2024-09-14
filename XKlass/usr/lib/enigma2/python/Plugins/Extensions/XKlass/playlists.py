@@ -370,8 +370,7 @@ class XKlass_Playlists(Screen):
 
         p = 0
         for playlist in self.playlists_all:
-            if str(playlist["playlist_info"]["name"]) == str(cfg.defaultplaylist.value):
-
+            if str(playlist["playlist_info"]["name"]) == str(cfg.lastplaylist.value):
                 break
             p += 1
 
@@ -470,7 +469,7 @@ class XKlass_Playlists(Screen):
 
     def closePlaylists(self):
         if "user_info" in glob.active_playlist and "auth" in glob.active_playlist["user_info"] and glob.active_playlist["user_info"]["auth"] == 1 and glob.active_playlist["user_info"]["status"] == "Active":
-            cfg.defaultplaylist.setValue(str(glob.active_playlist["playlist_info"]["name"]))
+            cfg.lastplaylist.setValue(str(glob.active_playlist["playlist_info"]["name"]))
             cfg.save()
             self.close()
         else:

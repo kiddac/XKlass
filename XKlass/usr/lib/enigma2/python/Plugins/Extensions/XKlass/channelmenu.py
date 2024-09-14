@@ -110,8 +110,6 @@ class XKlass_ChannelMenu(Screen):
         if glob.current_list:
             self.list.append([7, _("Show/Hide Channels")])
         self.list.append([8, _("Account Info")])
-        # if cfg.defaultplaylist.value != glob.active_playlist["playlist_info"]["name"]:
-        #    self.list.append([9, _("Set As Default Playlist")])
         if len(self.playlists_all) > 1:
             self.list.append([10, _("Manage Playlists")])
         self.list.append([11, _("Add New Playlist")])
@@ -147,8 +145,6 @@ class XKlass_ChannelMenu(Screen):
                 self.showHidden()
             if choice == _("Account Info"):
                 self.userInfo()
-            # if choice == ("Set As Default Playlist"):
-            #    self.defaultPlaylist()
             if choice == _("Manage Playlists"):
                 self.showPlaylists()
             if choice == _("Add New Playlist"):
@@ -198,14 +194,6 @@ class XKlass_ChannelMenu(Screen):
             if "auth" in glob.active_playlist["user_info"]:
                 if glob.active_playlist["user_info"]["auth"] == 1:
                     self.session.openWithCallback(self.callback, serverinfo.XKlass_UserInfo)
-
-    """
-    def defaultPlaylist(self):
-        self.closeDialog()
-        cfg.defaultplaylist.setValue(str(glob.active_playlist["playlist_info"]["name"]))
-        cfg.save()
-        self.callback()
-        """
 
     def showPlaylists(self):
         self.closeDialog()
