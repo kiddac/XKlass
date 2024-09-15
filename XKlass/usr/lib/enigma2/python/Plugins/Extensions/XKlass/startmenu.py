@@ -145,7 +145,7 @@ class XKlass_MainMenu(Screen):
             self.session.openWithCallback(self.start, Console, title="Checking Python Dependencies", cmdlist=[cmd], closeOnSuccess=False)
 
     def start(self, answer=None):
-        print("*** start ***")
+        # print("*** start ***")
         if not checkinternet.check_internet():
             self.session.openWithCallback(self.quit, MessageBox, _("No internet."), type=MessageBox.TYPE_ERROR, timeout=5)
 
@@ -158,7 +158,7 @@ class XKlass_MainMenu(Screen):
             self.delayedDownload()
 
     def delayedDownload(self):
-        print("*** delayed download ***")
+        # print("*** delayed download ***")
         self.timer = eTimer()
         try:
             self.timer_conn = self.timer.timeout.connect(self.makePlaylistUrlList)
@@ -166,11 +166,11 @@ class XKlass_MainMenu(Screen):
             try:
                 self.timer.callback.append(self.makePlaylistUrlList)
             except:
-                self.makeUrlList()
+                self.makePlaylistUrlList()
         self.timer.start(20, True)
 
     def makePlaylistUrlList(self):
-        print("*** makeplaylisturllist ***")
+        # print("*** makeplaylisturllist ***")
         self.url_list = []
         for index, playlists in enumerate(self.playlists_all):
             player_api = str(playlists["playlist_info"].get("player_api", ""))
@@ -185,7 +185,7 @@ class XKlass_MainMenu(Screen):
             self.processPlaylistDownloads()
 
     def processPlaylistDownloads(self):
-        print("*** processplaylistsDownloads ***")
+        # print("*** processplaylistsDownloads ***")
         threads = min(len(self.url_list), 20)
 
         if hasConcurrent:
@@ -200,7 +200,7 @@ class XKlass_MainMenu(Screen):
         self.buildPlaylistList()
 
     def concurrent_download(self, threads):
-        print("*** concurrentdownloads ***")
+        # print("*** concurrentdownloads ***")
         from concurrent.futures import ThreadPoolExecutor
         try:
             with ThreadPoolExecutor(max_workers=threads) as executor:
@@ -210,25 +210,29 @@ class XKlass_MainMenu(Screen):
             print("Concurrent execution error:", e)
 
     def multiprocessing_download(self, threads):
-        print("*** multiprocessing_download ***")
+        # print("*** multiprocessing_download ***")
         from multiprocessing.pool import ThreadPool
         try:
-            with ThreadPool(threads) as pool:
-                results = pool.imap_unordered(self.downloadUrl, self.url_list)
-                pool.close()
-                pool.join()
-            self.update_playlists_with_results(results)
+            pool = ThreadPool(threads)
+            results = pool.imap_unordered(self.downloadUrl, self.url_list)
+            pool.close()
+            pool.join()
+
+            # Convert iterator to list
+            results_list = list(results)
+
+            self.update_playlists_with_results(results_list)
         except Exception as e:
             print("Multiprocessing execution error:", e)
 
     def sequential_download(self):
-        print("*** sequential_download ***")
+        # print("*** sequential_download ***")
         for url in self.url_list:
             results = self.downloadUrl(url)
             self.update_playlists_with_results(results)
 
     def downloadUrl(self, url):
-        print("*** downloadUrl ***", url)
+        # print("*** downloadUrl ***", url)
         import requests
         index = url[1]
         retries = Retry(total=2, backoff_factor=1)
@@ -252,7 +256,7 @@ class XKlass_MainMenu(Screen):
         return index, None
 
     def update_playlists_with_results(self, results):
-        print("*** update 1 ***")
+        # print("*** update 1 ***")
         for index, response in results:
             if response:
                 self.playlists_all[index].update(response)
@@ -260,7 +264,7 @@ class XKlass_MainMenu(Screen):
                 self.playlists_all[index]["user_info"] = {}
 
     def buildPlaylistList(self):
-        print("*** buildPlaylistList ***")
+        # print("*** buildPlaylistList ***")
         for playlists in self.playlists_all:
             if "user_info" in playlists:
                 user_info = playlists["user_info"]
@@ -336,12 +340,12 @@ class XKlass_MainMenu(Screen):
         self.createSetupPlaylists()
 
     def writeJsonFile(self):
-        print("*** writeJsonFile ***")
+        # print("*** writeJsonFile ***")
         with open(playlists_json, "w") as f:
             json.dump(self.playlists_all, f)
 
     def createSetupPlaylists(self):
-        print("*** createSetupPlaylists ***")
+        # print("*** createSetupPlaylists ***")
         if cfg.introvideo.value:
             self.playVideo()
         else:
@@ -399,7 +403,7 @@ class XKlass_MainMenu(Screen):
         self.makeUrlCategoryList()
 
     def set_last_playlist(self):
-        print("*** set_last_playlist ***")
+        # print("*** set_last_playlist ***")
         for p, playlist in enumerate(self.playlists_all):
             playlist_name = playlist["playlist_info"]["name"]
             # Check if playlist matches the default
@@ -430,7 +434,7 @@ class XKlass_MainMenu(Screen):
         return (index, text, str(url))
 
     def getCurrentEntry(self):
-        print("*** getCurrentEntry ***")
+        # print("*** getCurrentEntry ***")
         if self.list2:
             glob.current_selection = self["playlists"].getIndex()
             glob.active_playlist = self.playlists_all[glob.current_selection]
@@ -440,7 +444,7 @@ class XKlass_MainMenu(Screen):
             configfile.save()
 
     def makeUrlCategoryList(self):
-        print("*** makeUrlCategoryList ***")
+        # print("*** makeUrlCategoryList ***")
         self.url_list = []
         glob.active_playlist["data"]["live_categories"] = []
         glob.active_playlist["data"]["vod_categories"] = []
@@ -478,7 +482,7 @@ class XKlass_MainMenu(Screen):
         self.processApiDownloads()
 
     def processApiDownloads(self):
-        print("*** processApiDownloads ***")
+        # print("*** processApiDownloads ***")
         threads = min(len(self.url_list), 4)
 
         if hasConcurrent:
@@ -493,7 +497,7 @@ class XKlass_MainMenu(Screen):
         self.createSetupOptions()
 
     def concurrent_api_download(self, threads):
-        print("*** concurrent_api_download ***")
+        # print("*** concurrent_api_download ***")
         from concurrent.futures import ThreadPoolExecutor
         try:
             with ThreadPoolExecutor(max_workers=threads) as executor:
@@ -503,25 +507,29 @@ class XKlass_MainMenu(Screen):
             print("Concurrent execution error:", e)
 
     def multiprocessing_api_download(self, threads):
-        print("*** multiprocessing_api_download ***")
+        # print("*** multiprocessing_download ***")
         from multiprocessing.pool import ThreadPool
         try:
-            with ThreadPool(threads) as pool:
-                results = pool.imap_unordered(self.downloadUrl, self.url_list)
-                pool.close()
-                pool.join()
-            self.update_playlists_with_api_results(results)
+            pool = ThreadPool(threads)
+            results = pool.imap_unordered(self.downloadUrl, self.url_list)
+            pool.close()
+            pool.join()
+
+            # Convert iterator to list
+            results_list = list(results)
+
+            self.update_playlists_with_api_results(results_list)
         except Exception as e:
             print("Multiprocessing execution error:", e)
 
     def sequential_api_download(self):
-        print("*** sequential_api_download ***")
+        # print("*** sequential_api_download ***")
         for url in self.url_list:
             results = self.downloadUrl(url)
             self.update_playlists_with_api_results(results)
 
     def update_playlists_with_api_results(self, results):
-        print("*** update 2 ***")
+        # print("*** update 2 ***")
         for index, response in results:
             if response:
                 if index == 1:
@@ -537,7 +545,7 @@ class XKlass_MainMenu(Screen):
                     glob.active_playlist["data"]["live_streams"] = response
 
     def createSetupOptions(self):
-        print("*** createSetupOptions ***")
+        # print("*** createSetupOptions ***")
         self.list = []
         self.index = 0
         downloads_all = []
