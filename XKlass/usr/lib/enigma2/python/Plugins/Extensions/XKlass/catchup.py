@@ -374,17 +374,18 @@ class XKlass_Catchup_Categories(Screen):
             http.mount("https://", adapter)
 
             try:
-                # Perform the initial request
                 r = http.get(url[0], headers=hdr, timeout=(10, 20), verify=False)
                 r.raise_for_status()
 
-                if 'application/json' in r.headers.get('Content-Type', ''):
-                    try:
-                        response = r.json()
-                    except ValueError as e:
-                        print("Error decoding JSON:", e, url)
-                else:
-                    print("Error: Response is not JSON", url)
+                # Follow redirects manually and check for JSON content
+                if 'application/json' not in r.headers.get('Content-Type', ''):
+                    print("Final response is non-JSON content", r.url)
+                    return index, None
+
+                try:
+                    response = r.json()
+                except ValueError as e:
+                    print("Error decoding JSON:", e, url)
 
             except requests.exceptions.RequestException as e:
                 print("Request error:", e)

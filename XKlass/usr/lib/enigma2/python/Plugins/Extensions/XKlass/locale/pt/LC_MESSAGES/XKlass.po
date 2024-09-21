@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "POT-Creation-Date: 2024-09-14 22:47+0100\n"
-"PO-Revision-Date: 2024-09-14 22:47+0100\n"
+"PO-Revision-Date: 2024-09-16 11:16+0100\n"
 "Last-Translator: extream87\n"
 "Language-Team: \n"
 "Language: pt_PT\n"
@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.4.4\n"
+"X-Generator: Poedit 3.5\n"
 "X-Poedit-Basepath: ../../../../../../../../../..\n"
 "X-Poedit-SearchPath-0: .\n"
 
@@ -42,7 +42,7 @@ msgstr "Terminado"
 
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/Task.py:60
 msgid "Failed"
-msgstr ""
+msgstr "Falhou"
 
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/Task.py:325
 #, python-format
@@ -50,30 +50,32 @@ msgid ""
 "Error: %s\n"
 "Retry?"
 msgstr ""
+"Erro: %s\n"
+"Repetir?"
 
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/Task.py:328
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/playlists.py:317
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/playlists.py:401
 msgid "Error"
-msgstr ""
+msgstr "Erro"
 
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/Task.py:375
 msgid "An unknown error occurred!"
-msgstr ""
+msgstr "Ocorreu um erro desconhecido!"
 
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/Task.py:400
 #, python-format
 msgid "A required tool (%s) was not found."
-msgstr ""
+msgstr "Não foi encontrada uma ferramenta necessária (%s)."
 
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/Task.py:408
 msgid "Cancelled upon user request"
-msgstr ""
+msgstr "Cancelado mediante solicitação do usuário"
 
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/Task.py:425
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/Task.py:440
 msgid "Error code"
-msgstr ""
+msgstr "Código de erro"
 
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/catchup.py:145
 msgid "Catch Up Categories"
@@ -81,7 +83,7 @@ msgstr "Gravações Automáticas Categorias"
 
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/catchup.py:150
 msgid "Catchup TV"
-msgstr ""
+msgstr "Acompanhamento de TV"
 
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/catchup.py:190
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/catchup.py:652
@@ -163,7 +165,7 @@ msgstr "TODOS"
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/series.py:990
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/vod.py:723
 msgid "Server error or invalid link."
-msgstr ""
+msgstr "Erro do servidor ou ligação inválida."
 
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/catchup.py:618
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/catchup.py:643
@@ -270,7 +272,7 @@ msgstr "Filtrar esta categoria..."
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/series.py:2141
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/vod.py:1784
 msgid "No results found."
-msgstr ""
+msgstr "Não foram encontrados resultados."
 
 # Código de senha incorreto.
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/catchup.py:939
@@ -319,19 +321,19 @@ msgstr "Adicionado ao gerenciador de transferencia"
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/series.py:2473
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/vod.py:2112
 msgid "Note recording acts as an open connection."
-msgstr ""
+msgstr "A gravação de notas funciona como uma conexão aberta."
 
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/catchup.py:1125
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/series.py:2473
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/vod.py:2112
 msgid "Do not record and play streams at the same time."
-msgstr ""
+msgstr "Não grave e reproduza streams ao mesmo tempo."
 
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/catchup.py:1125
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/series.py:2473
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/vod.py:2112
 msgid "Open download manager?"
-msgstr ""
+msgstr "Abrir o gerenciador de downloads?"
 
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/catchup.py:1128
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/series.py:2476
@@ -358,7 +360,7 @@ msgstr "Quer retomar esta reprodução?"
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/vodplayer.py:407
 #, python-format
 msgid "Resume position at %s"
-msgstr "Retome a posição em% s"
+msgstr "Retome a posição em  %s"
 
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/catchupplayer.py:490
 msgid "Catch Up"
@@ -368,11 +370,11 @@ msgstr "Gravações Automáticas"
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/liveplayer.py:873
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/vodplayer.py:759
 msgid "Resolution Change Failed"
-msgstr ""
+msgstr "Falha na alteração da resolução"
 
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/channelmenu.py:51
 msgid "Menu"
-msgstr ""
+msgstr "Menu"
 
 # Atualização manual de EPG
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/channelmenu.py:108
@@ -387,19 +389,19 @@ msgstr "Forçar Atualização do EPG"
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/channelmenu.py:249
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/playsettings.py:46
 msgid "Playlist Settings"
-msgstr "Configurações"
+msgstr "Configurações da lista de reprodução"
 
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/channelmenu.py:111
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/channelmenu.py:144
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/channelmenu.py:251
 msgid "Show/Hide Channels"
-msgstr ""
+msgstr "Mostrar/ocultar canais"
 
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/channelmenu.py:112
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/channelmenu.py:146
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/channelmenu.py:253
 msgid "Account Info"
-msgstr ""
+msgstr "Informação da Conta"
 
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/channelmenu.py:114
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/channelmenu.py:148
@@ -407,13 +409,13 @@ msgstr ""
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/playlists.py:63
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/startmenu.py:582
 msgid "Manage Playlists"
-msgstr ""
+msgstr "Gerenciar listas de reprodução"
 
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/channelmenu.py:115
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/channelmenu.py:150
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/channelmenu.py:259
 msgid "Add New Playlist"
-msgstr ""
+msgstr "Adicionar nova lista de reprodução"
 
 # Gerenciador de transferencia
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/channelmenu.py:126
@@ -430,11 +432,11 @@ msgstr "Gerenciador de transferencia"
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/settings.py:68
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/startmenu.py:584
 msgid "Global Settings"
-msgstr ""
+msgstr "Configurações globais"
 
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/channelmenu.py:171
 msgid "Recordings in progress. EPG not downloaded."
-msgstr ""
+msgstr "Gravações em curso. EPG não baixado."
 
 # Baixando EPGs.
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/channelmenu.py:173
@@ -443,7 +445,7 @@ msgstr "Baixando EPGs."
 
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/channelmenu.py:239
 msgid "Live"
-msgstr ""
+msgstr "Ao vivo"
 
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/channelmenu.py:241
 msgid "Vod"
@@ -458,7 +460,7 @@ msgstr "Séries"
 
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/channelmenu.py:245
 msgid "Catchup"
-msgstr ""
+msgstr "Alcançar"
 
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/downloadmanager.py:56
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/downloadmanager.py:402
@@ -490,7 +492,7 @@ msgstr "Espaço livre:"
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/downloadmanager.py:238
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/downloadmanager.py:241
 msgid "of"
-msgstr "of"
+msgstr "de"
 
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/downloadmanager.py:403
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/hidden.py:78
@@ -578,7 +580,7 @@ msgstr "Categorias de canais"
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/live.py:156
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/startmenu.py:571
 msgid "Live TV"
-msgstr ""
+msgstr "Televisão ao vivo"
 
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/live.py:565
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/vod.py:585
@@ -630,7 +632,7 @@ msgstr "Informação"
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/playlists.py:107
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/startmenu.py:150
 msgid "No internet."
-msgstr ""
+msgstr "Sem internet."
 
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/playlists.py:327
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/playlists.py:403
@@ -678,6 +680,9 @@ msgid ""
 "\n"
 "Press Yellow button to soft delete dead playlists"
 msgstr ""
+"Você tem listas de reprodução mortas que estão atrasando o carregamento.\n"
+"\n"
+"Pressione o botão amarelo para excluir suavemente listas de reprodução inativas"
 
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/playlists.py:418
 msgid "Delete selected playlist?"
@@ -743,24 +748,22 @@ msgid "Alternative EPG url:"
 msgstr "URL alternativo do EPG:"
 
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/playsettings.py:237
-msgid ""
-"Bouquet name cannot be blank. Please enter a unique bouquet name. Minimum 3 "
-"characters."
-msgstr ""
+msgid "Bouquet name cannot be blank. Please enter a unique bouquet name. Minimum 3 characters."
+msgstr "O nome do buquê não pode estar em branco. Introduza um nome de bouquet exclusivo. Mínimo de 3 caracteres."
 
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/playsettings.py:243
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/server.py:217
 msgid "Name already used. Please enter a unique name."
-msgstr ""
+msgstr "Nome já utilizado. Introduza um nome exclusivo."
 
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/plugin.py:179
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/plugin.py:180
 msgid "Original"
-msgstr ""
+msgstr "Original"
 
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/plugin.py:180
 msgid "Added"
-msgstr ""
+msgstr "Adicionado"
 
 # Classificar: Ano
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/plugin.py:180
@@ -775,7 +778,7 @@ msgstr "Ordem: Ano"
 
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/plugin.py:180
 msgid "Year"
-msgstr ""
+msgstr "Ano"
 
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/plugin.py:277
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/plugin.py:385
@@ -819,7 +822,7 @@ msgstr "Categorias de séries"
 
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/series.py:696
 msgid "No series found in this category."
-msgstr ""
+msgstr "Nenhuma série encontrada nesta categoria."
 
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/series.py:757
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/series.py:2571
@@ -829,7 +832,7 @@ msgstr "Temporada "
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/series.py:1640
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/vod.py:1357
 msgid "Rating: "
-msgstr ""
+msgstr "Avaliação: "
 
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/series.py:1691
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/vod.py:1348
@@ -844,7 +847,7 @@ msgstr "Diretor:"
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/series.py:1701
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/vod.py:1313
 msgid "Overview"
-msgstr ""
+msgstr "Visão geral"
 
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/server.py:49
 msgid "Add Playlist"
@@ -856,7 +859,7 @@ msgstr "Protocolo:"
 
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/server.py:116
 msgid "Server URL: i.e. domain.xyz"
-msgstr ""
+msgstr "URL do servidor: ou seja, domain.xyz"
 
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/server.py:117
 msgid "Port:"
@@ -876,10 +879,8 @@ msgid "Details are not valid or unauthorised"
 msgstr "Dados não validos ou não autorizado"
 
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/server.py:211
-msgid ""
-"Bouquet name cannot be blank. Please enter a unique bouquet name. Minimum 2 "
-"characters."
-msgstr ""
+msgid "Bouquet name cannot be blank. Please enter a unique bouquet name. Minimum 2 characters."
+msgstr "O nome do buquê não pode estar em branco. Introduza um nome de bouquet exclusivo. Mínimo de 2 caracteres."
 
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/server.py:227
 msgid "Playlist added successfully."
@@ -934,7 +935,7 @@ msgstr "Deslocamento do servidor:"
 
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/serverinfo.py:83
 msgid "Unknown"
-msgstr ""
+msgstr "Desconhecido"
 
 # Altere o PIN dos pais padrão..
 # O PIN não pode ser 0000, 1111 or 1234
@@ -944,6 +945,9 @@ msgid ""
 "\n"
 "Pin cannot be 0000, 111, or 1234"
 msgstr ""
+"Altere o PIN parental padrão.\n"
+"\n"
+"O pino não pode ser 0000, 111 ou 1234"
 
 # Você precisa reiniciar a GUI
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/settings.py:136
@@ -957,11 +961,11 @@ msgstr "Quer reiniciar agora?"
 
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/settings.py:146
 msgid "Select skin"
-msgstr ""
+msgstr "Selecione a skin"
 
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/settings.py:147
 msgid "Select fake web user-agent"
-msgstr ""
+msgstr "Selecione um agente de usuário da web falso"
 
 # localização playlists.txt
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/settings.py:149
@@ -973,7 +977,7 @@ msgstr "localização playlists.txt"
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/settings.py:166
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/settings.py:174
 msgid " *Restart GUI Required"
-msgstr ""
+msgstr " *Reiniciar GUI necessário"
 
 # Localização de transferências do EPG
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/settings.py:150
@@ -994,11 +998,11 @@ msgstr "Tipo de transmissão FILMES/SERIES"
 
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/settings.py:155
 msgid "Default VOD category sort order"
-msgstr ""
+msgstr "Ordem de classificação de categoria VOD padrão"
 
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/settings.py:156
 msgid "Default VOD stream sort order"
-msgstr ""
+msgstr "Ordem de classificação de fluxo VOD padrão"
 
 # XKlass Control dos Pais
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/settings.py:158
@@ -1011,7 +1015,7 @@ msgstr "XKlassv senha de controlo parental"
 
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/settings.py:160
 msgid "Show in main menu"
-msgstr ""
+msgstr "Mostrar no menu principal"
 
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/settings.py:161
 msgid "Use Movie Database(TMDB) for VOD & Series"
@@ -1036,19 +1040,19 @@ msgstr "Permitir plugin SubsSupport em FILME"
 
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/settings.py:166
 msgid "Automatic EPG download time"
-msgstr ""
+msgstr "Tempo de download automático do EPG"
 
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/settings.py:167
 msgid "Show intro video"
-msgstr ""
+msgstr "Mostrar vídeo de introdução"
 
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/settings.py:168
 msgid "Loop intro video"
-msgstr ""
+msgstr "Vídeo de introdução em loop"
 
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/settings.py:169
 msgid "Intro video selection"
-msgstr ""
+msgstr "Seleção de vídeo de introdução"
 
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/settings.py:170
 msgid "Show channel picons"
@@ -1068,15 +1072,15 @@ msgstr "Mostrar pôsteres da barra de informações"
 
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/settings.py:174
 msgid "Auto start XKlass on boot"
-msgstr ""
+msgstr "Iniciar automaticamente o XKlass na inicialização"
 
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/settings.py:175
 msgid "Play satellite channel audio in background"
-msgstr ""
+msgstr "Reproduzir áudio do canal via satélite em segundo plano"
 
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/settings.py:176
 msgid "Add speedtest plugin to main menu"
-msgstr ""
+msgstr "Adicionar plugin speedtest ao menu principal"
 
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/settings.py:303
 msgid "Choose Directory:"
@@ -1093,7 +1097,7 @@ msgstr "Menu Principal"
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/startmenu.py:574
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/vod.py:121
 msgid "Movies"
-msgstr ""
+msgstr "Filmes"
 
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/startmenu.py:580
 msgid "Catch Up TV"
@@ -1101,23 +1105,21 @@ msgstr "Gravações Automáticas"
 
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/startmenu.py:590
 msgid "Reboot GUI"
-msgstr ""
+msgstr "Reinicializar GUI"
 
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/startmenu.py:593
 msgid "Speed Test"
-msgstr ""
+msgstr "Teste de Velocidade"
 
 # Aviso: exclua os dados json armazenados de todas as listas de reprodução ... Configurações, favoritos, etc. As listas de reprodução não serão excluídas.
 # Você deseja continuar?
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/startmenu.py:734
 msgid ""
-"Warning: delete stored json data for all playlists... Settings, favourites "
-"etc. \n"
+"Warning: delete stored json data for all playlists... Settings, favourites etc. \n"
 "Playlists will not be deleted.\n"
 "Do you wish to continue?"
 msgstr ""
-"Aviso: remove os dados json para todas as listas... Definições, favoritos, "
-"etc. \n"
+"Aviso: remove os dados json para todas as listas... Definições, favoritos, etc. \n"
 "As listas não serão removidas.\n"
 "Deseja continuar?"
 
@@ -1134,6 +1136,8 @@ msgid ""
 "The TMDB plugin is not installed!\n"
 "Please install it."
 msgstr ""
+"O plugin TMDB não está instalado!\n"
+"Por favor instale-o."
 
 #: usr/lib/enigma2/python/Plugins/Extensions/XKlass/vod.py:2147
 msgid ""
@@ -1181,8 +1185,7 @@ msgstr "Filmes"
 #~ msgstr "Configurações"
 
 #~ msgid "No data, blocked or playlist not compatible with XKlass plugin."
-#~ msgstr ""
-#~ "Sem dados bloqueados ou lista de reprodução não compatível com XSTR ..."
+#~ msgstr "Sem dados bloqueados ou lista de reprodução não compatível com XSTR ..."
 
 #~ msgid "Server Not Responding"
 #~ msgstr "Servidor Não Responde"
@@ -1258,9 +1261,7 @@ msgstr "Filmes"
 
 # Tempo de download automático do EPG * Requer reinicialização da GUI
 #~ msgid "Auto start XKlass on boot *Restart GUI Required"
-#~ msgstr ""
-#~ "Iniciar automaticamente o XKlass na inicialização * Reiniciar GUI "
-#~ "necessário"
+#~ msgstr "Iniciar automaticamente o XKlass na inicialização * Reiniciar GUI necessário"
 
 #~ msgid "Server timeout (seconds)"
 #~ msgstr "Tempo Limite do Servidor (segundos)"
@@ -1298,9 +1299,7 @@ msgstr "Filmes"
 
 # Transferencias múltiplas não permitidos. Aguarde ou cancele o transferencia.
 #~ msgid "Multiple downloads not allowed. Please wait or cancel download."
-#~ msgstr ""
-#~ "Transferencias múltiplas não permitidos. Aguarde ou cancele o "
-#~ "transferencia."
+#~ msgstr "Transferencias múltiplas não permitidos. Aguarde ou cancele o transferencia."
 
 #~ msgid "Download Failed!\n"
 #~ msgstr ""

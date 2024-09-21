@@ -235,6 +235,8 @@ class XKlass_MainMenu(Screen):
         # print("*** downloadUrl ***", url)
         import requests
         index = url[1]
+        response = None
+
         retries = Retry(total=2, backoff_factor=1)
         adapter = HTTPAdapter(max_retries=retries)
 
@@ -243,17 +245,25 @@ class XKlass_MainMenu(Screen):
             http.mount("https://", adapter)
 
             try:
-                response = http.get(url[0], headers=hdr, timeout=6, verify=False)
-                response.raise_for_status()
+                r = http.get(url[0], headers=hdr, timeout=6, verify=False)
+                r.raise_for_status()
 
-                if response.headers.get('Content-Type', '').startswith('application/json'):
-                    return index, response.json()
+                # Follow redirects manually and check for JSON content
+                if 'application/json' not in r.headers.get('Content-Type', ''):
+                    print("Final response is non-JSON content", r.url)
+                    return index, None
+
+                try:
+                    response = r.json()
+                except ValueError as e:
+                    print("Error decoding JSON:", e, url)
+
             except requests.exceptions.RequestException as e:
                 print("Request error:", e)
             except Exception as e:
                 print("Unexpected error:", e)
 
-        return index, None
+        return index, response
 
     def update_playlists_with_results(self, results):
         # print("*** update 1 ***")
@@ -395,24 +405,33 @@ class XKlass_MainMenu(Screen):
 
         self.drawList2 = [self.buildPlalyistListEntry(x[0], x[1], x[2], x[3], x[4]) for x in self.list2]
 
-        self.set_last_playlist()
+        activeplaylists = any(
+            "user_info" in playlist and playlist["user_info"]["status"] == "Active"
+            for playlist in self.playlists_all
+        )
 
-        self["playlists"].setList(self.drawList2)
-        self["playlists"].setIndex(glob.current_selection)
-
-        self.makeUrlCategoryList()
+        if activeplaylists:
+            self.set_last_playlist()
+            self["playlists"].setList(self.drawList2)
+            self["playlists"].setIndex(glob.current_selection)
+            self.makeUrlCategoryList()
+        else:
+            self.addServer()
+            self.close()
 
     def set_last_playlist(self):
         # print("*** set_last_playlist ***")
         for p, playlist in enumerate(self.playlists_all):
             playlist_name = playlist["playlist_info"]["name"]
-            # Check if playlist matches the default
-            if playlist_name == cfg.lastplaylist.value and any(playlist_name == item[1] for item in self.list2):
-                glob.active_playlist = playlist
-                glob.current_selection = p
-                glob.active_playlist["data"]["live_streams"] = []
-                self.original_active_playlist = glob.active_playlist
-                return
+            if "user_info" in playlist and "status" in playlist["user_info"]:
+                status = playlist["user_info"]["status"]
+                # Check if playlist matches the default
+                if playlist_name == cfg.lastplaylist.value and any(playlist_name == item[1] for item in self.list2) and status == "Active":
+                    glob.active_playlist = playlist
+                    glob.current_selection = p
+                    glob.active_playlist["data"]["live_streams"] = []
+                    self.original_active_playlist = glob.active_playlist
+                    return
 
         # If no match found, fall back to the first playlist in list2
         fallback_playlist_name = self.list2[0][1]
@@ -430,7 +449,7 @@ class XKlass_MainMenu(Screen):
         self.original_active_playlist = glob.active_playlist
 
     def buildPlalyistListEntry(self, index, name, url, activenum, maxnum):
-        text = str(name) + "   Active:" + str(activenum) + " Max:" + str(maxnum)
+        text = str(name) + "   " + _("Active:") + str(activenum) + " " + _("Max:") + str(maxnum)
         return (index, text, str(url))
 
     def getCurrentEntry(self):
