@@ -50,6 +50,11 @@ from .xStaticText import StaticText
 from .Task import job_manager as JobManager
 from .Task import Task, Job
 
+hdr = {
+    'User-Agent': str(cfg.useragent.value),
+    'Connection': 'keep-alive',
+    'Accept-Encoding': 'gzip, deflate'
+}
 
 ui = False
 
@@ -146,9 +151,6 @@ class downloadTask(Task):
                 print(e)
 
 
-hdr = {'User-Agent': str(cfg.useragent.value)}
-
-
 class XKlass_DownloadManager(Screen):
 
     def __init__(self, session):
@@ -198,7 +200,7 @@ class XKlass_DownloadManager(Screen):
         self.setTitle(self.setup_title)
 
     def cleantitle(self, title):
-        cleanName = re.sub(r'[^A-Za-z0-9\s-]', '', title)  # Remove special characters except whitespace and hyphen
+        cleanName = re.sub(r'[\'\<\>\:\"\/\\\|\?\*\(\)\[\]]', "", str(title))
         cleanName = re.sub(r'\s+', ' ', cleanName)  # Replace multiple spaces with a single space
         cleanName = cleanName.strip()  # Remove leading and trailing spaces
         cleanName = cleanName.replace(' ', '-')  # Replace spaces with hyphens
@@ -231,20 +233,17 @@ class XKlass_DownloadManager(Screen):
     def diskspace(self):
         try:
             stat = os.statvfs(cfg.downloadlocation.value)
-            free_bytes = stat.f_bfree * stat.f_bsize
-            total_bytes = stat.f_blocks * stat.f_bsize
-            free_space = convert_size(float(free_bytes))
-            total_space = convert_size(float(total_bytes))
-            self["diskspace"].setText(_("Free Space:") + " " + str(free_space) + " " + _("of") + " " + str(total_space))
+            free = convert_size(float(stat.f_bfree * stat.f_bsize))
+            total = convert_size(float(stat.f_blocks * stat.f_bsize))
         except Exception as e:
-            print("Error getting disk space:", e)
-            self["diskspace"].setText(_("Free Space:") + " -?- " + _("of") + " -?-")
+            print(e)
+            free = "-?-"
+            total = "-?-"
+        self["diskspace"].setText(_("Free Space:") + " " + str(free) + " " + _("of") + " " + str(total))
 
     def cleanalltitles(self):
         for video in self.downloads_all:
-            title = video[1]
-            cleaned_title = self.cleantitle(title)
-            video[1] = cleaned_title
+            video[1] = self.cleantitle(video[1])
 
     def getDownloadSize(self):
         x = 0
@@ -254,20 +253,21 @@ class XKlass_DownloadManager(Screen):
 
                 retries = Retry(total=3, backoff_factor=1)
                 adapter = HTTPAdapter(max_retries=retries)
-                http = requests.Session()
-                http.mount("http://", adapter)
-                http.mount("https://", adapter)
 
-                try:
-                    with http.get(url, headers=hdr, timeout=10, verify=False, stream=True) as r:
+                with requests.Session() as http:
+                    http.mount("http://", adapter)
+                    http.mount("https://", adapter)
+
+                    try:
+                        r = http.get(url, headers=hdr, timeout=10, verify=False, stream=True)
                         r.raise_for_status()
                         if r.status_code == requests.codes.ok:
                             content_length = float(r.headers.get("content-length", 0))
                             video[5] = content_length
 
-                except Exception as e:
-                    print(e)
-                    video[5] = 0  # Set download size to 0 in case of any error
+                    except Exception as e:
+                        print(e)
+                        video[5] = 0
 
                 x += 1
                 if x == 5:
@@ -276,14 +276,18 @@ class XKlass_DownloadManager(Screen):
 
     def checkactivedownloads(self):
         templist = []
-
         for video in self.downloads_all:
             recbytes = 0
             filmtitle = str(video[1])
-            extension = os.path.splitext(video[2])[-1]
 
-            filename = filmtitle + extension
-            path = os.path.join(cfg.downloadlocation.value, filename)
+            try:
+                extension = str(os.path.splitext(video[2])[-1])
+            except Exception as e:
+                print(e)
+                extension = ""
+
+            filename = str(filmtitle) + str(extension)
+            path = str(cfg.downloadlocation.value) + str(filename)
 
             totalbytes = video[5]
 
@@ -291,15 +295,12 @@ class XKlass_DownloadManager(Screen):
                 recbytes = os.path.getsize(path)
                 if int(totalbytes) != int(recbytes):
                     try:
-                        progress = int((recbytes / totalbytes) * 100) - 2
-                    except ZeroDivisionError:
-                        progress = 0
+                        video[4] = int((recbytes / totalbytes) * 100) - 2
+                    except:
+                        video[4] = 0
 
-                    if progress < 0:
-                        progress = 0
-
-                    video[4] = progress
-
+                    if video[4] < 0:
+                        video[4] = 0
                     templist.append(video)
             else:
                 video[3] = "Not Started"
@@ -307,15 +308,19 @@ class XKlass_DownloadManager(Screen):
                 templist.append(video)
 
         self.downloads_all[:] = templist
+
         self.buildList()
         self.saveJson()
 
     def stopDownloads(self):
-        # Stop all active tasks related to XKlass
+        # stop all active tasks
         for job in JobManager.getPendingJobs():
+
             if "XKlass" in job.cmdline:
+
                 if job.status == job.NOT_STARTED:
                     JobManager.active_jobs.remove(job)
+
                 elif job.status == job.IN_PROGRESS:
                     job.cancel()
 
@@ -326,9 +331,8 @@ class XKlass_DownloadManager(Screen):
             filmtitle = str(video[1])
             url = str(video[2])
             state = str(video[3])
-
             try:
-                extension = os.path.splitext(url)[-1]
+                extension = str(os.path.splitext(video[2])[-1])
             except Exception as e:
                 print(e)
                 extension = ""
@@ -341,13 +345,16 @@ class XKlass_DownloadManager(Screen):
             video_domain = parsed_uri.hostname
 
             if state != "Not Started":
+
                 if self.session.nav.getCurrentlyPlayingServiceReference():
                     playingstream = self.session.nav.getCurrentlyPlayingServiceReference().toString()
+
                     if video_domain and str(video_domain) in playingstream:
                         if self.session.nav.getCurrentlyPlayingServiceReference():
                             self.session.nav.stopService()
 
                 cmd = "wget -U 'Enigma2 - XKlass Plugin' -c '%s' -O '%s%s'" % (url, shortpath, filename)
+
                 if "https" in str(url):
                     cmd = "wget --no-check-certificate -U 'Enigma2 - XKlass Plugin' -c '%s' -O '%s%s'" % (url, shortpath, filename)
 
@@ -509,7 +516,9 @@ class XKlass_DownloadManager(Screen):
     def delete(self):
         if self["downloadlist"].getCurrent():
             currentindex = self["downloadlist"].getIndex()
-            if self.downloads_all[currentindex][3] == "Not Started":
+            if self.downloads_all[currentindex][3] != "Not Started":
+                return
+            else:
                 self.delete_entry()
 
     def delete_entry(self, answer=None):
@@ -518,6 +527,7 @@ class XKlass_DownloadManager(Screen):
         elif answer:
             currentindex = self["downloadlist"].getIndex()
             del self.downloads_all[currentindex]
+
             self.sortlist()
             self.buildList()
             self.saveJson()
@@ -546,11 +556,9 @@ class XKlass_DownloadManager(Screen):
                 break
             x += 1
         del self.downloads_all[x]
-
         if ui:
             self.sortlist()
             self.buildList()
-
         self.createMetaFile(filename, self.filmtitle)
         self.saveJson()
 
