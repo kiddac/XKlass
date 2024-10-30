@@ -79,7 +79,11 @@ if sslverify:
                 ClientTLSOptions(self.hostname, ctx)
             return ctx
 
-hdr = {'User-Agent': str(cfg.useragent.value)}
+hdr = {
+    'User-Agent': str(cfg.useragent.value),
+    'Connection': 'keep-alive',
+    'Accept-Encoding': 'gzip, deflate'
+}
 
 
 class XKlass_Series_Categories(Screen):
@@ -971,7 +975,7 @@ class XKlass_Series_Categories(Screen):
         # print("*** downloadapidata ***", url)
         retries = Retry(total=2, backoff_factor=1)
         adapter = HTTPAdapter(max_retries=retries)
-        
+
         with requests.Session() as http:
             http.mount("http://", adapter)
             http.mount("https://", adapter)

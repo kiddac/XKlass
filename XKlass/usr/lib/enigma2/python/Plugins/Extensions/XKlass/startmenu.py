@@ -35,7 +35,11 @@ from .plugin import (cfg, downloads_json, hasConcurrent, hasMultiprocessing, pla
 from .xStaticText import StaticText
 from . import checkinternet
 
-hdr = {'User-Agent': str(cfg.useragent.value)}
+hdr = {
+    'User-Agent': str(cfg.useragent.value),
+    'Connection': 'keep-alive',
+    'Accept-Encoding': 'gzip, deflate'
+}
 
 
 class XKlass_MainMenu(Screen):

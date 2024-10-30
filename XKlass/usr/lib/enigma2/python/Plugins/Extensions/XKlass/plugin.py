@@ -215,9 +215,12 @@ addFont(os.path.join(font_folder, "slyk-medium.ttf"), "slykregular", 100, 0)
 addFont(os.path.join(font_folder, "slyk-bold.ttf"), "slykbold", 100, 0)
 addFont(os.path.join(font_folder, "classfont2.ttf"), "klass", 100, 0)
 
-hdr = {"User-Agent": "Enigma2 - XKlass Plugin"}
-# hdr = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:125.0) Gecko/20100101 Firefox/125.0"}
-# hdr = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"}
+
+hdr = {
+    'User-Agent': 'Enigma2 - XKlass Plugin',
+    'Connection': 'keep-alive',
+    'Accept-Encoding': 'gzip, deflate'
+}
 
 
 # create folder for working files

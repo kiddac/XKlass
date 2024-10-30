@@ -90,7 +90,14 @@ try:
 except:
     TMDB_installed = False
 
-hdr = {'User-Agent': str(cfg.useragent.value)}
+hdr = {
+    'User-Agent': str(cfg.useragent.value),
+    'Connection': 'keep-alive',
+    'Accept-Encoding': 'gzip, deflate'
+}
+
+agent = Agent(reactor)
+downloader = DataDownloader(agent, pythonVer)
 
 
 class XKlass_Vod_Categories(Screen):

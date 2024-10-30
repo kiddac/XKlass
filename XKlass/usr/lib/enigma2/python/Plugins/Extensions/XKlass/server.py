@@ -28,7 +28,11 @@ from .plugin import skin_directory, playlist_file, cfg, playlists_json
 from .xStaticText import StaticText
 
 
-hdr = {'User-Agent': str(cfg.useragent.value)}
+hdr = {
+    'User-Agent': str(cfg.useragent.value),
+    'Connection': 'keep-alive',
+    'Accept-Encoding': 'gzip, deflate'
+}
 
 
 class XKlass_AddServer(ConfigListScreen, Screen):
