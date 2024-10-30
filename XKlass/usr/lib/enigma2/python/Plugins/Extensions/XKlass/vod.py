@@ -708,27 +708,26 @@ class XKlass_Vod_Categories(Screen):
             glob.originalChannelList2 = self.list2[:]
 
     def downloadApiData(self, url):
-        # print("*** downloadapidata ***", url)
-        try:
-            retries = Retry(total=2, backoff_factor=1)
-            adapter = HTTPAdapter(max_retries=retries)
-            http = requests.Session()
+        retries = Retry(total=2, backoff_factor=1)
+        adapter = HTTPAdapter(max_retries=retries)
+
+        with requests.Session() as http:
             http.mount("http://", adapter)
             http.mount("https://", adapter)
 
-            response = http.get(url, headers=hdr, timeout=(10, 30), verify=False)
-            response.raise_for_status()
+            try:
+                response = http.get(url, headers=hdr, timeout=(10, 30), verify=False)
+                response.raise_for_status()
 
-            if response.status_code == requests.codes.ok:
-                try:
-                    return response.json()
-                except ValueError:
-                    print("JSON decoding failed.")
-                    return None
-        except Exception as e:
-            print("Error occurred during API data download:", e)
-
-        self.session.openWithCallback(self.back, MessageBox, _("Server error or invalid link."), MessageBox.TYPE_ERROR, timeout=3)
+                if response.status_code == requests.codes.ok:
+                    try:
+                        return response.json()
+                    except ValueError:
+                        print("JSON decoding failed.")
+                        return None
+            except Exception as e:
+                print("Error occurred during API data download:", e)
+                self.session.openWithCallback(self.back, MessageBox, _("Server error or invalid link."), MessageBox.TYPE_ERROR, timeout=3)
 
     def buildCategories(self):
         # print("*** buildCategories ***")
@@ -771,92 +770,97 @@ class XKlass_Vod_Categories(Screen):
 
             self.tmdbresults = ""
 
+            content = ""
+
             retries = Retry(total=1, backoff_factor=1)
             adapter = HTTPAdapter(max_retries=retries)
-            http = requests.Session()
-            http.mount("http://", adapter)
-            http.mount("https://", adapter)
-            try:
-                r = http.get(url, headers=hdr, timeout=(10, 20), verify=False)
-                r.raise_for_status()
-                if r.status_code == requests.codes.ok:
-                    try:
-                        content = r.json()
-                    except ValueError as e:
-                        print(e)
-                        content = None
 
-                if content and ("info" in content) and content["info"]:
-                    self.tmdbresults = content["info"]
+            with requests.Session() as http:
+                http.mount("http://", adapter)
+                http.mount("https://", adapter)
 
-                    if "name" not in self.tmdbresults and "movie_data" in content and content["movie_data"]:
-                        self.tmdbresults["name"] = content["movie_data"]["name"]
+                try:
+                    r = http.get(url, headers=hdr, timeout=(10, 20), verify=False)
+                    r.raise_for_status()
 
-                    if "cover_big" in self.tmdbresults:
-                        cover = self.tmdbresults["cover_big"]
-
-                        if cover and cover.startswith("http"):
-                            try:
-                                cover = cover.replace(r"\/", "/")
-                            except:
-                                pass
-
-                            if cover == "https://image.tmdb.org/t/p/w600_and_h900_bestv2":
-                                cover = ""
-
-                            if cover.startswith("https://image.tmdb.org/t/p/") or cover.startswith("http://image.tmdb.org/t/p/"):
-                                dimensions = cover.partition("/p/")[2].partition("/")[0]
-
-                                if screenwidth.width() <= 1280:
-                                    cover = cover.replace(dimensions, "w200")
-                                elif screenwidth.width() <= 1920:
-                                    cover = cover.replace(dimensions, "w300")
-                                else:
-                                    cover = cover.replace(dimensions, "w400")
-                        else:
-                            cover = ""
-
-                        self.tmdbresults["cover_big"] = cover
-
-                    if "duration" in self.tmdbresults:
-                        duration = self.tmdbresults["duration"]
+                    if r.status_code == requests.codes.ok:
                         try:
-                            hours, minutes, seconds = map(int, duration.split(':'))
-                            duration = "{}h {}m".format(hours, minutes)
-                            self.tmdbresults["duration"] = duration
+                            content = r.json()
+                        except ValueError as e:
+                            print("JSON decoding failed:", e)
+                            content = None
+                except Exception as e:
+                    print("Error during request:", e)
+                    content = None
+
+            if content and ("info" in content) and content["info"]:
+                self.tmdbresults = content["info"]
+
+                if "name" not in self.tmdbresults and "movie_data" in content and content["movie_data"]:
+                    self.tmdbresults["name"] = content["movie_data"]["name"]
+
+                if "cover_big" in self.tmdbresults:
+                    cover = self.tmdbresults["cover_big"]
+
+                    if cover and cover.startswith("http"):
+                        try:
+                            cover = cover.replace(r"\/", "/")
                         except:
                             pass
 
-                    if "backdrop_path" in self.tmdbresults:
-                        if isinstance(self.tmdbresults["backdrop_path"], list):
-                            try:
-                                backdrop_path = self.tmdbresults["backdrop_path"][0]
-                                self.tmdbresults["backdrop_path"] = backdrop_path
-                            except:
-                                pass
-                        else:
-                            backdrop_path = self.tmdbresults["backdrop_path"]
+                        if cover == "https://image.tmdb.org/t/p/w600_and_h900_bestv2":
+                            cover = ""
 
-                    if "genre" in self.tmdbresults:
-                        genres_list = self.tmdbresults["genre"].split(', ')
-                        genre = ' / '.join(genres_list)
-                        self.tmdbresults["genre"] = genre
+                        if cover.startswith("https://image.tmdb.org/t/p/") or cover.startswith("http://image.tmdb.org/t/p/"):
+                            dimensions = cover.partition("/p/")[2].partition("/")[0]
 
-                elif "movie_data" in content and content["movie_data"]:
-                    self.tmdbresults = content["movie_data"]
-                else:
-                    self.tmdbresults = ""
+                            if screenwidth.width() <= 1280:
+                                cover = cover.replace(dimensions, "w200")
+                            elif screenwidth.width() <= 1920:
+                                cover = cover.replace(dimensions, "w300")
+                            else:
+                                cover = cover.replace(dimensions, "w400")
+                    else:
+                        cover = ""
 
-                if cfg.TMDB.value is True:
-                    self.getTMDB()
-                else:
-                    self.displayTMDB()
-                    if cfg.channelcovers.value is True:
-                        self.downloadCover()
-                        self.downloadBackdrop()
+                    self.tmdbresults["cover_big"] = cover
 
-            except Exception as e:
-                print(e)
+                if "duration" in self.tmdbresults:
+                    duration = self.tmdbresults["duration"]
+                    try:
+                        hours, minutes, seconds = map(int, duration.split(':'))
+                        duration = "{}h {}m".format(hours, minutes)
+                        self.tmdbresults["duration"] = duration
+                    except:
+                        pass
+
+                if "backdrop_path" in self.tmdbresults:
+                    if isinstance(self.tmdbresults["backdrop_path"], list):
+                        try:
+                            backdrop_path = self.tmdbresults["backdrop_path"][0]
+                            self.tmdbresults["backdrop_path"] = backdrop_path
+                        except:
+                            pass
+                    else:
+                        backdrop_path = self.tmdbresults["backdrop_path"]
+
+                if "genre" in self.tmdbresults:
+                    genres_list = self.tmdbresults["genre"].split(', ')
+                    genre = ' / '.join(genres_list)
+                    self.tmdbresults["genre"] = genre
+
+            elif "movie_data" in content and content["movie_data"]:
+                self.tmdbresults = content["movie_data"]
+            else:
+                self.tmdbresults = ""
+
+            if cfg.TMDB.value is True:
+                self.getTMDB()
+            else:
+                self.displayTMDB()
+                if cfg.channelcovers.value is True:
+                    self.downloadCover()
+                    self.downloadBackdrop()
 
     def selectionChanged(self):
         # print("*** selectionChanged ***")
@@ -1023,7 +1027,7 @@ class XKlass_Vod_Categories(Screen):
 
         searchtitle = quote(searchtitle, safe="")
 
-        if self.isIMDB is False:
+        if not self.isIMDB:
             searchurl = 'http://api.themoviedb.org/3/search/movie?api_key={}&query={}'.format(self.check(self.token), searchtitle)
             if year:
                 searchurl = 'http://api.themoviedb.org/3/search/movie?api_key={}&primary_release_year={}&query={}'.format(self.check(self.token), year, searchtitle)
@@ -1405,7 +1409,8 @@ class XKlass_Vod_Categories(Screen):
                 pass
 
             desc_image = ""
-            if self.tmdbresults:  # tmbdb
+
+            if self.tmdbresults:  # tmdb
                 desc_image = str(self.tmdbresults.get("cover_big")).strip() or str(self.tmdbresults.get("movie_image")).strip() or ""
 
                 if self.cover_download_deferred and not self.cover_download_deferred.called:
