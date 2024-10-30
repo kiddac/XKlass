@@ -48,7 +48,7 @@ class XKlass_ChannelMenu(Screen):
         self.playlists_all = self.playlists_all = loadfiles.process_files()
         self["list"] = List(self.drawList, enableWrapAround=True)
 
-        self.setup_title = (_("Menu"))
+        self.setup_title = _("Menu")
 
         self.provider = glob.active_playlist["playlist_info"]["name"]
         self["provider"] = StaticText(self.provider)
