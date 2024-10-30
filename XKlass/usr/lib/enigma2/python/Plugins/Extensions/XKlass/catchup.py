@@ -593,7 +593,7 @@ class XKlass_Catchup_Categories(Screen):
             http.mount("https://", adapter)
 
             try:
-                response = http.get(url, headers=hdr, timeout=(10, 30), verify=False)
+                response = http.get(url, headers=hdr, timeout=(10, 60), verify=False)
                 response.raise_for_status()
 
                 if response.status_code == requests.codes.ok:
@@ -1127,20 +1127,20 @@ class XKlass_Catchup_Categories(Screen):
                 self.session.open(MessageBox, _("Catchup error. No data for this slot"), MessageBox.TYPE_WARNING, timeout=5)
 
     def checkRedirect(self, url):
-        x = ""
         retries = Retry(total=3, backoff_factor=1)
         adapter = HTTPAdapter(max_retries=retries)
-        http = requests.Session()
-        http.mount("http://", adapter)
-        http.mount("https://", adapter)
-        try:
-            x = http.get(url, headers=hdr, timeout=30, verify=False, stream=True)
-            url = x.url
-            x.close()
-            return str(url)
-        except Exception as e:
-            print(e)
-            return str(url)
+
+        with requests.Session() as http:
+            http.mount("http://", adapter)
+            http.mount("https://", adapter)
+
+            try:
+                response = http.get(url, headers=hdr, timeout=30, verify=False, stream=True)
+                url = response.url
+                return str(url)
+            except Exception as e:
+                print(e)
+                return str(url)
 
     def parse_datetime(self, datetime_str):
         time_formats = ["%Y-%m-%d %H:%M:%S", "%Y-%m-%d %H-%M-%S", "%Y-%m-%d-%H:%M:%S", "%Y- %m-%d %H:%M:%S"]
