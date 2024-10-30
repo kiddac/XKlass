@@ -513,14 +513,22 @@ class XKlass_StreamPlayer(
 
                     retries = Retry(total=3, backoff_factor=1)
                     adapter = HTTPAdapter(max_retries=retries)
-                    http = requests.Session()
-                    http.mount("http://", adapter)
-                    http.mount("https://", adapter)
-                    r = http.get(url, headers=hdr, timeout=(10, 20), verify=False)
-                    r.raise_for_status()
-                    if r.status_code == requests.codes.ok:
-                        response = r.json()
-                        shortEPGJson = response.get("epg_listings", [])
+
+                    with requests.Session() as http:
+                        http.mount("http://", adapter)
+                        http.mount("https://", adapter)
+
+                        try:
+                            r = http.get(url, headers=hdr, timeout=(10, 20), verify=False)
+                            r.raise_for_status()
+
+                            if r.status_code == requests.codes.ok:
+                                response = r.json()
+                                shortEPGJson = response.get("epg_listings", [])
+                        except Exception as e:
+                            print("Error fetching or processing response:", e)
+                            response = None
+                            shortEPGJson = []
 
                     if shortEPGJson and len(shortEPGJson) > 1:
                         self.epgshortlist = []
