@@ -668,26 +668,26 @@ class XKlass_Live_Categories(Screen):
 
     def downloadApiData(self, url):
         # print("**** downloadApiData ****")
-        try:
-            retries = Retry(total=2, backoff_factor=1)
-            adapter = HTTPAdapter(max_retries=retries)
-            http = requests.Session()
+        retries = Retry(total=2, backoff_factor=1)
+        adapter = HTTPAdapter(max_retries=retries)
+
+        with requests.Session() as http:
             http.mount("http://", adapter)
             http.mount("https://", adapter)
 
-            response = http.get(url, headers=hdr, timeout=(10, 30), verify=False)
-            response.raise_for_status()
+            try:
+                response = http.get(url, headers=hdr, timeout=(10, 30), verify=False)
+                response.raise_for_status()
 
-            if response.status_code == requests.codes.ok:
-                try:
-                    return response.json()
-                except ValueError:
-                    print("JSON decoding failed.")
-                    return None
-        except Exception as e:
-            print("Error occurred during API data download:", e)
-
-        self.session.openWithCallback(self.back, MessageBox, _("Server error or invalid link."), MessageBox.TYPE_ERROR, timeout=3)
+                if response.status_code == requests.codes.ok:
+                    try:
+                        return response.json()
+                    except ValueError:
+                        print("JSON decoding failed.")
+                        return None
+            except Exception as e:
+                print("Error occurred during API data download:", e)
+                self.session.openWithCallback(self.back, MessageBox, _("Server error or invalid link."), MessageBox.TYPE_ERROR, timeout=3)
 
     def xmltvCheckData(self):
         # print("*** xmltvCheckData ***")
@@ -1518,18 +1518,20 @@ class XKlass_Live_Categories(Screen):
 
                         retries = Retry(total=3, backoff_factor=1)
                         adapter = HTTPAdapter(max_retries=retries)
-                        http = requests.Session()
-                        http.mount("http://", adapter)
-                        http.mount("https://", adapter)
 
-                        try:
-                            r = http.get(url, headers=hdr, timeout=(10, 20), verify=False)
-                            r.raise_for_status()
+                        with requests.Session() as http:
+                            http.mount("http://", adapter)
+                            http.mount("https://", adapter)
 
-                            if r.status_code == requests.codes.ok:
-                                response = r.json()
-                        except Exception as e:
-                            print("Error fetching short EPG:", e)
+                            try:
+                                r = http.get(url, headers=hdr, timeout=(10, 20), verify=False)
+                                r.raise_for_status()
+
+                                if r.status_code == requests.codes.ok:
+                                    response = r.json()
+                            except Exception as e:
+                                print("Error fetching short EPG:", e)
+                                response = None
 
                         if response:
                             now = datetime.now()
