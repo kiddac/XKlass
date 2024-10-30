@@ -142,7 +142,7 @@ class XKlass_MainMenu(Screen):
             print(e)
             os.chmod("/usr/lib/enigma2/python/Plugins/Extensions/XKlass/dependencies.sh", 0o0755)
             cmd = ". /usr/lib/enigma2/python/Plugins/Extensions/XKlass/dependencies.sh"
-            self.session.openWithCallback(self.start, Console, title="Checking Python Dependencies", cmdlist=[cmd], closeOnSuccess=False)
+            self.session.openWithCallback(self.start, Console, title="Checking Python Dependencies", cmdlist=[cmd], closeOnSuccess=True)
 
     def start(self, answer=None):
         # print("*** start ***")
@@ -406,7 +406,7 @@ class XKlass_MainMenu(Screen):
         self.drawList2 = [self.buildPlalyistListEntry(x[0], x[1], x[2], x[3], x[4]) for x in self.list2]
 
         activeplaylists = any(
-            "user_info" in playlist and playlist["user_info"]["status"] == "Active"
+            "user_info" in playlist and "status" in playlist["user_info"] and playlist["user_info"]["status"] == "Active"
             for playlist in self.playlists_all
         )
 
