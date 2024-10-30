@@ -123,14 +123,17 @@ Image.preinit = _mypreinit
 
 epgimporter = os.path.isdir("/usr/lib/enigma2/python/Plugins/Extensions/EPGImport")
 
-hdr = {'User-Agent': str(cfg.useragent.value)}
+hdr = {
+    'User-Agent': str(cfg.useragent.value),
+    'Connection': 'keep-alive',
+    'Accept-Encoding': 'gzip, deflate'
+}
 
 
 class XKlass_Catchup_Categories(Screen):
     ALLOW_SUSPEND = True
 
     def __init__(self, session):
-        # print("*** catchup init ***")
         Screen.__init__(self, session)
         self.session = session
 
@@ -301,8 +304,6 @@ class XKlass_Catchup_Categories(Screen):
             print(e)
 
     def refresh(self):
-        # print("*** refresh ***")
-
         if cfg.backgroundsat.value:
             self.delayTimer = eTimer()
             try:
@@ -344,7 +345,6 @@ class XKlass_Catchup_Categories(Screen):
         self.createSetup()
 
     def makeUrlList(self):
-        # print("*** makeurllist ***")
         self.url_list = []
 
         player_api = str(glob.active_playlist["playlist_info"].get("player_api", ""))
@@ -468,7 +468,6 @@ class XKlass_Catchup_Categories(Screen):
             json.dump(playlists_all, f)
 
     def createSetup(self, data=None):
-        # print("*** createSetup ***")
         self["splash"].hide()
         self["x_title"].setText("")
         self["x_description"].setText("")
@@ -481,7 +480,6 @@ class XKlass_Catchup_Categories(Screen):
         self.buildLists()
 
     def buildLists(self):
-        # print("*** buildLists ***")
         if self.level == 1:
             self.buildList1()
         else:
@@ -503,7 +501,6 @@ class XKlass_Catchup_Categories(Screen):
 
         hidden = "0" in currentHidden
 
-        # print("**** livestreamsurl ***", self.liveStreamsUrl)
         if not self.liveStreamsData:
             self.liveStreamsData = self.downloadApiData(self.liveStreamsUrl)
 
@@ -539,7 +536,6 @@ class XKlass_Catchup_Categories(Screen):
         glob.originalChannelList1 = self.list1[:]
 
     def getLevel2(self):
-        # print("*** getLevel2 ***")
         response = self.downloadApiData(glob.nextlist[-1]["next_url"])
 
         index = 0
@@ -589,30 +585,28 @@ class XKlass_Catchup_Categories(Screen):
         glob.originalChannelList2 = self.list2[:]
 
     def downloadApiData(self, url):
-        # print("**** downloadApiData ****")
-        try:
-            retries = Retry(total=2, backoff_factor=1)
-            adapter = HTTPAdapter(max_retries=retries)
-            http = requests.Session()
+        retries = Retry(total=2, backoff_factor=1)
+        adapter = HTTPAdapter(max_retries=retries)
+
+        with requests.Session() as http:
             http.mount("http://", adapter)
             http.mount("https://", adapter)
 
-            response = http.get(url, headers=hdr, timeout=(10, 30), verify=False)
-            response.raise_for_status()
+            try:
+                response = http.get(url, headers=hdr, timeout=(10, 30), verify=False)
+                response.raise_for_status()
 
-            if response.status_code == requests.codes.ok:
-                try:
-                    return response.json()
-                except ValueError:
-                    print("JSON decoding failed.")
-                    return None
-        except Exception as e:
-            print("Error occurred during API data download:", e)
-
-        self.session.openWithCallback(self.back, MessageBox, _("Server error or invalid link."), MessageBox.TYPE_ERROR, timeout=3)
+                if response.status_code == requests.codes.ok:
+                    try:
+                        return response.json()
+                    except ValueError:
+                        print("JSON decoding failed.")
+                        return None
+            except Exception as e:
+                print("Error occurred during API data download:", e)
+                self.session.openWithCallback(self.back, MessageBox, _("Server error or invalid link."), MessageBox.TYPE_ERROR, timeout=3)
 
     def buildList1(self):
-        # print("*** buildlist1 ***")
         self["picon"].hide()
 
         if self["key_blue"].getText() != _("Reset Search"):
@@ -628,7 +622,6 @@ class XKlass_Catchup_Categories(Screen):
             self["main_list"].setIndex(glob.nextlist[-1]["index"])
 
     def buildList2(self):
-        # print("*** buildlist2 ***")
         self.main_list = [buildCatchupStreamList(x[0], x[1], x[2], x[3], x[4], x[5], x[6], x[13]) for x in self.list2 if not x[13]]
         self["main_list"].setList(self.main_list)
         self["picon"].show()
@@ -637,7 +630,6 @@ class XKlass_Catchup_Categories(Screen):
             self["main_list"].setIndex(glob.nextlist[-1]["index"])
 
     def resetButtons(self):
-        # print("*** buttons ***")
         if glob.nextlist[-1]["filter"]:
             self["key_yellow"].setText("")
             self["key_blue"].setText(_("Reset Search"))
@@ -657,7 +649,6 @@ class XKlass_Catchup_Categories(Screen):
                 self["key_menu"].setText("+/-")
 
     def selectionChanged(self):
-        # print("*** selectionchanged ***")
         current_item = self["main_list"].getCurrent()
         if current_item:
             channel_title = current_item[0]
@@ -700,7 +691,6 @@ class XKlass_Catchup_Categories(Screen):
             self["key_blue"].setText("")
 
     def downloadImage(self):
-        # print("*** downloadimage ***")
         if self["main_list"].getCurrent():
             try:
                 for filename in ["original.png", "temp.png"]:
@@ -738,17 +728,14 @@ class XKlass_Catchup_Categories(Screen):
                 self.loadDefaultImage()
 
     def loadBlankImage(self, data=None):
-        # print("*** loadblankimage ***")
         if self["picon"].instance:
             self["picon"].instance.setPixmapFromFile(os.path.join(common_path, "picon_blank.png"))
 
     def loadDefaultImage(self, data=None):
-        # print("*** loaddefaultimage ***")
         if self["picon"].instance:
             self["picon"].instance.setPixmapFromFile(os.path.join(common_path, "picon.png"))
 
     def resizeImage(self, data=None):
-        # print("*** resizeImage ***")
         current_item = self["main_list"].getCurrent()
         if current_item:
             original = os.path.join(dir_tmp, "temp.png")
@@ -799,38 +786,31 @@ class XKlass_Catchup_Categories(Screen):
                 self.loadDefaultImage()
 
     def goUp(self):
-        # print("*** goup ***")
         instance = self.selectedlist.master.master.instance
         instance.moveSelection(instance.moveUp)
         self.selectionChanged()
 
     def goDown(self):
-        # print("*** godown ***")
         instance = self.selectedlist.master.master.instance
         instance.moveSelection(instance.moveDown)
         self.selectionChanged()
 
     def pageUp(self):
-        # print("*** pageup ***")
         instance = self.selectedlist.master.master.instance
         instance.moveSelection(instance.pageUp)
         self.selectionChanged()
 
     def pageDown(self):
-        # print("*** pagedown ***")
         instance = self.selectedlist.master.master.instance
         instance.moveSelection(instance.pageDown)
         self.selectionChanged()
 
     # button 0
     def reset(self):
-        # print("*** reset ***")
         self.selectedlist.setIndex(0)
         self.selectionChanged()
 
     def sort(self):
-        # print("*** sort ***")
-
         current_sort = self["key_yellow"].getText()
         if not current_sort or current_sort == _("Reverse"):
             return
@@ -878,7 +858,6 @@ class XKlass_Catchup_Categories(Screen):
         self.buildLists()
 
     def search(self, result=None):
-        # print("*** search ***")
         if not self["key_blue"].getText():
             return
 
@@ -890,7 +869,6 @@ class XKlass_Catchup_Categories(Screen):
             self.session.openWithCallback(self.filterChannels, VirtualKeyBoard, title=_("Filter this category..."), text=self.searchString)
 
     def filterChannels(self, result=None):
-        # print("*** filterchannels ***")
         activelist = []
         if result:
             self.filterresult = result
@@ -916,7 +894,6 @@ class XKlass_Catchup_Categories(Screen):
                 self.buildLists()
 
     def resetSearch(self):
-        # print("*** resetsearch ***")
         self["key_blue"].setText(_("Search"))
         self["key_yellow"].setText(self.sortText)
 
@@ -933,7 +910,6 @@ class XKlass_Catchup_Categories(Screen):
         self.buildLists()
 
     def pinEntered(self, result=None):
-        # print("*** pinentered ***")
         if not result:
             self.pin = False
             self.session.open(MessageBox, _("Incorrect pin code."), type=MessageBox.TYPE_ERROR, timeout=5)
@@ -949,7 +925,6 @@ class XKlass_Catchup_Categories(Screen):
             return
 
     def parentalCheck(self):
-        # print("*** parentalcheck ***")
         self.pin = True
         nowtime = int(time.mktime(datetime.now().timetuple())) if pythonVer == 2 else int(datetime.timestamp(datetime.now()))
 
@@ -973,7 +948,6 @@ class XKlass_Catchup_Categories(Screen):
             self.next()
 
     def next(self):
-        # print("*** next ***")
         if self["main_list"].getCurrent():
             current_index = self["main_list"].getIndex()
             glob.nextlist[-1]["index"] = current_index
@@ -1008,14 +982,11 @@ class XKlass_Catchup_Categories(Screen):
                     self.createSetup()
 
     def setIndex(self, data=None):
-        # print("*** setindex ***")
         if self["main_list"].getCurrent():
             self["main_list"].setIndex(glob.currentchannellistindex)
             self.createSetup()
 
     def back(self, data=None):
-        # print("*** back ***")
-
         try:
             self.closeChoiceBoxDialog()
         except Exception as e:
@@ -1054,7 +1025,6 @@ class XKlass_Catchup_Categories(Screen):
                 self.createSetup()
 
     def hideEPG(self):
-        # print("*** hideEPG ***")
         self["picon"].hide()
         self["epg_bg"].hide()
         self["x_title"].setText("")
@@ -1062,10 +1032,8 @@ class XKlass_Catchup_Categories(Screen):
         self["progress"].hide()
 
     def showEPG(self):
-        # print("*** showEPG ***")
         self["picon"].show()
         self["epg_bg"].show()
-        # self["progress"].show()
 
     def displayShortEPG(self):
         current_item = self["epg_short_list"].getCurrent()
