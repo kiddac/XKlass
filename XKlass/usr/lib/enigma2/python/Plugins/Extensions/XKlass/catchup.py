@@ -311,7 +311,6 @@ class XKlass_Catchup_Categories(Screen):
                 self.delayTimer.callback.append(self.playOriginalChannel)
             self.delayTimer.start(1000, True)
 
-
         self.level = glob.current_level
 
         if not glob.ChoiceBoxDialog:
@@ -1240,6 +1239,7 @@ class XKlass_Catchup_Categories(Screen):
                     start_datetime_original = self.parse_datetime(start)
                     if start_datetime_original:
                         start_datetime = start_datetime_original + timedelta(hours=shift)
+                        start_datetime_original_margin = start_datetime_original - timedelta(minutes=catchupstart)
                     else:
                         print("Error parsing start datetime")
                         continue
@@ -1273,7 +1273,9 @@ class XKlass_Catchup_Categories(Screen):
 
                     epg_duration = int((end_datetime_margin - start_datetime_margin).total_seconds() / 60.0)
 
-                    url_datestring = start_datetime_original.strftime("%Y-%m-%d:%H-%M")
+                    url_datestring = start_datetime_original_margin.strftime("%Y-%m-%d:%H-%M")
+
+                    # url_datestring = start_datetime_margin.strftime("%Y-%m-%d:%H-%M")
 
                     if (epg_date_all, epg_time_all) not in duplicatecheck:
                         duplicatecheck.add((epg_date_all, epg_time_all))
