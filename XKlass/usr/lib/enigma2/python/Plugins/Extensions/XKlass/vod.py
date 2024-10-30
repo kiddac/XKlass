@@ -97,7 +97,7 @@ hdr = {
 }
 
 agent = Agent(reactor)
-downloader = DataDownloader(agent, pythonVer)
+# downloader = DataDownloader(agent, pythonVer)
 
 
 class XKlass_Vod_Categories(Screen):
