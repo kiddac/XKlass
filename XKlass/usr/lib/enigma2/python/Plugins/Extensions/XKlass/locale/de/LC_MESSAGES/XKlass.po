@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "POT-Creation-Date: 2024-09-14 22:41+0100\n"
-"PO-Revision-Date: 2024-09-14 22:42+0100\n"
+"PO-Revision-Date: 2024-11-12 17:33+0000\n"
 "Last-Translator: Masta2002\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -233,7 +233,7 @@ msgstr "Konto-Informationen"
 #: channelmenu.py:114 channelmenu.py:148 channelmenu.py:257 playlists.py:63
 #: startmenu.py:582
 msgid "Manage Playlists"
-msgstr ""
+msgstr "Wiedergabelisten verwalten"
 
 #: channelmenu.py:115 channelmenu.py:150 channelmenu.py:259
 msgid "Add New Playlist"
@@ -518,11 +518,11 @@ msgstr "Name bereits verwendet. Bitte gib einen eindeutigen Namen ein."
 
 #: plugin.py:179 plugin.py:180
 msgid "Original"
-msgstr ""
+msgstr "Original"
 
 #: plugin.py:180
 msgid "Added"
-msgstr ""
+msgstr "Hinzugefügt"
 
 #: plugin.py:180 series.py:2052 series.py:2075 vod.py:510 vod.py:536
 #: vod.py:1684 vod.py:1704
@@ -531,7 +531,7 @@ msgstr "Sortierung: Jahr"
 
 #: plugin.py:180
 msgid "Year"
-msgstr ""
+msgstr "Jahr"
 
 #: plugin.py:277 plugin.py:385
 msgid "XKlass"
@@ -733,11 +733,11 @@ msgstr "Standardtyp VOD/Serien-Stream"
 
 #: settings.py:155
 msgid "Default VOD category sort order"
-msgstr ""
+msgstr "Standard-Sortierreihenfolge der VOD-Kategorien"
 
 #: settings.py:156
 msgid "Default VOD stream sort order"
-msgstr ""
+msgstr "Standard-Sortierreihenfolge für VOD-Streams"
 
 #: settings.py:158
 msgid "XKlass parental control"
@@ -785,7 +785,7 @@ msgstr "Intro-Video in Schleife"
 
 #: settings.py:169
 msgid "Intro video selection"
-msgstr ""
+msgstr "Auswahl des Intro-Videos"
 
 #: settings.py:170
 msgid "Show channel picons"
@@ -809,11 +809,11 @@ msgstr "XKlass beim Booten automatisch starten"
 
 #: settings.py:175
 msgid "Play satellite channel audio in background"
-msgstr ""
+msgstr "Satellitenkanal-Audio im Hintergrund abspielen"
 
 #: settings.py:176
 msgid "Add speedtest plugin to main menu"
-msgstr ""
+msgstr "Speedtest-Plugin zum Hauptmenü hinzufügen"
 
 #: settings.py:303
 msgid "Choose Directory:"
@@ -837,11 +837,11 @@ msgstr "Catchup TV"
 
 #: startmenu.py:590
 msgid "Reboot GUI"
-msgstr ""
+msgstr "Neustart-GUI"
 
 #: startmenu.py:593
 msgid "Speed Test"
-msgstr ""
+msgstr "Geschwindigkeitstest"
 
 #: startmenu.py:734
 msgid ""
@@ -850,6 +850,10 @@ msgid ""
 "Playlists will not be deleted.\n"
 "Do you wish to continue?"
 msgstr ""
+"Achtung: Gespeicherte json-Daten für alle Playlists löschen... "
+"Einstellungen, Favoriten etc.\n"
+"Wiedergabelisten werden nicht gelöscht.\n"
+"Möchten Sie fortfahren?"
 
 #: vod.py:116
 msgid "Vod Categories"
@@ -878,12 +882,3 @@ msgstr ""
 #: vodplayer.py:497
 msgid "VOD"
 msgstr "Video-on-Demand"
-
-#~ msgid "Set As Default Playlist"
-#~ msgstr "Als Standard-Wiedergabeliste festlegen"
-
-#~ msgid "Switch Playlist"
-#~ msgstr "Playliste wechseln"
-
-#~ msgid "Server not responding."
-#~ msgstr "Server reagiert nicht."
