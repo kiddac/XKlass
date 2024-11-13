@@ -425,20 +425,32 @@ class XKlass_MainMenu(Screen):
 
     def set_last_playlist(self):
         # print("*** set_last_playlist ***")
-        for p, playlist in enumerate(self.playlists_all):
+        p = 0
+
+        for playlist in self.playlists_all:
             playlist_name = playlist["playlist_info"]["name"]
+
             if "user_info" in playlist and "status" in playlist["user_info"]:
                 status = playlist["user_info"]["status"]
-                # Check if playlist matches the default
-                if playlist_name == cfg.lastplaylist.value and any(playlist_name == item[1] for item in self.list2) and status == "Active":
+
+                if (
+                    playlist_name == cfg.lastplaylist.value
+                    and any(playlist_name == item[1] for item in self.list2)
+                    and status == "Active"
+                ):
+
                     glob.active_playlist = playlist
                     glob.current_selection = p
                     glob.active_playlist["data"]["live_streams"] = []
+
                     self.original_active_playlist = glob.active_playlist
                     return
 
-        # If no match found, fall back to the first playlist in list2
+                if status == "Active":
+                    p += 1
+
         fallback_playlist_name = self.list2[0][1]
+
         for p, playlist in enumerate(self.playlists_all):
             playlist_name = playlist["playlist_info"]["name"]
             if playlist_name == fallback_playlist_name:

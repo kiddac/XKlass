@@ -23,3 +23,4 @@ current_list = None
 current_level = None
 current_screen = None
 previous_screen = None
+refresh_index = 0

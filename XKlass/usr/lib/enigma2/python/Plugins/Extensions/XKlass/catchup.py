@@ -319,18 +319,21 @@ class XKlass_Catchup_Categories(Screen):
                 self["category_actions"].setEnabled(True)
                 self["channel_actions"].setEnabled(False)
                 self["menu_actions"].setEnabled(False)
-            if self.level == 2:
+            elif self.level == 2:
                 self["category_actions"].setEnabled(False)
                 self["channel_actions"].setEnabled(True)
                 self["menu_actions"].setEnabled(False)
 
+        sameplaylist = True
+
         if self.original_active_playlist["playlist_info"]["full_url"] != glob.active_playlist["playlist_info"]["full_url"]:
             if self.level == 1:
                 self.reset()
-            if self.level == 2:
+            elif self.level == 2:
                 self.back()
                 self.reset()
             glob.active_playlist["data"]["live_streams"] = []
+            sameplaylist = False
 
         self.initGlobals()
 
@@ -343,6 +346,9 @@ class XKlass_Catchup_Categories(Screen):
                 self.makeUrlList()
 
         self.createSetup()
+
+        if sameplaylist:
+            self["main_list"].setIndex(glob.refresh_index)
 
     def makeUrlList(self):
         self.url_list = []
@@ -1292,6 +1298,7 @@ class XKlass_Catchup_Categories(Screen):
         if self.selectedlist == self["epg_short_list"]:
             self.back()
         from . import channelmenu
+        glob.refresh_index = self["main_list"].getIndex()
         glob.current_list = self.prelist + self.list1 if self.level == 1 else self.list2
         glob.current_level = self.level
         glob.current_screen = "catchup"

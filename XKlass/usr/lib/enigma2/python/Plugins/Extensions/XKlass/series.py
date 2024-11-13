@@ -347,6 +347,8 @@ class XKlass_Series_Categories(Screen):
                 self["channel_actions"].setEnabled(True)
                 self["menu_actions"].setEnabled(False)
 
+        sameplaylist = True
+
         if (self.original_active_playlist["playlist_info"]["full_url"] != glob.active_playlist["playlist_info"]["full_url"]) or self.tmdbsetting != cfg.TMDB.value:
             if self.level == 1:
                 self.reset()
@@ -365,6 +367,7 @@ class XKlass_Series_Categories(Screen):
                 self.back()
                 self.back()
                 self.reset()
+            sameplaylist = True
 
         self.initGlobals()
 
@@ -379,6 +382,9 @@ class XKlass_Series_Categories(Screen):
                 self.makeUrlList()
 
         self.createSetup()
+
+        if sameplaylist:
+            self["main_list"].setIndex(glob.refresh_index)
 
     def makeUrlList(self):
         # print("*** makeurllist ***")
@@ -1393,7 +1399,7 @@ class XKlass_Series_Categories(Screen):
                     if "vote_average" in self.tmdbdetails and self.tmdbdetails["vote_average"]:
                         rating_str = str(self.tmdbdetails["vote_average"])
 
-                    if rating_str is not None and float(rating_str) != 0:
+                    if rating_str not in [None, 0, 0.0, "0", "0.0"]:
                         try:
                             rating = float(rating_str)
                             rounded_rating = round(rating, 1)
@@ -2550,6 +2556,7 @@ class XKlass_Series_Categories(Screen):
 
     def showPopupMenu(self):
         from . import channelmenu
+        glob.refresh_index = self["main_list"].getIndex()
         glob.current_list = self.prelist + self.list1 if self.level == 1 else self.list2
         glob.current_level = self.level
         glob.current_screen = "series"

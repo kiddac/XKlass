@@ -348,12 +348,15 @@ class XKlass_Vod_Categories(Screen):
                 self["channel_actions"].setEnabled(True)
                 self["menu_actions"].setEnabled(False)
 
+        sameplaylist = True
+
         if self.original_active_playlist["playlist_info"]["full_url"] != glob.active_playlist["playlist_info"]["full_url"]:
             if self.level == 1:
                 self.reset()
             elif self.level == 2:
                 self.back()
                 self.reset()
+            sameplaylist = False
 
         self.initGlobals()
 
@@ -366,6 +369,9 @@ class XKlass_Vod_Categories(Screen):
                 self.makeUrlList()
 
         self.createSetup()
+
+        if sameplaylist:
+            self["main_list"].setIndex(glob.refresh_index)
 
     def makeUrlList(self):
         # print("*** makeurllist ***")
@@ -1203,13 +1209,16 @@ class XKlass_Vod_Categories(Screen):
 
                     if "vote_average" in self.tmdbdetails:
                         rating_str = self.tmdbdetails["vote_average"]
-                        if rating_str and rating_str != 0:
+                        if rating_str not in [None, 0, 0.0, "0", "0.0"]:
                             try:
                                 rating = float(rating_str)
                                 rounded_rating = round(rating, 1)
                                 self.tmdbresults["rating"] = "{:.1f}".format(rounded_rating)
-                            except ValueError:
-                                self.tmdbresults["rating"] = str(rating_str)
+                            except ValueError as e:
+                                print("*** rating1 error ***", e)
+                                self.tmdbresults["rating"] = 0
+                        else:
+                            self.tmdbresults["rating"] = 0
 
                     if "genres" in self.tmdbdetails and self.tmdbdetails["genres"]:
                         genre = " / ".join(str(genreitem["name"]) for genreitem in self.tmdbdetails["genres"][:4])
@@ -1272,7 +1281,7 @@ class XKlass_Vod_Categories(Screen):
             if self.tmdbresults:
                 info = self.tmdbresults
 
-                rating = float(info.get("rating", 0))
+                rating = info.get("rating", 0)
 
                 rating_texts = {
                     (0.0, 0.0): "",
@@ -1313,7 +1322,8 @@ class XKlass_Vod_Categories(Screen):
                         rating = float(rating)
                         rounded_rating = round(rating, 1)
                         rating = "{:.1f}".format(rounded_rating)
-                    except ValueError:
+                    except Exception as e:
+                        print("*** rating2 error ***", e)
                         pass
 
                 self["rating_text"].setText(str(rating).strip())
@@ -2217,6 +2227,7 @@ class XKlass_Vod_Categories(Screen):
 
     def showPopupMenu(self):
         from . import channelmenu
+        glob.refresh_index = self["main_list"].getIndex()
         glob.current_list = self.prelist + self.list1 if self.level == 1 else self.list2
         glob.current_level = self.level
         if self.level == 1 or (self.level == 2 and self.chosen_category not in ["favourites", "recents"]):
