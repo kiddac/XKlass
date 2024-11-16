@@ -367,7 +367,8 @@ class XKlass_Series_Categories(Screen):
                 self.back()
                 self.back()
                 self.reset()
-            sameplaylist = True
+
+            sameplaylist = False
 
         self.initGlobals()
 
@@ -1631,7 +1632,7 @@ class XKlass_Series_Categories(Screen):
                     genre = str(info["genre"]).strip()
 
                 try:
-                    rating = float(info.get("rating", 0))
+                    rating = float(info.get("rating", 0) or 0)
                 except:
                     rating = 0
 

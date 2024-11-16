@@ -1281,7 +1281,7 @@ class XKlass_Vod_Categories(Screen):
             if self.tmdbresults:
                 info = self.tmdbresults
 
-                rating = info.get("rating", 0)
+                rating = float(info.get("rating", 0) or 0)
 
                 rating_texts = {
                     (0.0, 0.0): "",
@@ -2159,6 +2159,7 @@ class XKlass_Vod_Categories(Screen):
 
     def openIMDb(self):
         # print("*** openIMDb ***")
+        glob.refresh_index = self["main_list"].getIndex()
         if DreamOS and TMDB_installed:
             try:
                 name = str(self["main_list"].getCurrent()[0])

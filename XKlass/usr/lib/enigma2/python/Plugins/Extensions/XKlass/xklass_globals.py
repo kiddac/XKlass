@@ -24,3 +24,4 @@ current_level = None
 current_screen = None
 previous_screen = None
 refresh_index = 0
+current_active_playlist_selection = 0

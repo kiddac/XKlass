@@ -97,6 +97,12 @@ class XKlass_MainMenu(Screen):
 
         self.playlists_all = loadfiles.process_files()
 
+        for playlist in self.playlists_all:
+            playlist["data"]["live_categories"] = []
+            playlist["data"]["live_streams"] = []
+            playlist["data"]["vod_categories"] = []
+            playlist["data"]["series_categories"] = []
+
         glob.active_playlist = []
 
         try:
@@ -368,13 +374,13 @@ class XKlass_MainMenu(Screen):
         self["splash"].hide()
 
         self.list2 = []
-        index = 0
 
         for playlist in self.playlists_all:
             name = playlist["playlist_info"].get("name", playlist["playlist_info"].get("domain", ""))
             url = playlist["playlist_info"].get("host", "")
             activenum = ""
             maxnum = ""
+            index = playlist["playlist_info"]["index"]
 
             user_info = playlist.get("user_info", {})
             if "auth" in user_info:
@@ -398,7 +404,6 @@ class XKlass_MainMenu(Screen):
                             maxnum = 0
 
                         self.list2.append([index, name, url, activenum, maxnum])
-                        index += 1
 
             if playlist.get("data", {}).get("fail_count", 0) > 5:
                 self.session.open(MessageBox, _("You have dead playlists that are slowing down loading.\n\nPress Yellow button to soft delete dead playlists"), MessageBox.TYPE_WARNING)
@@ -416,8 +421,6 @@ class XKlass_MainMenu(Screen):
 
         if activeplaylists:
             self.set_last_playlist()
-            self["playlists"].setList(self.drawList2)
-            self["playlists"].setIndex(glob.current_selection)
             self.makeUrlCategoryList()
         else:
             self.addServer()
@@ -425,44 +428,48 @@ class XKlass_MainMenu(Screen):
 
     def set_last_playlist(self):
         # print("*** set_last_playlist ***")
-        p = 0
+
+        activeindex = 0
+        found = False
 
         for playlist in self.playlists_all:
             playlist_name = playlist["playlist_info"]["name"]
 
-            if "user_info" in playlist and "status" in playlist["user_info"]:
-                status = playlist["user_info"]["status"]
+            if "user_info" in playlist and playlist["user_info"] and "status" in playlist["user_info"] and playlist["user_info"]["status"] == "Active":
 
-                if (
-                    playlist_name == cfg.lastplaylist.value
-                    and any(playlist_name == item[1] for item in self.list2)
-                    and status == "Active"
-                ):
-
+                if playlist_name == cfg.lastplaylist.value:
                     glob.active_playlist = playlist
-                    glob.current_selection = p
-                    glob.active_playlist["data"]["live_streams"] = []
-
+                    glob.current_active_playlist_selection = activeindex
                     self.original_active_playlist = glob.active_playlist
-                    return
+                    found = True
+                    break
 
-                if status == "Active":
-                    p += 1
+                activeindex += 1
 
-        fallback_playlist_name = self.list2[0][1]
+        # If no match found, fall back to the first playlist in list2
 
-        for p, playlist in enumerate(self.playlists_all):
-            playlist_name = playlist["playlist_info"]["name"]
-            if playlist_name == fallback_playlist_name:
-                glob.active_playlist = playlist
-                glob.current_selection = p
-                cfg.lastplaylist.setValue(playlist_name)
-                cfg.save()
-                configfile.save()
-                break
+        if not found:
+
+            activeindex = 0
+
+            for playlist in self.playlists_all:
+
+                playlist_name = playlist["playlist_info"]["name"]
+
+                if "user_info" in playlist and playlist["user_info"] and "status" in playlist["user_info"] and playlist["user_info"]["status"] == "Active":
+                    glob.active_playlist = playlist
+                    glob.current_active_playlist_selection = activeindex
+                    cfg.lastplaylist.setValue(playlist_name)
+                    cfg.save()
+                    configfile.save()
+                    break
+
+                activeindex += 1
 
         glob.active_playlist["data"]["live_streams"] = []
         self.original_active_playlist = glob.active_playlist
+        self["playlists"].setList(self.drawList2)
+        self["playlists"].setIndex(glob.current_active_playlist_selection)
 
     def buildPlalyistListEntry(self, index, name, url, activenum, maxnum):
         text = str(name) + "   " + _("Active:") + str(activenum) + " " + _("Max:") + str(maxnum)
@@ -471,12 +478,25 @@ class XKlass_MainMenu(Screen):
     def getCurrentEntry(self):
         # print("*** getCurrentEntry ***")
         if self.list2:
-            glob.current_selection = self["playlists"].getIndex()
-            glob.active_playlist = self.playlists_all[glob.current_selection]
+            self["list"].setIndex(0)
+            glob.active_playlist["data"]["live_categories"] = []
+            glob.active_playlist["data"]["live_streams"] = []
+            glob.active_playlist["data"]["vod_categories"] = []
+            glob.active_playlist["data"]["series_categories"] = []
+
+            glob.current_active_playlist_selection = self["playlists"].getIndex()
+
+            current_playlist_selection = self["playlists"].getCurrent()[0]
+
+            glob.active_playlist = self.playlists_all[current_playlist_selection]
+
             self.original_active_playlist = glob.active_playlist
+
             cfg.lastplaylist.setValue(glob.active_playlist["playlist_info"]["name"])
             cfg.save()
             configfile.save()
+
+            self.makeUrlCategoryList()
 
     def makeUrlCategoryList(self):
         # print("*** makeUrlCategoryList ***")
@@ -610,13 +630,13 @@ class XKlass_MainMenu(Screen):
         if has_catchup:
             glob.active_playlist["data"]["catchup"] = True
 
-        if show_live:
+        if show_live and glob.active_playlist["data"]["live_categories"]:
             self.list.append(["", _("Live TV"), 0])
 
-        if show_vod:
+        if show_vod and glob.active_playlist["data"]["vod_categories"]:
             self.list.append(["", _("Movies"), 1])
 
-        if show_series:
+        if show_series and glob.active_playlist["data"]["series_categories"]:
             self.list.append(["", _("Series"), 2])
 
         if show_catchup and glob.active_playlist["data"]["catchup"]:
@@ -638,7 +658,8 @@ class XKlass_MainMenu(Screen):
         self.drawList = [self.buildListEntry(x[0], x[1], x[2]) for x in self.list]
         self["list"].setList(self.drawList)
 
-        self.playlists_all[glob.current_selection] = glob.active_playlist
+        playlistindex = glob.active_playlist["playlist_info"]["index"]
+        self.playlists_all[playlistindex] = glob.active_playlist
 
         self.writeJsonFile()
 
@@ -659,6 +680,8 @@ class XKlass_MainMenu(Screen):
                 self.session.nav.stopService()
 
         current_entry = self["list"].getCurrent()
+
+        glob.current_selection = glob.active_playlist["playlist_info"]["index"]
 
         if current_entry:
             index = current_entry[2]
@@ -794,6 +817,9 @@ class XKlass_MainMenu(Screen):
 
         if self.original_active_playlist != glob.active_playlist:
             self.original_active_playlist = glob.active_playlist
+            self["splash"].show()
+            self["background"] = StaticText("")
             self.createSetupPlaylists()
+
         else:
             self.createSetupOptions()
