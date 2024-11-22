@@ -413,6 +413,7 @@ class XKlass_Playlists(Screen):
     def quit(self, answer=None):
         glob.current_selection = self.original_current_selection
         glob.active_playlist = self.original_active_playlist
+        self.writeJsonFile()
         self.close()
 
     def deleteServer(self, answer=None):

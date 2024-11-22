@@ -358,9 +358,8 @@ class XKlass_Vod_Categories(Screen):
                 self.reset()
             sameplaylist = False
 
-        self.initGlobals()
+            self.initGlobals()
 
-        if self.original_active_playlist["playlist_info"]["full_url"] != glob.active_playlist["playlist_info"]["full_url"]:
             if not glob.active_playlist["player_info"]["showvod"]:
                 self.original_active_playlist = glob.active_playlist
                 self.close()
@@ -371,7 +370,9 @@ class XKlass_Vod_Categories(Screen):
         self.createSetup()
 
         if sameplaylist:
-            self["main_list"].setIndex(glob.refresh_index)
+            if self["main_list"].getCurrent():
+                self["main_list"].setIndex(glob.nextlist[-1]["index"])
+            self.selectionChanged()
 
     def makeUrlList(self):
         # print("*** makeurllist ***")
@@ -805,31 +806,32 @@ class XKlass_Vod_Categories(Screen):
                 if "name" not in self.tmdbresults and "movie_data" in content and content["movie_data"]:
                     self.tmdbresults["name"] = content["movie_data"]["name"]
 
+                cover = ""
                 if "cover_big" in self.tmdbresults:
                     cover = self.tmdbresults["cover_big"]
+                elif "movie_image" in self.tmdbresults:
+                    cover = self.tmdbresults["movie_image"]
 
-                    if cover and cover.startswith("http"):
-                        try:
-                            cover = cover.replace(r"\/", "/")
-                        except:
-                            pass
+                if cover and cover.startswith("http"):
+                    try:
+                        cover = cover.replace(r"\/", "/")
+                    except:
+                        pass
 
-                        if cover == "https://image.tmdb.org/t/p/w600_and_h900_bestv2":
-                            cover = ""
-
-                        if cover.startswith("https://image.tmdb.org/t/p/") or cover.startswith("http://image.tmdb.org/t/p/"):
-                            dimensions = cover.partition("/p/")[2].partition("/")[0]
-
-                            if screenwidth.width() <= 1280:
-                                cover = cover.replace(dimensions, "w200")
-                            elif screenwidth.width() <= 1920:
-                                cover = cover.replace(dimensions, "w300")
-                            else:
-                                cover = cover.replace(dimensions, "w400")
-                    else:
+                    if cover == "https://image.tmdb.org/t/p/w600_and_h900_bestv2":
                         cover = ""
 
-                    self.tmdbresults["cover_big"] = cover
+                    if cover.startswith("https://image.tmdb.org/t/p/") or cover.startswith("http://image.tmdb.org/t/p/"):
+                        dimensions = cover.partition("/p/")[2].partition("/")[0]
+
+                        if screenwidth.width() <= 1280:
+                            cover = cover.replace(dimensions, "w200")
+                        elif screenwidth.width() <= 1920:
+                            cover = cover.replace(dimensions, "w300")
+                        else:
+                            cover = cover.replace(dimensions, "w400")
+
+                self.tmdbresults["cover_big"] = cover
 
                 if "duration" in self.tmdbresults:
                     duration = self.tmdbresults["duration"]
@@ -857,8 +859,6 @@ class XKlass_Vod_Categories(Screen):
 
             elif "movie_data" in content and content["movie_data"]:
                 self.tmdbresults = content["movie_data"]
-            else:
-                self.tmdbresults = ""
 
             if cfg.TMDB.value is True:
                 self.getTMDB()
@@ -870,6 +870,8 @@ class XKlass_Vod_Categories(Screen):
 
     def selectionChanged(self):
         # print("*** selectionChanged ***")
+
+        self.tmdbresults = ""
 
         if self.cover_download_deferred:
             self.cover_download_deferred.cancel()
@@ -886,7 +888,7 @@ class XKlass_Vod_Categories(Screen):
             channel_title = current_item[0]
             current_index = self["main_list"].getIndex()
             glob.currentchannellistindex = current_index
-            # glob.nextlist[-1]["index"] = current_index
+            glob.nextlist[-1]["index"] = current_index
 
             position = current_index + 1
             position_all = len(self.pre_list) + len(self.main_list) if self.level == 1 else len(self.main_list)
@@ -949,9 +951,8 @@ class XKlass_Vod_Categories(Screen):
         # remove everything left between pipes.
         searchtitle = re.sub(r'\|.*?\|', '', searchtitle)
 
-        # remove all content between and including () multiple times
-        if database == "TMDB":
-            searchtitle = re.sub(r'\(\(.*?\)\)|\(.*?\)', '', searchtitle)
+        # remove all content between and including () multiple times unless it contains only numbers.
+        searchtitle = re.sub(r'\((?!\d+\))[^()]*\)', '', searchtitle)
 
         # remove all content between and including [] multiple times
         searchtitle = re.sub(r'\[\[.*?\]\]|\[.*?\]', '', searchtitle)
@@ -1085,7 +1086,7 @@ class XKlass_Vod_Categories(Screen):
                 if not resultid:
                     self.displayTMDB()
                     if cfg.channelcovers.value:
-                        self.tmdbresults = ""
+                        # self.tmdbresults = ""
                         self.downloadCover()
                     return
 
@@ -1125,6 +1126,9 @@ class XKlass_Vod_Categories(Screen):
         response = ""
         self.tmdbdetails = []
         director = []
+        poster_path = ""
+        backdrop_path = ""
+        logo_path = ""
 
         try:
             with codecs.open(os.path.join(dir_tmp, "search.txt"), "r", encoding="utf-8") as f:
@@ -1193,13 +1197,13 @@ class XKlass_Vod_Categories(Screen):
                         logosize = "w500"
 
                     if poster_path:
-                        self.tmdbresults["cover_big"] = "http://image.tmdb.org/t/p/{}{}".format(coversize, poster_path) if poster_path else ""
+                        self.tmdbresults["cover_big"] = "http://image.tmdb.org/t/p/{}{}".format(coversize, poster_path)
 
                     if backdrop_path:
-                        self.tmdbresults["backdrop_path"] = "http://image.tmdb.org/t/p/{}{}".format(backdropsize, backdrop_path) if backdrop_path else ""
+                        self.tmdbresults["backdrop_path"] = "http://image.tmdb.org/t/p/{}{}".format(backdropsize, backdrop_path)
 
                     if logo_path:
-                        self.tmdbresults["logo"] = "http://image.tmdb.org/t/p/{}{}".format(logosize, logo_path) if logo_path else ""
+                        self.tmdbresults["logo"] = "http://image.tmdb.org/t/p/{}{}".format(logosize, logo_path)
 
                     if "overview" in self.tmdbdetails and self.tmdbdetails["overview"].strip():
                         self.tmdbresults["description"] = str(self.tmdbdetails["overview"])
@@ -1428,8 +1432,7 @@ class XKlass_Vod_Categories(Screen):
             desc_image = ""
 
             if self.tmdbresults:  # tmdb
-                desc_image = str(self.tmdbresults.get("cover_big")).strip() or str(self.tmdbresults.get("movie_image")).strip() or ""
-
+                desc_image = str(self.tmdbresults.get("cover_big")).strip()
                 if self.cover_download_deferred and not self.cover_download_deferred.called:
                     self.cover_download_deferred.cancel()
 
@@ -2159,7 +2162,6 @@ class XKlass_Vod_Categories(Screen):
 
     def openIMDb(self):
         # print("*** openIMDb ***")
-        glob.refresh_index = self["main_list"].getIndex()
         if DreamOS and TMDB_installed:
             try:
                 name = str(self["main_list"].getCurrent()[0])
@@ -2228,7 +2230,6 @@ class XKlass_Vod_Categories(Screen):
 
     def showPopupMenu(self):
         from . import channelmenu
-        glob.refresh_index = self["main_list"].getIndex()
         glob.current_list = self.prelist + self.list1 if self.level == 1 else self.list2
         glob.current_level = self.level
         if self.level == 1 or (self.level == 2 and self.chosen_category not in ["favourites", "recents"]):

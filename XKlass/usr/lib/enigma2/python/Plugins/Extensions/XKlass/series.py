@@ -152,7 +152,7 @@ class XKlass_Series_Categories(Screen):
         self.chosen_category = ""
 
         self.pin = False
-        self.tmdbresults = ""
+        self.tmdbresults = {}
 
         self.storedtitle = ""
         self.storedseason = ""
@@ -370,7 +370,7 @@ class XKlass_Series_Categories(Screen):
 
             sameplaylist = False
 
-        self.initGlobals()
+            self.initGlobals()
 
         if (self.original_active_playlist["playlist_info"]["full_url"] != glob.active_playlist["playlist_info"]["full_url"]) or self.tmdbsetting != cfg.TMDB.value:
             if not glob.active_playlist["player_info"]["showvod"]:
@@ -385,7 +385,9 @@ class XKlass_Series_Categories(Screen):
         self.createSetup()
 
         if sameplaylist:
-            self["main_list"].setIndex(glob.refresh_index)
+            if self["main_list"].getCurrent():
+                self["main_list"].setIndex(glob.nextlist[-1]["index"])
+            self.selectionChanged()
 
     def makeUrlList(self):
         # print("*** makeurllist ***")
@@ -535,17 +537,16 @@ class XKlass_Series_Categories(Screen):
         self.buildLists()
 
     def buildLists(self):
-        # print("*** buildLists ***")
-        if self.level == 1:
+        if self.level == 1 and self.list1:
             self.buildCategories()
 
-        elif self.level == 2:
+        elif self.level == 2 and self.list2:
             self.buildSeries()
 
-        elif self.level == 3:
+        elif self.level == 3 and self.list3:
             self.buildSeasons()
 
-        elif self.level == 4:
+        elif self.level == 4 and self.list4:
             self.buildEpisodes()
 
         if (self.level == 1 and self.list1) or (self.level == 2 and self.list2) or (self.level == 3 and self.list3) or (self.level == 4 and self.list4):
@@ -700,7 +701,6 @@ class XKlass_Series_Categories(Screen):
                 # 0 index, 1 name, 2 series_id, 3 cover, 4 plot, 5 cast, 6 director, 7 genre, 8 releaseDate, 9 rating, 10 last_modified, 11 next_url, 12 tmdb, 13 hidden, 14 year, 15 backdrop
                 self.list2.append([index, str(name), str(series_id), str(cover), str(plot), str(cast), str(director), str(genre), str(releaseDate), str(rating), str(last_modified), str(next_url), str(tmdb), hidden, str(year), str(backdrop_path)])
 
-            # print("*** self list 2 ***", self.list2)
             glob.originalChannelList2 = self.list2[:]
 
         else:
@@ -801,7 +801,6 @@ class XKlass_Series_Categories(Screen):
 
                                     if "id" in item and item["id"]:
                                         series_id = item["id"]
-
                                     break
 
                         if str(series_id) in glob.active_playlist["player_info"]["seriesseasonshidden"]:
@@ -1026,23 +1025,24 @@ class XKlass_Series_Categories(Screen):
             self["main_list"].setList(self.main_list)
 
             self.showVod()
-
-            self["main_list"].setIndex(glob.nextlist[-1]["index"])
+            if self["main_list"].getCurrent():
+                self["main_list"].setIndex(glob.nextlist[-1]["index"])
 
     def buildSeasons(self):
         # print("*** buildSeasons ***")
         if self.list3:
             self.main_list = [buildSeriesSeasonsList(x[0], x[1], x[2], x[3], x[4], x[5], x[6], x[7], x[8], x[9], x[10], x[11], x[12], x[13], x[14], x[15]) for x in self.list3 if not x[13]]
             self["main_list"].setList(self.main_list)
-            self["main_list"].setIndex(glob.nextlist[-1]["index"])
+            if self["main_list"].getCurrent():
+                self["main_list"].setIndex(glob.nextlist[-1]["index"])
 
     def buildEpisodes(self):
         # print("*** buildEpisodes ***")
         if self.list4:
             self.main_list = [buildSeriesEpisodesList(x[0], x[1], x[2], x[3], x[4], x[5], x[6], x[7], x[8], x[9], x[10], x[11], x[12], x[13], x[14], x[15], x[16], x[17]) for x in self.list4 if not x[13]]
             self["main_list"].setList(self.main_list)
-
-            self["main_list"].setIndex(glob.nextlist[-1]["index"])
+            if self["main_list"].getCurrent():
+                self["main_list"].setIndex(glob.nextlist[-1]["index"])
 
     def displaySeriesData(self):
         # print("*** displaySeriesData ***")
@@ -1054,11 +1054,13 @@ class XKlass_Series_Categories(Screen):
                     self.getTMDB()
 
             else:
-                self.tmdbresults = ""
+                # self.tmdbresults = ""
                 self.displayTMDB()
 
     def selectionChanged(self):
         # print("*** selectionChanged ***")
+
+        self.tmdbresults = {}
         self.tmdbretry = 0
 
         if self.cover_download_deferred:
@@ -1075,7 +1077,7 @@ class XKlass_Series_Categories(Screen):
         if current_item:
             channel_title = current_item[0]
             current_index = self["main_list"].getIndex()
-            glob.currentchannellistindex = current_index
+            # glob.currentchannellistindex = current_index
             # glob.nextlist[-1]["index"] = current_index
 
             position = current_index + 1
@@ -1148,9 +1150,8 @@ class XKlass_Series_Categories(Screen):
         # remove everything left between pipes.
         searchtitle = re.sub(r'\|.*?\|', '', searchtitle)
 
-        # remove all content between and including () multiple times
-        if database == "TMDB":
-            searchtitle = re.sub(r'\(\(.*?\)\)|\(.*?\)', '', searchtitle)
+        # remove all content between and including () multiple times unless it contains only numbers.
+        searchtitle = re.sub(r'\((?!\d+\))[^()]*\)', '', searchtitle)
 
         # remove all content between and including [] multiple times
         searchtitle = re.sub(r'\[\[.*?\]\]|\[.*?\]', '', searchtitle)
@@ -1287,7 +1288,7 @@ class XKlass_Series_Categories(Screen):
                     self.tmdb2 = resultid
 
                     if not resultid:
-                        self.tmdbresults = ""
+                        # self.tmdbresults = ""
                         self.displayTMDB()
                         return
 
@@ -1300,7 +1301,7 @@ class XKlass_Series_Categories(Screen):
                         self.getTMDB()
                     else:
                         self.tmdbretry = 0
-                        self.tmdbresults = ""
+                        # self.tmdbresults = ""
                         self.displayTMDB()
                         return
 
@@ -1362,7 +1363,7 @@ class XKlass_Series_Categories(Screen):
                     self.repeatcount += 1
 
             else:
-                self.tmdbresults = ""
+                # self.tmdbresults = ""
                 self.displayTMDB()
                 return
 
@@ -1370,9 +1371,9 @@ class XKlass_Series_Categories(Screen):
         # print("*** processTMDBDetails ***")
         self.repeatcount = 0
         response = ""
-        if self.level == 2:
-            self.tmdbresults = {}
-            self.tmdbdetails = []
+
+        self.tmdbresults = {}
+        self.tmdbdetails = []
         director = []
         logos = None
 
@@ -2245,7 +2246,6 @@ class XKlass_Series_Categories(Screen):
     def next(self):
         # print("*** next ***")
         if self["main_list"].getCurrent():
-
             current_index = self["main_list"].getIndex()
             glob.nextlist[-1]["index"] = current_index
             glob.currentchannellist = self.main_list[:]
@@ -2389,6 +2389,7 @@ class XKlass_Series_Categories(Screen):
             self["x_title"].setText("")
             self["x_description"].setText("")
             self.level -= 1
+            glob.current_level = self.level
             self["category_actions"].setEnabled(True)
             self["channel_actions"].setEnabled(False)
             self["menu_actions"].setEnabled(False)
@@ -2557,7 +2558,6 @@ class XKlass_Series_Categories(Screen):
 
     def showPopupMenu(self):
         from . import channelmenu
-        glob.refresh_index = self["main_list"].getIndex()
         glob.current_list = self.prelist + self.list1 if self.level == 1 else self.list2
         glob.current_level = self.level
         glob.current_screen = "series"

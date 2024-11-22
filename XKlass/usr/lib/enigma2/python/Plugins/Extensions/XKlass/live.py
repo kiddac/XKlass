@@ -376,9 +376,8 @@ class XKlass_Live_Categories(Screen):
             glob.active_playlist["data"]["live_streams"] = []
             sameplaylist = False
 
-        self.initGlobals()
+            self.initGlobals()
 
-        if self.original_active_playlist["playlist_info"]["full_url"] != glob.active_playlist["playlist_info"]["full_url"]:
             if not glob.active_playlist["player_info"]["showlive"]:
                 self.original_active_playlist = glob.active_playlist
                 self.close()
@@ -389,7 +388,9 @@ class XKlass_Live_Categories(Screen):
         self.createSetup()
 
         if sameplaylist:
-            self["main_list"].setIndex(glob.refresh_index)
+            if self["main_list"].getCurrent():
+                self["main_list"].setIndex(glob.nextlist[-1]["index"])
+            self.selectionChanged()
 
     def makeUrlList(self):
         # print("*** makeurllist ***")
@@ -1180,7 +1181,6 @@ class XKlass_Live_Categories(Screen):
                     self["key_yellow"].setText(_("Sort: A-Z"))
 
                     glob.nextlist.append({"next_url": next_url, "index": 0, "level": self.level, "sort": self["key_yellow"].getText(), "filter": ""})
-
                     self.createSetup()
                 else:
                     self.createSetup()
@@ -1885,7 +1885,6 @@ class XKlass_Live_Categories(Screen):
 
     def showPopupMenu(self):
         from . import channelmenu
-        glob.refresh_index = self["main_list"].getIndex()
         glob.current_list = self.prelist + self.list1 if self.level == 1 else self.list2
         glob.current_level = self.level
         if self.level == 1 or (self.level == 2 and self.chosen_category not in ["favourites", "recents"]):
