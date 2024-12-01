@@ -171,9 +171,9 @@ class XKlass_Update:
                     epgxmlfile = os.path.join(epgfolder, "epg.xml")
                     epgjsonfile = os.path.join(epgfolder, "epg.json")
 
-                    exists = any(str(domain) == str(x[0]) for x in self.urllist)
-                    if exists:
+                    if xmltv in [x[1] for x in self.urllist]:
                         continue
+
                     self.urllist.append([domain, xmltv, epgxmlfile, epgjsonfile])
 
                     if not os.path.exists(epgfolder):
