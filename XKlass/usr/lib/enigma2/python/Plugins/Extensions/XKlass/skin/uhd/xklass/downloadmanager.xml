@@ -35,7 +35,9 @@
 	<ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XKlass/skin/uhd/common/button-bg.png" position="0,1360" size="2560,80" alphatest="blend" zPosition="1"/>
 	<widget source="key_red" render="Pixmap" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XKlass/skin/uhd/common/key_red.png" position="672,1375" size="51,51" alphatest="blend" zPosition="2"/>
 	<widget source="key_red" render="Label" position="736,1360" size="300,80" font="xklassregular;32" foregroundColor="#ffffff" backgroundColor="#0a3162" valign="center" transparent="1" noWrap="1" zPosition="2"/>
-	<widget source="key_green" render="Pixmap" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XKlass/skin/uhd/common/key_green.png" position="1036,1375" size="51,51" alphatest="blend" zPosition="2"/>
+	<widget source="key_green" render="Pixmap" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XKlass/skin/uhd/common/key_green.png" position="1036,1375" size="51,51" alphatest="blend" zPosition="2">
+		<convert type="ConditionalShowHide"/>
+	</widget>
 	<widget source="key_green" render="Label" position="1100,1360" size="300,80" font="xklassregular;32" foregroundColor="#ffffff" backgroundColor="#0a3162" valign="center" transparent="1" noWrap="1" zPosition="2"/>
 	<widget source="key_yellow" render="Pixmap" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XKlass/skin/uhd/common/key_yellow.png" position="1399,1375" size="51,51" alphatest="blend" zPosition="2">
 		<convert type="ConditionalShowHide"/>
