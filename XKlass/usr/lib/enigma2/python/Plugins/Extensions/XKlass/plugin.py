@@ -218,7 +218,6 @@ addFont(os.path.join(font_folder, "classfont2.ttf"), "klass", 100, 0)
 
 hdr = {
     'User-Agent': 'Enigma2 - XKlass Plugin',
-    'Connection': 'keep-alive',
     'Accept-Encoding': 'gzip, deflate'
 }
 

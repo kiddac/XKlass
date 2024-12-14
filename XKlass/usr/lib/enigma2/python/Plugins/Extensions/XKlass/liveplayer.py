@@ -360,7 +360,6 @@ skin_path = os.path.join(skin_directory, cfg.skin.value)
 
 hdr = {
     'User-Agent': str(cfg.useragent.value),
-    'Connection': 'keep-alive',
     'Accept-Encoding': 'gzip, deflate'
 }
 
