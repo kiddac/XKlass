@@ -38,6 +38,8 @@ pythonVer = sys.version_info.major
 
 isDreambox = os.path.exists("/usr/bin/apt-get")
 
+debugs = False
+
 with open("/usr/lib/enigma2/python/Plugins/Extensions/XKlass/version.txt", "r") as f:
     version = f.readline()
 
