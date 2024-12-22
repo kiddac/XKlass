@@ -243,7 +243,7 @@ class XKlass_AddServer(ConfigListScreen, Screen):
     def checkline(self):
         valid = False
 
-        retries = Retry(total=3, backoff_factor=1)
+        retries = Retry(total=2, backoff_factor=1)
         adapter = HTTPAdapter(max_retries=retries)
 
         with requests.Session() as http:
@@ -251,9 +251,9 @@ class XKlass_AddServer(ConfigListScreen, Screen):
             http.mount("https://", adapter)
 
             try:
-                response = http.get(self.apiline, headers=hdr, timeout=30, verify=False, stream=True)
+                response = http.get(self.apiline, headers=hdr, timeout=30, verify=False)
                 response.raise_for_status()
-                if response.status_code == requests.codes.ok or response.status_code == 206:
+                if response.status_code == requests.codes.ok:
                     try:
                         json_response = response.json()
                         if "user_info" in json_response and "auth" in json_response["user_info"]:
