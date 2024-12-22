@@ -362,6 +362,8 @@ class XKlass_Playlists(Screen):
                                 expires = datetime.fromtimestamp(int(exp_date)).strftime("%d-%m-%Y")
                             except:
                                 expires = "Null"
+                        else:
+                            expires = "Null"
 
                         active = str(_("Active Conn:"))
                         activenum = playlist["user_info"]["active_cons"]
@@ -489,7 +491,7 @@ class XKlass_Playlists(Screen):
                 self.session.open(serverinfo.XKlass_UserInfo)
 
     def closePlaylists(self):
-        if "user_info" in glob.active_playlist and "auth" in glob.active_playlist["user_info"] and glob.active_playlist["user_info"]["auth"] == 1 and glob.active_playlist["user_info"]["status"] == "Active":
+        if "user_info" in glob.active_playlist and "auth" in glob.active_playlist["user_info"] and str(glob.active_playlist["user_info"]["auth"]) == "1" and glob.active_playlist["user_info"]["status"] == "Active":
             cfg.lastplaylist.setValue(str(glob.active_playlist["playlist_info"]["name"]))
             cfg.save()
             configfile.save()

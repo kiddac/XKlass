@@ -192,7 +192,7 @@ class XKlass_ChannelMenu(Screen):
         from . import serverinfo
         if "user_info" in glob.active_playlist:
             if "auth" in glob.active_playlist["user_info"]:
-                if glob.active_playlist["user_info"]["auth"] == 1:
+                if str(glob.active_playlist["user_info"]["auth"]) == "1":
                     self.session.openWithCallback(self.callback, serverinfo.XKlass_UserInfo)
 
     def showPlaylists(self):
