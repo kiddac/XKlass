@@ -740,7 +740,7 @@ class XKlass_Live_Categories(Screen):
 
     def xmltvCheckData(self):
         # print("*** xmltvCheckData ***")
-        safeName = re.sub(r'[\<\>\:\"\/\\\|\?\*]', "_", str(glob.active_playlist["playlist_info"]["name"]))
+        safeName = re.sub(r'[\'\<\>\:\"\/\\\|\?\*\(\)\[\]]', "_", str(glob.active_playlist["playlist_info"]["name"]))
         safeName = re.sub(r" +", "_", safeName)  # Combine multiple spaces into one underscore
         safeName = re.sub(r"_+", "_", safeName)  # Replace multiple underscores with a single underscore
 
@@ -1767,7 +1767,7 @@ class XKlass_Live_Categories(Screen):
 
     def buildXMLTV(self):
         # print("*** buildxmltv ***")
-        safeName = re.sub(r'[\<\>\:\"\/\\\|\?\*]', "_", str(glob.active_playlist["playlist_info"]["name"]))
+        safeName = re.sub(r'[\'\<\>\:\"\/\\\|\?\*\(\)\[\]]', "_", str(glob.active_playlist["playlist_info"]["name"]))
         safeName = re.sub(r" +", "_", safeName)
         safeName = re.sub(r"_+", "_", safeName)
 
