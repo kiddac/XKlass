@@ -122,8 +122,10 @@ def process_files():
             username = query["username"][0].strip()
             password = query["password"][0].strip()
 
+            """
             if "type" in query:
                 type = query["type"][0].strip()
+                """
 
             if "output" in query:
                 output = query["output"][0].strip()
@@ -142,12 +144,8 @@ def process_files():
 
             for playlist in playlists_all:
                 # Extra check in case playlists.txt details have been amended
-                if ("domain" in playlist["playlist_info"]
-                        and "username" in playlist["playlist_info"]
-                        and "password" in playlist["playlist_info"]):
-                    if (playlist["playlist_info"]["domain"] == domain
-                            and playlist["playlist_info"]["username"] == username
-                            and playlist["playlist_info"]["password"] == password):
+                if ("domain" in playlist["playlist_info"] and "username" in playlist["playlist_info"] and "password" in playlist["playlist_info"]):
+                    if (playlist["playlist_info"]["domain"] == domain and playlist["playlist_info"]["username"] == username and playlist["playlist_info"]["password"] == password):
 
                         playlist_exists = True
 
@@ -202,6 +200,7 @@ def process_files():
                         break
 
             if not playlist_exists:
+                print("*** playlist not exist ***", playlist["playlist_info"]["name"])
                 playlists_all.append({
                     "playlist_info": {
                         "index": index,
@@ -274,6 +273,9 @@ def process_files():
                         and "password=" + str(playlist["playlist_info"]["password"]) in line):
                     new_list.append(playlist)
                     break
+
+    for index, playlist in enumerate(new_list):
+        playlist["playlist_info"]["index"] = index  # Or index + 1 if you want to start from 1
 
     playlists_all = new_list
 

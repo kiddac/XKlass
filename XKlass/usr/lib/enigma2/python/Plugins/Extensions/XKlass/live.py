@@ -662,7 +662,7 @@ class XKlass_Live_Categories(Screen):
                 except:
                     continue
 
-                service_ref = "1:0:1:" + str(format(bouquet_id1, "x")) + ":" + str(format(bouquet_id2, "x")) + ":" + str(format(self.unique_ref, "x")) + ":0:0:0:0:" + "http%3a//example.m3u8"
+                service_ref = "1:0:1:" + str(format(bouquet_id1, "x")) + ":" + str(format(bouquet_id2, "x")) + ":" + str(format(self.unique_ref, "x")) + ":0:0:0:0:http%3a//example.m3u8"
 
                 custom_sid = str(channel.get("custom_sid", ""))
                 if custom_sid and custom_sid not in {"null", "None", "0"}:
@@ -672,7 +672,7 @@ class XKlass_Live_Categories(Screen):
                     elif str(channel["custom_sid"]).startswith(":0"):
                         channel["custom_sid"] = "1" + channel["custom_sid"]
 
-                    service_ref = str(":".join(channel["custom_sid"].split(":")[:7])) + ":0:0:0:" + "http%3a//example.m3u8"
+                    service_ref = str(":".join(channel["custom_sid"].split(":")[:7])) + ":0:0:0:http%3a//example.m3u8"
                     custom_sid = channel["custom_sid"]
 
                 next_url = "{}/live/{}/{}/{}.{}".format(self.host, self.username, self.password, stream_id, self.output)
@@ -1844,7 +1844,7 @@ class XKlass_Live_Categories(Screen):
                 except:
                     continue
 
-                service_ref = "1:0:1:" + str(format(bouquet_id1, "x")) + ":" + str(format(bouquet_id2, "x")) + ":" + str(format(self.unique_ref, "x")) + ":0:0:0:0:" + "http%3a//example.m3u8"
+                service_ref = "1:0:1:" + str(format(bouquet_id1, "x")) + ":" + str(format(bouquet_id2, "x")) + ":" + str(format(self.unique_ref, "x")) + ":0:0:0:0:http%3a//example.m3u8"
 
                 custom_sid = str(channel.get("custom_sid", ""))
                 if custom_sid and custom_sid not in {"null", "None", "0"}:
@@ -1854,7 +1854,7 @@ class XKlass_Live_Categories(Screen):
                     elif str(channel["custom_sid"]).startswith(":0"):
                         channel["custom_sid"] = "1" + channel["custom_sid"]
 
-                    service_ref = str(":".join(channel["custom_sid"].split(":")[:7])) + ":0:0:0:" + "http%3a//example.m3u8"
+                    service_ref = str(":".join(channel["custom_sid"].split(":")[:7])) + ":0:0:0:http%3a//example.m3u8"
 
                 self.xmltv_channel_list[i]["serviceref"] = str(service_ref)
                 name = self.xmltv_channel_list[i]["name"]

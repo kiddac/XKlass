@@ -2,9 +2,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: XKlass v1.03\n"
+"Project-Id-Version: XKlass v1.32\n"
 "POT-Creation-Date: 2024-09-14 22:43+0100\n"
-"PO-Revision-Date: 2024-09-14 22:44+0100\n"
+"PO-Revision-Date: 2025-01-13 18:05+0100\n"
 "Last-Translator: weeping <a.weeping@gmail.com>\n"
 "Language-Team: weeping <a.weeping@gmail.com>\n"
 "Language: es_ES\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.4.4\n"
+"X-Generator: Poedit 3.5\n"
 "X-Poedit-Basepath: ../../..\n"
 "X-Poedit-SearchPath-0: .\n"
 
@@ -235,7 +235,7 @@ msgstr "Información de Cuenta"
 #: channelmenu.py:114 channelmenu.py:148 channelmenu.py:257 playlists.py:63
 #: startmenu.py:582
 msgid "Manage Playlists"
-msgstr ""
+msgstr "Gestión de Listas"
 
 #: channelmenu.py:115 channelmenu.py:150 channelmenu.py:259
 msgid "Add New Playlist"
@@ -519,11 +519,11 @@ msgstr "Nombre usado. Introducir uno nuevo."
 
 #: plugin.py:179 plugin.py:180
 msgid "Original"
-msgstr ""
+msgstr "Original"
 
 #: plugin.py:180
 msgid "Added"
-msgstr ""
+msgstr "Añadido"
 
 #: plugin.py:180 series.py:2052 series.py:2075 vod.py:510 vod.py:536
 #: vod.py:1684 vod.py:1704
@@ -532,7 +532,7 @@ msgstr "Orden: Año"
 
 #: plugin.py:180
 msgid "Year"
-msgstr ""
+msgstr "Año"
 
 #: plugin.py:277 plugin.py:385
 msgid "XKlass"
@@ -580,7 +580,7 @@ msgstr "Temporada "
 
 #: series.py:1640 vod.py:1357
 msgid "Rating: "
-msgstr "Clasificación:"
+msgstr "Clasificación: "
 
 #: series.py:1691 vod.py:1348
 msgid "Cast:"
@@ -734,11 +734,11 @@ msgstr "Tipo de stream VOD\\SERIES predefinido"
 
 #: settings.py:155
 msgid "Default VOD category sort order"
-msgstr ""
+msgstr "Orden categorías VOD predefinido"
 
 #: settings.py:156
 msgid "Default VOD stream sort order"
-msgstr ""
+msgstr "Orden stream VOD predefinido"
 
 #: settings.py:158
 msgid "XKlass parental control"
@@ -786,7 +786,7 @@ msgstr "Bucle de Intro de Video"
 
 #: settings.py:169
 msgid "Intro video selection"
-msgstr ""
+msgstr "Seleccionar el Video de Intro"
 
 #: settings.py:170
 msgid "Show channel picons"
@@ -810,11 +810,11 @@ msgstr "Inicio automático de XKlass al iniciar"
 
 #: settings.py:175
 msgid "Play satellite channel audio in background"
-msgstr ""
+msgstr "Reproducir canal de audio de satelire de fondo"
 
 #: settings.py:176
 msgid "Add speedtest plugin to main menu"
-msgstr ""
+msgstr "Añadir test de velocidad en el menú principal"
 
 #: settings.py:303
 msgid "Choose Directory:"
@@ -838,11 +838,11 @@ msgstr "Catch-Up TV"
 
 #: startmenu.py:590
 msgid "Reboot GUI"
-msgstr ""
+msgstr "Reiniciar GUI"
 
 #: startmenu.py:593
 msgid "Speed Test"
-msgstr ""
+msgstr "Test de Velocidad"
 
 #: startmenu.py:734
 msgid ""

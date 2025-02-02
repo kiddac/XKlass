@@ -289,7 +289,6 @@ class XKlass_MainMenu(Screen):
 
         return index, response
 
-
     def update_playlists_with_results(self, results):
         # print("*** update 1 ***")
         for index, response in results:
@@ -674,7 +673,11 @@ class XKlass_MainMenu(Screen):
         self["list"].setList(self.drawList)
 
         playlistindex = glob.active_playlist["playlist_info"]["index"]
-        self.playlists_all[playlistindex] = glob.active_playlist
+        try:
+            self.playlists_all[playlistindex] = glob.active_playlist
+        except:
+            glob.active_playlist["playlist_info"]["index"] = 0
+            self.playlists_all[0] = glob.active_playlist
 
         self.writeJsonFile()
 
