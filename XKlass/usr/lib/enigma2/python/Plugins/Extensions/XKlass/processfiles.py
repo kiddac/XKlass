@@ -200,7 +200,6 @@ def process_files():
                         break
 
             if not playlist_exists:
-                print("*** playlist not exist ***", playlist["playlist_info"]["name"])
                 playlists_all.append({
                     "playlist_info": {
                         "index": index,
