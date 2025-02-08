@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2024-09-14 22:48+0100\n"
-"PO-Revision-Date: 2024-09-14 22:48+0100\n"
+"POT-Creation-Date: 2024-09-14 22:37+0100\n"
+"PO-Revision-Date: 2025-02-02 08:41+0100\n"
 "Last-Translator: Warder <ciksa@seznam.cz>\n"
 "Language-Team: \n"
 "Language: sk\n"
@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n>=2 && n<=4 ? 1 : 2);\n"
-"X-Generator: Poedit 3.4.4\n"
+"X-Generator: Poedit 3.5\n"
 "X-Poedit-Basepath: ../../..\n"
 "X-Poedit-SearchPath-0: .\n"
 
@@ -66,7 +66,7 @@ msgstr "Catch Up Kategórie"
 
 #: catchup.py:150
 msgid "Catchup TV"
-msgstr ""
+msgstr "Catchup TV"
 
 #: catchup.py:190 catchup.py:652 catchup.py:840 catchup.py:854 catchup.py:993
 #: live.py:205 live.py:766 live.py:967 live.py:981 live.py:1167 plugin.py:179
@@ -212,7 +212,7 @@ msgstr "Zmena uznesenia neúspešná"
 
 #: channelmenu.py:51
 msgid "Menu"
-msgstr ""
+msgstr "Zobraziť v ponuke rozšírení"
 
 #: channelmenu.py:108 channelmenu.py:140 channelmenu.py:247
 msgid "Manual EPG Update"
@@ -224,20 +224,20 @@ msgstr "Playlist Nastavenie"
 
 #: channelmenu.py:111 channelmenu.py:144 channelmenu.py:251
 msgid "Show/Hide Channels"
-msgstr ""
+msgstr "Zobraziť/skryť kanály"
 
 #: channelmenu.py:112 channelmenu.py:146 channelmenu.py:253
 msgid "Account Info"
-msgstr ""
+msgstr "Informácie o účte"
 
 #: channelmenu.py:114 channelmenu.py:148 channelmenu.py:257 playlists.py:63
 #: startmenu.py:582
 msgid "Manage Playlists"
-msgstr ""
+msgstr "Spravovať zoznamy skladieb"
 
 #: channelmenu.py:115 channelmenu.py:150 channelmenu.py:259
 msgid "Add New Playlist"
-msgstr ""
+msgstr "Pridať nový zoznam skladieb"
 
 #: channelmenu.py:126 channelmenu.py:152 channelmenu.py:261 startmenu.py:587
 msgid "Download Manager"
@@ -246,7 +246,7 @@ msgstr "Správca sťahovania"
 #: channelmenu.py:127 channelmenu.py:154 channelmenu.py:263 settings.py:68
 #: startmenu.py:584
 msgid "Global Settings"
-msgstr ""
+msgstr "Globálne nastavenia"
 
 #: channelmenu.py:171
 msgid "Recordings in progress. EPG not downloaded."
@@ -258,7 +258,7 @@ msgstr "Sťahovanie EPG."
 
 #: channelmenu.py:239
 msgid "Live"
-msgstr ""
+msgstr "Naživo"
 
 #: channelmenu.py:241
 msgid "Vod"
@@ -266,11 +266,11 @@ msgstr "Vod"
 
 #: channelmenu.py:243 series.py:109 series.py:2468 startmenu.py:577
 msgid "Series"
-msgstr "Edície"
+msgstr "Séria"
 
 #: channelmenu.py:245
 msgid "Catchup"
-msgstr ""
+msgstr "Catchup"
 
 #: downloadmanager.py:56 downloadmanager.py:402 downloadmanager.py:438
 msgid "Not Started"
@@ -366,7 +366,7 @@ msgstr "Živé kategórie"
 
 #: live.py:156 startmenu.py:571
 msgid "Live TV"
-msgstr ""
+msgstr "Živé TV"
 
 #: live.py:565 vod.py:585
 msgid "FAVOURITES"
@@ -378,7 +378,7 @@ msgstr "NEDÁVNO SLEDOVANÉ"
 
 #: live.py:761 live.py:1018 playlists.py:70 vod.py:1386 vod.py:1734
 msgid "Delete"
-msgstr "Zmazať"
+msgstr "Odstrániť"
 
 #: live.py:1420 live.py:1475 live.py:1484
 msgid "Next Info"
@@ -406,7 +406,7 @@ msgstr "Informácie"
 
 #: playlists.py:107 startmenu.py:150
 msgid "No internet."
-msgstr ""
+msgstr "Bez internetu."
 
 #: playlists.py:327 playlists.py:403
 msgid "Not Authorised"
@@ -516,11 +516,11 @@ msgstr "Už použitý názov. Zadajte jedinečný názov."
 
 #: plugin.py:179 plugin.py:180
 msgid "Original"
-msgstr ""
+msgstr "Originálne"
 
 #: plugin.py:180
 msgid "Added"
-msgstr ""
+msgstr "Pridané"
 
 #: plugin.py:180 series.py:2052 series.py:2075 vod.py:510 vod.py:536
 #: vod.py:1684 vod.py:1704
@@ -529,7 +529,7 @@ msgstr "Zoradiť: Rok"
 
 #: plugin.py:180
 msgid "Year"
-msgstr ""
+msgstr "Rok"
 
 #: plugin.py:277 plugin.py:385
 msgid "XKlass"
@@ -577,7 +577,7 @@ msgstr "Sezóna "
 
 #: series.py:1640 vod.py:1357
 msgid "Rating: "
-msgstr ""
+msgstr "Hodnotenie: "
 
 #: series.py:1691 vod.py:1348
 msgid "Cast:"
@@ -589,7 +589,7 @@ msgstr "Režisér:"
 
 #: series.py:1701 vod.py:1313
 msgid "Overview"
-msgstr ""
+msgstr "Prehľad"
 
 #: server.py:49
 msgid "Add Playlist"
@@ -677,7 +677,7 @@ msgstr "Offset servera:"
 
 #: serverinfo.py:83
 msgid "Unknown"
-msgstr ""
+msgstr "Neznáme"
 
 #: settings.py:119
 msgid ""
@@ -685,6 +685,9 @@ msgid ""
 "\n"
 "Pin cannot be 0000, 111, or 1234"
 msgstr ""
+"Zmeňte predvolený rodičovský kód PIN.\n"
+"\n"
+"Pin nemôže byť 0000, 111 alebo 1234"
 
 #: settings.py:136
 msgid "You need to restart the GUI"
@@ -700,7 +703,7 @@ msgstr "Vyber skin"
 
 #: settings.py:147
 msgid "Select fake web user-agent"
-msgstr ""
+msgstr "Vyberte falošný webový používateľský agent"
 
 #: settings.py:149
 msgid "playlists.txt location"
@@ -728,19 +731,19 @@ msgstr "Predvolený typ streamu VOD/SERIES"
 
 #: settings.py:155
 msgid "Default VOD category sort order"
-msgstr ""
+msgstr "Predvolené poradie triedenia kategórií VOD"
 
 #: settings.py:156
 msgid "Default VOD stream sort order"
-msgstr ""
+msgstr "Predvolené poradie zoradenia streamu VOD"
 
 #: settings.py:158
 msgid "XKlass parental control"
-msgstr "XKlass rodičovská kontrola"
+msgstr "Rodičovská kontrola XKlass"
 
 #: settings.py:159
 msgid "XKlass parental pin"
-msgstr "Rodičovský pin XKlass"
+msgstr "Rodičovský špendlík XKlass"
 
 #: settings.py:160
 msgid "Show in main menu"
@@ -772,15 +775,15 @@ msgstr "Automatický čas sťahovania EPG"
 
 #: settings.py:167
 msgid "Show intro video"
-msgstr ""
+msgstr "Zobraziť úvodné video"
 
 #: settings.py:168
 msgid "Loop intro video"
-msgstr ""
+msgstr "Slučka úvodného videa"
 
 #: settings.py:169
 msgid "Intro video selection"
-msgstr ""
+msgstr "Výber úvodného videa"
 
 #: settings.py:170
 msgid "Show channel picons"
@@ -804,11 +807,11 @@ msgstr "Automatické spustenie XKlass pri štarte"
 
 #: settings.py:175
 msgid "Play satellite channel audio in background"
-msgstr ""
+msgstr "Prehrávajte zvuk satelitného kanála na pozadí"
 
 #: settings.py:176
 msgid "Add speedtest plugin to main menu"
-msgstr ""
+msgstr "Pridajte doplnok speedtest do hlavnej ponuky"
 
 #: settings.py:303
 msgid "Choose Directory:"
@@ -824,7 +827,7 @@ msgstr "Hlavné menu"
 
 #: startmenu.py:574 vod.py:121
 msgid "Movies"
-msgstr ""
+msgstr "Filmy"
 
 #: startmenu.py:580
 msgid "Catch Up TV"
@@ -832,11 +835,11 @@ msgstr "Catch Up TV"
 
 #: startmenu.py:590
 msgid "Reboot GUI"
-msgstr ""
+msgstr "Reštartujte GUI"
 
 #: startmenu.py:593
 msgid "Speed Test"
-msgstr ""
+msgstr "Test rýchlosti"
 
 #: startmenu.py:734
 msgid ""
@@ -863,6 +866,8 @@ msgid ""
 "The TMDB plugin is not installed!\n"
 "Please install it."
 msgstr ""
+"Doplnok TMDB nie je nainštalovaný!\n"
+"Nainštalujte si ho."
 
 #: vod.py:2147
 msgid ""
@@ -875,85 +880,3 @@ msgstr ""
 #: vodplayer.py:497
 msgid "VOD"
 msgstr "VOD"
-
-#~ msgid "Select Playlist"
-#~ msgstr "Vyberte Playlist"
-
-#~ msgid "Playlists.txt location is invalid and has been reset."
-#~ msgstr "Umiestnenie súboru Playlists.txt je neplatné a bolo obnovené."
-
-#, fuzzy
-#~| msgid ""
-#~| "Please update your wget library to download https lines\n"
-#~| "\n"
-#~| "opkg update\n"
-#~| "opkg install wget"
-#~ msgid ""
-#~ "Please update your wget library to download https lines\n"
-#~ "\n"
-#~ "opkg update\n"
-#~ "apt-get -y install wget"
-#~ msgstr ""
-#~ "Aktualizujte svoju knižnicu wget a stiahnite si riadky https\n"
-#~ "\n"
-#~ "Aktualizácia OPKG\n"
-#~ "opkg inštalácia wget"
-
-#~ msgid "Live Streams"
-#~ msgstr "Priame prenosy"
-
-#~ msgid "Reset JSON"
-#~ msgstr "Resetujte JSON"
-
-#~ msgid "Main Settings"
-#~ msgstr "Hlavné nastavenia"
-
-#~ msgid "No data, blocked or playlist not compatible with XKlass plugin."
-#~ msgstr ""
-#~ "Žiadne údaje, blokované alebo playlist nie je kompatibilný s doplnkom "
-#~ "XKlass."
-
-#~ msgid "Server Not Responding"
-#~ msgstr "Server nereaguje"
-
-#~ msgid "Expires: "
-#~ msgstr "Skončí: "
-
-#~ msgid "Stream Source URL:"
-#~ msgstr "Adresa URL zdroja Streamu:"
-
-#~ msgid "Video Type:"
-#~ msgstr "Typ Videa:"
-
-#~ msgid "Genre:"
-#~ msgstr "Žáner:"
-
-#~ msgid "Duration:"
-#~ msgstr "Trvanie:"
-
-#~ msgid "Release Date:"
-#~ msgstr "Dátum vydania:"
-
-#~ msgid "Country:"
-#~ msgstr "Krajina:"
-
-#~ msgid "Add Xtream Codes Playlist"
-#~ msgstr "Pridajte Xtream Codes Playlists"
-
-#~ msgid "Preview LIVE streams in mini tv"
-#~ msgstr "Náhľad LIVE prenosov v mini tv"
-
-#~ msgid "Stop stream on back button"
-#~ msgstr "Zastaviť stream na tlačidle Späť"
-
-#~ msgid "Skip playlist selection screen if only 1 playlist"
-#~ msgstr "Preskočiť obrazovku výberu playlist, ak máte iba 1 playlist"
-
-#~ msgid " of "
-#~ msgstr " z "
-
-#~ msgid "TV Series"
-#~ msgstr "TV seriál"
-
-#~ msgid "Download EPG on boot"
-#~ msgstr "Stiahnutie EPG pri štarte systému"

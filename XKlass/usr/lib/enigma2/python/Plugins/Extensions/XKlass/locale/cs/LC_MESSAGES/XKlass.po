@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2024-09-14 22:40+0100\n"
-"PO-Revision-Date: 2024-09-14 22:43+0100\n"
+"POT-Creation-Date: 2024-09-14 22:37+0100\n"
+"PO-Revision-Date: 2025-02-02 08:30+0100\n"
 "Last-Translator: Warder <ciksa@seznam.cz>\n"
 "Language-Team: \n"
 "Language: cs\n"
@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n>=2 && n<=4 ? 1 : 2);\n"
-"X-Generator: Poedit 3.4.4\n"
+"X-Generator: Poedit 3.5\n"
 "X-Poedit-Basepath: ../../..\n"
 "X-Poedit-SearchPath-0: .\n"
 
@@ -66,7 +66,7 @@ msgstr "Catch Up kategorie"
 
 #: catchup.py:150
 msgid "Catchup TV"
-msgstr ""
+msgstr "Catchup TV"
 
 #: catchup.py:190 catchup.py:652 catchup.py:840 catchup.py:854 catchup.py:993
 #: live.py:205 live.py:766 live.py:967 live.py:981 live.py:1167 plugin.py:179
@@ -208,11 +208,11 @@ msgstr "Catch Up"
 
 #: catchupplayer.py:667 liveplayer.py:873 vodplayer.py:759
 msgid "Resolution Change Failed"
-msgstr "Změna rozlišení neúspěšná"
+msgstr "Změna rozlišení se nezdařila"
 
 #: channelmenu.py:51
 msgid "Menu"
-msgstr ""
+msgstr "Menu"
 
 #: channelmenu.py:108 channelmenu.py:140 channelmenu.py:247
 msgid "Manual EPG Update"
@@ -224,20 +224,20 @@ msgstr "Playlist nastavení"
 
 #: channelmenu.py:111 channelmenu.py:144 channelmenu.py:251
 msgid "Show/Hide Channels"
-msgstr ""
+msgstr "Zobrazit/skrýt kanály"
 
 #: channelmenu.py:112 channelmenu.py:146 channelmenu.py:253
 msgid "Account Info"
-msgstr ""
+msgstr "Informace o účtu"
 
 #: channelmenu.py:114 channelmenu.py:148 channelmenu.py:257 playlists.py:63
 #: startmenu.py:582
 msgid "Manage Playlists"
-msgstr ""
+msgstr "Správa seznamů"
 
 #: channelmenu.py:115 channelmenu.py:150 channelmenu.py:259
 msgid "Add New Playlist"
-msgstr ""
+msgstr "Přidat nový seznam skladeb"
 
 #: channelmenu.py:126 channelmenu.py:152 channelmenu.py:261 startmenu.py:587
 msgid "Download Manager"
@@ -246,7 +246,7 @@ msgstr "Správce stahování"
 #: channelmenu.py:127 channelmenu.py:154 channelmenu.py:263 settings.py:68
 #: startmenu.py:584
 msgid "Global Settings"
-msgstr ""
+msgstr "Globální nastavení"
 
 #: channelmenu.py:171
 msgid "Recordings in progress. EPG not downloaded."
@@ -258,11 +258,11 @@ msgstr "Stahování EPG."
 
 #: channelmenu.py:239
 msgid "Live"
-msgstr ""
+msgstr "Live"
 
 #: channelmenu.py:241
 msgid "Vod"
-msgstr "Vod"
+msgstr "VOD"
 
 #: channelmenu.py:243 series.py:109 series.py:2468 startmenu.py:577
 msgid "Series"
@@ -270,7 +270,7 @@ msgstr "Série"
 
 #: channelmenu.py:245
 msgid "Catchup"
-msgstr ""
+msgstr "Dohonění"
 
 #: downloadmanager.py:56 downloadmanager.py:402 downloadmanager.py:438
 msgid "Not Started"
@@ -342,7 +342,7 @@ msgstr "Zadaný kód PIN je nesprávný."
 
 #: hidden.py:64 hidden.py:66 hidden.py:69
 msgid "Hidden Categories"
-msgstr ""
+msgstr "Skryté kategorie"
 
 #: hidden.py:79 playsettings.py:54 record.py:42 server.py:58 settings.py:76
 msgid "Save"
@@ -366,7 +366,7 @@ msgstr "Živé kategorie"
 
 #: live.py:156 startmenu.py:571
 msgid "Live TV"
-msgstr ""
+msgstr "Živý televizní přenos"
 
 #: live.py:565 vod.py:585
 msgid "FAVOURITES"
@@ -406,7 +406,7 @@ msgstr "Informace"
 
 #: playlists.py:107 startmenu.py:150
 msgid "No internet."
-msgstr ""
+msgstr "Žádný internet."
 
 #: playlists.py:327 playlists.py:403
 msgid "Not Authorised"
@@ -516,11 +516,11 @@ msgstr "Již použitý název. Zadejte prosím jedinečný název."
 
 #: plugin.py:179 plugin.py:180
 msgid "Original"
-msgstr ""
+msgstr "Originální"
 
 #: plugin.py:180
 msgid "Added"
-msgstr ""
+msgstr "Přidáno"
 
 #: plugin.py:180 series.py:2052 series.py:2075 vod.py:510 vod.py:536
 #: vod.py:1684 vod.py:1704
@@ -529,7 +529,7 @@ msgstr "Seřadit: Rok"
 
 #: plugin.py:180
 msgid "Year"
-msgstr ""
+msgstr "Rok"
 
 #: plugin.py:277 plugin.py:385
 msgid "XKlass"
@@ -577,7 +577,7 @@ msgstr "Sezóna "
 
 #: series.py:1640 vod.py:1357
 msgid "Rating: "
-msgstr ""
+msgstr "Hodnocení: "
 
 #: series.py:1691 vod.py:1348
 msgid "Cast:"
@@ -585,11 +585,11 @@ msgstr "Obsazení:"
 
 #: series.py:1696 vod.py:1338
 msgid "Director:"
-msgstr "Režisér:"
+msgstr "Režie:"
 
 #: series.py:1701 vod.py:1313
 msgid "Overview"
-msgstr ""
+msgstr "Přehled"
 
 #: server.py:49
 msgid "Add Playlist"
@@ -677,7 +677,7 @@ msgstr "Offset serveru:"
 
 #: serverinfo.py:83
 msgid "Unknown"
-msgstr ""
+msgstr "Neznámý"
 
 #: settings.py:119
 msgid ""
@@ -685,6 +685,9 @@ msgid ""
 "\n"
 "Pin cannot be 0000, 111, or 1234"
 msgstr ""
+"Změňte výchozí rodičovský PIN.\n"
+"\n"
+"Pin nemůže být 0000, 111 nebo 1234"
 
 #: settings.py:136
 msgid "You need to restart the GUI"
@@ -700,7 +703,7 @@ msgstr "Vybrat vzhled"
 
 #: settings.py:147
 msgid "Select fake web user-agent"
-msgstr ""
+msgstr "Vyberte falešný webový uživatelský agent"
 
 #: settings.py:149
 msgid "playlists.txt location"
@@ -728,19 +731,19 @@ msgstr "Výchozí typ streamu VOD/SERIES"
 
 #: settings.py:155
 msgid "Default VOD category sort order"
-msgstr ""
+msgstr "Výchozí pořadí řazení kategorií VOD"
 
 #: settings.py:156
 msgid "Default VOD stream sort order"
-msgstr ""
+msgstr "Výchozí pořadí řazení streamu VOD"
 
 #: settings.py:158
 msgid "XKlass parental control"
-msgstr "XKlass rodičovská kontrola"
+msgstr "Rodičovská kontrola XKlass"
 
 #: settings.py:159
 msgid "XKlass parental pin"
-msgstr "XKlass rodičovský pin"
+msgstr "Rodičovský špendlík XKlass"
 
 #: settings.py:160
 msgid "Show in main menu"
@@ -772,15 +775,15 @@ msgstr "Čas automatického stahování EPG"
 
 #: settings.py:167
 msgid "Show intro video"
-msgstr ""
+msgstr "Zobrazit úvodní video"
 
 #: settings.py:168
 msgid "Loop intro video"
-msgstr ""
+msgstr "Spustit úvodní video"
 
 #: settings.py:169
 msgid "Intro video selection"
-msgstr ""
+msgstr "Výběr úvodního videa"
 
 #: settings.py:170
 msgid "Show channel picons"
@@ -800,15 +803,15 @@ msgstr "Zobrazit plakáty na informačním panelu"
 
 #: settings.py:174
 msgid "Auto start XKlass on boot"
-msgstr "Automatické spuštění XKlass při startu systému"
+msgstr "Automatické spuštění XKlass při startu"
 
 #: settings.py:175
 msgid "Play satellite channel audio in background"
-msgstr ""
+msgstr "Přehrávejte zvuk satelitního kanálu na pozadí"
 
 #: settings.py:176
 msgid "Add speedtest plugin to main menu"
-msgstr ""
+msgstr "Přidejte plugin speedtest do hlavní nabídky"
 
 #: settings.py:303
 msgid "Choose Directory:"
@@ -824,7 +827,7 @@ msgstr "Hlavní menu"
 
 #: startmenu.py:574 vod.py:121
 msgid "Movies"
-msgstr ""
+msgstr "Filmy"
 
 #: startmenu.py:580
 msgid "Catch Up TV"
@@ -832,11 +835,11 @@ msgstr "Catch Up TV"
 
 #: startmenu.py:590
 msgid "Reboot GUI"
-msgstr ""
+msgstr "Restartujte GUI"
 
 #: startmenu.py:593
 msgid "Speed Test"
-msgstr ""
+msgstr "Test rychlosti"
 
 #: startmenu.py:734
 msgid ""
@@ -863,8 +866,8 @@ msgid ""
 "The TMDB plugin is not installed!\n"
 "Please install it."
 msgstr ""
-"TMDB plugin není nainstalován!\n"
-"Prosím, nainstalujte jej."
+"Plugin TMDB není nainstalován!\n"
+"Nainstalujte jej prosím."
 
 #: vod.py:2147
 msgid ""
@@ -877,86 +880,3 @@ msgstr ""
 #: vodplayer.py:497
 msgid "VOD"
 msgstr "VOD"
-
-#~ msgid "Select Playlist"
-#~ msgstr "Vybrat Playlist"
-
-#~ msgid "Playlists.txt location is invalid and has been reset."
-#~ msgstr "Umístění souboru Playlists.txt je neplatné a bylo resetováno."
-
-#, fuzzy
-#~| msgid ""
-#~| "Please update your wget library to download https lines\n"
-#~| "\n"
-#~| "opkg update\n"
-#~| "opkg install wget"
-#~ msgid ""
-#~ "Please update your wget library to download https lines\n"
-#~ "\n"
-#~ "opkg update\n"
-#~ "apt-get -y install wget"
-#~ msgstr ""
-#~ "Aktualizujte prosím svou knihovnu wget a stáhněte si řádky https\n"
-#~ "\n"
-#~ "Aktualizace OPKG\n"
-#~ "opkg install wget"
-
-#~ msgid "Live Streams"
-#~ msgstr "Živé přenosy"
-
-#~ msgid "Reset JSON"
-#~ msgstr "Resetovat JSON"
-
-#~ msgid "Main Settings"
-#~ msgstr "Hlavní nastavení"
-
-#~ msgid "No data, blocked or playlist not compatible with XKlass plugin."
-#~ msgstr ""
-#~ "Žádná data, blokované nebo playlist není kompatibilní s pluginem XKlass."
-
-#~ msgid "Server Not Responding"
-#~ msgstr "Server nereaguje"
-
-#~ msgid "Expires: "
-#~ msgstr "Vyprší: "
-
-#~ msgid "Stream Source URL:"
-#~ msgstr "Adresa URL zdroje Streamu:"
-
-#~ msgid "Video Type:"
-#~ msgstr "Typ videa:"
-
-#~ msgid "Genre:"
-#~ msgstr "Žánr:"
-
-#~ msgid "Duration:"
-#~ msgstr "Doba trvání:"
-
-#~ msgid "Release Date:"
-#~ msgstr "Datum vydání:"
-
-#~ msgid "Country:"
-#~ msgstr "Země:"
-
-#~ msgid "Add Xtream Codes Playlist"
-#~ msgstr "Přidat seznam skladeb Xtream Codes"
-
-#~ msgid "Preview LIVE streams in mini tv"
-#~ msgstr "Náhled LIVE přenosů v mini tv"
-
-#~ msgid "Stop stream on back button"
-#~ msgstr "Zastaviť stream po stlačený tlačítka Zpět"
-
-#~ msgid "Skip playlist selection screen if only 1 playlist"
-#~ msgstr ""
-#~ "Přeskočit obrazovku výběru seznamu skladeb, pokud je pouze 1 seznam "
-#~ "skladeb"
-
-#~ msgid " of "
-#~ msgstr " z "
-
-#~ msgid "TV Series"
-#~ msgstr "TV seriály"
-
-#~ msgid "Download EPG on boot"
-#~ msgstr "Stažení EPG při spuštění systému"

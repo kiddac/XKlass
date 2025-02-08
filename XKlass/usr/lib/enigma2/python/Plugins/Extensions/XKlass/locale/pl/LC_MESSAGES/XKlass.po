@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2024-09-14 22:47+0100\n"
-"PO-Revision-Date: 2024-09-14 22:47+0100\n"
+"POT-Creation-Date: 2024-09-14 22:37+0100\n"
+"PO-Revision-Date: 2025-02-02 08:38+0100\n"
 "Last-Translator: Warder <ciksa@seznam.cz>\n"
 "Language-Team: \n"
 "Language: pl\n"
@@ -11,7 +11,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 "
 "|| n%100>14) ? 1 : 2);\n"
-"X-Generator: Poedit 3.4.4\n"
+"X-Generator: Poedit 3.5\n"
 "X-Poedit-Basepath: ../../..\n"
 "X-Poedit-SearchPath-0: .\n"
 
@@ -67,7 +67,7 @@ msgstr "Kategorie nadrabiania zaległości"
 
 #: catchup.py:150
 msgid "Catchup TV"
-msgstr ""
+msgstr "Telewizja catch-up"
 
 #: catchup.py:190 catchup.py:652 catchup.py:840 catchup.py:854 catchup.py:993
 #: live.py:205 live.py:766 live.py:967 live.py:981 live.py:1167 plugin.py:179
@@ -213,7 +213,7 @@ msgstr "Zmiana rozdzielczości nie powiodła się"
 
 #: channelmenu.py:51
 msgid "Menu"
-msgstr ""
+msgstr "Menu"
 
 #: channelmenu.py:108 channelmenu.py:140 channelmenu.py:247
 msgid "Manual EPG Update"
@@ -225,20 +225,20 @@ msgstr "Ustawienia listy odtwarzania"
 
 #: channelmenu.py:111 channelmenu.py:144 channelmenu.py:251
 msgid "Show/Hide Channels"
-msgstr ""
+msgstr "Pokaż/Ukryj kanały"
 
 #: channelmenu.py:112 channelmenu.py:146 channelmenu.py:253
 msgid "Account Info"
-msgstr ""
+msgstr "Dane konta"
 
 #: channelmenu.py:114 channelmenu.py:148 channelmenu.py:257 playlists.py:63
 #: startmenu.py:582
 msgid "Manage Playlists"
-msgstr ""
+msgstr "Zarządzaj listami odtwarzania"
 
 #: channelmenu.py:115 channelmenu.py:150 channelmenu.py:259
 msgid "Add New Playlist"
-msgstr ""
+msgstr "Dodaj nową listę odtwarzania"
 
 #: channelmenu.py:126 channelmenu.py:152 channelmenu.py:261 startmenu.py:587
 msgid "Download Manager"
@@ -247,7 +247,7 @@ msgstr "Menedżer pobierania"
 #: channelmenu.py:127 channelmenu.py:154 channelmenu.py:263 settings.py:68
 #: startmenu.py:584
 msgid "Global Settings"
-msgstr ""
+msgstr "Ustawienia globalne"
 
 #: channelmenu.py:171
 msgid "Recordings in progress. EPG not downloaded."
@@ -259,7 +259,7 @@ msgstr "Pobieranie EPG."
 
 #: channelmenu.py:239
 msgid "Live"
-msgstr ""
+msgstr "Live"
 
 #: channelmenu.py:241
 msgid "Vod"
@@ -271,7 +271,7 @@ msgstr "Seria"
 
 #: channelmenu.py:245
 msgid "Catchup"
-msgstr ""
+msgstr "Nadrobić zaległości"
 
 #: downloadmanager.py:56 downloadmanager.py:402 downloadmanager.py:438
 msgid "Not Started"
@@ -367,7 +367,7 @@ msgstr "Kategorie na żywo"
 
 #: live.py:156 startmenu.py:571
 msgid "Live TV"
-msgstr ""
+msgstr "Telewizja na żywo"
 
 #: live.py:565 vod.py:585
 msgid "FAVOURITES"
@@ -407,7 +407,7 @@ msgstr "Informacja"
 
 #: playlists.py:107 startmenu.py:150
 msgid "No internet."
-msgstr ""
+msgstr "Brak internetu."
 
 #: playlists.py:327 playlists.py:403
 msgid "Not Authorised"
@@ -517,11 +517,11 @@ msgstr "Nazwa jest już używana. Wprowadź unikalną nazwę."
 
 #: plugin.py:179 plugin.py:180
 msgid "Original"
-msgstr ""
+msgstr "Oryginalny"
 
 #: plugin.py:180
 msgid "Added"
-msgstr ""
+msgstr "Dodano"
 
 #: plugin.py:180 series.py:2052 series.py:2075 vod.py:510 vod.py:536
 #: vod.py:1684 vod.py:1704
@@ -530,7 +530,7 @@ msgstr "Sortuj: Rok"
 
 #: plugin.py:180
 msgid "Year"
-msgstr ""
+msgstr "Rok"
 
 #: plugin.py:277 plugin.py:385
 msgid "XKlass"
@@ -578,7 +578,7 @@ msgstr "Sezon "
 
 #: series.py:1640 vod.py:1357
 msgid "Rating: "
-msgstr ""
+msgstr "Ranking: "
 
 #: series.py:1691 vod.py:1348
 msgid "Cast:"
@@ -590,7 +590,7 @@ msgstr "Reżyser:"
 
 #: series.py:1701 vod.py:1313
 msgid "Overview"
-msgstr ""
+msgstr "Przegląd"
 
 #: server.py:49
 msgid "Add Playlist"
@@ -646,7 +646,7 @@ msgstr "Data wygaśnięcia:"
 
 #: serverinfo.py:48
 msgid "Created At:"
-msgstr "Pomyślnie utworzono listę ulubionych \"%s\"."
+msgstr "Utworzono w:"
 
 #: serverinfo.py:49
 msgid "Is Trial:"
@@ -678,7 +678,7 @@ msgstr "Przesunięcie serwera:"
 
 #: serverinfo.py:83
 msgid "Unknown"
-msgstr ""
+msgstr "Nieznany"
 
 #: settings.py:119
 msgid ""
@@ -686,6 +686,9 @@ msgid ""
 "\n"
 "Pin cannot be 0000, 111, or 1234"
 msgstr ""
+"Proszę zmienić domyślny kod PIN rodzicielski.\n"
+"\n"
+"Kod PIN nie może być 0000, 111 ani 1234"
 
 #: settings.py:136
 msgid "You need to restart the GUI"
@@ -701,7 +704,7 @@ msgstr "Wybierz skórkę"
 
 #: settings.py:147
 msgid "Select fake web user-agent"
-msgstr ""
+msgstr "Wybierz fałszywy web user-agent"
 
 #: settings.py:149
 msgid "playlists.txt location"
@@ -729,11 +732,11 @@ msgstr "Domyślny typ strumienia VOD/SERIES"
 
 #: settings.py:155
 msgid "Default VOD category sort order"
-msgstr ""
+msgstr "Domyślna kolejność sortowania kategorii VOD"
 
 #: settings.py:156
 msgid "Default VOD stream sort order"
-msgstr ""
+msgstr "Domyślna kolejność sortowania strumieni VOD"
 
 #: settings.py:158
 msgid "XKlass parental control"
@@ -741,7 +744,7 @@ msgstr "Kontrola rodzicielska XKlass"
 
 #: settings.py:159
 msgid "XKlass parental pin"
-msgstr "Pin rodzicielski XKlass"
+msgstr "Przypinka rodzicielska XKlass"
 
 #: settings.py:160
 msgid "Show in main menu"
@@ -773,15 +776,15 @@ msgstr "Automatyczny czas pobierania EPG"
 
 #: settings.py:167
 msgid "Show intro video"
-msgstr ""
+msgstr "Pokaż film wprowadzający"
 
 #: settings.py:168
 msgid "Loop intro video"
-msgstr ""
+msgstr "Pętla intro wideo"
 
 #: settings.py:169
 msgid "Intro video selection"
-msgstr ""
+msgstr "Wybór filmu wprowadzającego"
 
 #: settings.py:170
 msgid "Show channel picons"
@@ -801,15 +804,15 @@ msgstr "Pokaż plakaty infobar"
 
 #: settings.py:174
 msgid "Auto start XKlass on boot"
-msgstr "Automatyczne uruchamianie XKlass przy starcie systemu"
+msgstr "Automatyczne uruchamianie XKlass przy rozruchu"
 
 #: settings.py:175
 msgid "Play satellite channel audio in background"
-msgstr ""
+msgstr "Odtwarzaj dźwięk kanału satelitarnego w tle"
 
 #: settings.py:176
 msgid "Add speedtest plugin to main menu"
-msgstr ""
+msgstr "Dodaj wtyczkę speedtest do menu głównego"
 
 #: settings.py:303
 msgid "Choose Directory:"
@@ -825,7 +828,7 @@ msgstr "Menu główne"
 
 #: startmenu.py:574 vod.py:121
 msgid "Movies"
-msgstr ""
+msgstr "Filmy"
 
 #: startmenu.py:580
 msgid "Catch Up TV"
@@ -833,11 +836,11 @@ msgstr "Catch Up TV"
 
 #: startmenu.py:590
 msgid "Reboot GUI"
-msgstr ""
+msgstr "Uruchom ponownie GUI"
 
 #: startmenu.py:593
 msgid "Speed Test"
-msgstr ""
+msgstr "Test prędkości"
 
 #: startmenu.py:734
 msgid ""
@@ -864,6 +867,8 @@ msgid ""
 "The TMDB plugin is not installed!\n"
 "Please install it."
 msgstr ""
+"Wtyczka TMDB nie jest zainstalowana!\n"
+"Proszę ją zainstalować."
 
 #: vod.py:2147
 msgid ""
@@ -876,87 +881,3 @@ msgstr ""
 #: vodplayer.py:497
 msgid "VOD"
 msgstr "VOD"
-
-#~ msgid "Select Playlist"
-#~ msgstr "Wybierz listę odtwarzania"
-
-#~ msgid "Playlists.txt location is invalid and has been reset."
-#~ msgstr ""
-#~ "Lokalizacja pliku Playlists.txt jest nieprawidłowa i została zresetowana."
-
-#, fuzzy
-#~| msgid ""
-#~| "Please update your wget library to download https lines\n"
-#~| "\n"
-#~| "opkg update\n"
-#~| "opkg install wget"
-#~ msgid ""
-#~ "Please update your wget library to download https lines\n"
-#~ "\n"
-#~ "opkg update\n"
-#~ "apt-get -y install wget"
-#~ msgstr ""
-#~ "Zaktualizuj bibliotekę wget, aby pobierać linie https\n"
-#~ "\n"
-#~ "opkg update\n"
-#~ "opkg install wget"
-
-#~ msgid "Live Streams"
-#~ msgstr "Zajęcia na żywo"
-
-#~ msgid "Reset JSON"
-#~ msgstr "Resetowanie JSON"
-
-#~ msgid "Main Settings"
-#~ msgstr "Ustawienia główne"
-
-#~ msgid "No data, blocked or playlist not compatible with XKlass plugin."
-#~ msgstr ""
-#~ "Brak danych, zablokowane lub lista odtwarzania niezgodna z wtyczką XKlass."
-
-#~ msgid "Server Not Responding"
-#~ msgstr "Serwer nie odpowiada"
-
-#~ msgid "Expires: "
-#~ msgstr "Wygasa: "
-
-#~ msgid "Stream Source URL:"
-#~ msgstr "URL źródła strumienia:"
-
-#~ msgid "Video Type:"
-#~ msgstr "Typ wideo:"
-
-#~ msgid "Genre:"
-#~ msgstr "Gatunek:"
-
-#~ msgid "Duration:"
-#~ msgstr "Czas trwania:"
-
-#~ msgid "Release Date:"
-#~ msgstr "Data wydania:"
-
-#~ msgid "Country:"
-#~ msgstr "Kraj:"
-
-#~ msgid "Add Xtream Codes Playlist"
-#~ msgstr "Dodaj listę odtwarzania Xtream Codes"
-
-#~ msgid "Preview LIVE streams in mini tv"
-#~ msgstr "Podgląd transmisji LIVE w mini tv"
-
-#~ msgid "Stop stream on back button"
-#~ msgstr "Zatrzymaj strumień na przycisku Wstecz"
-
-#~ msgid "Skip playlist selection screen if only 1 playlist"
-#~ msgstr ""
-#~ "Pomiń ekran wyboru listy odtwarzania, jeśli dostępna jest tylko 1 lista "
-#~ "odtwarzania"
-
-#~ msgid " of "
-#~ msgstr " do "
-
-#~ msgid "TV Series"
-#~ msgstr "Serial telewizyjny"
-
-#~ msgid "Download EPG on boot"
-#~ msgstr "Pobieranie EPG podczas uruchamiania"

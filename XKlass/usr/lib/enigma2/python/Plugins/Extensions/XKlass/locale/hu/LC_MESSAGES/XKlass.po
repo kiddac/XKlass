@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2024-09-14 22:45+0100\n"
-"PO-Revision-Date: 2024-09-14 22:46+0100\n"
+"POT-Creation-Date: 2024-09-14 22:37+0100\n"
+"PO-Revision-Date: 2025-02-02 08:34+0100\n"
 "Last-Translator: Warder <ciksa@seznam.cz>\n"
 "Language-Team: \n"
 "Language: hu\n"
@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.4.4\n"
+"X-Generator: Poedit 3.5\n"
 "X-Poedit-Basepath: ../../..\n"
 "X-Poedit-SearchPath-0: .\n"
 
@@ -66,7 +66,7 @@ msgstr "Felzárkózási kategóriák"
 
 #: catchup.py:150
 msgid "Catchup TV"
-msgstr ""
+msgstr "Catchup TV"
 
 #: catchup.py:190 catchup.py:652 catchup.py:840 catchup.py:854 catchup.py:993
 #: live.py:205 live.py:766 live.py:967 live.py:981 live.py:1167 plugin.py:179
@@ -212,7 +212,7 @@ msgstr "Felbontás módosítása sikertelen"
 
 #: channelmenu.py:51
 msgid "Menu"
-msgstr ""
+msgstr "Menü"
 
 #: channelmenu.py:108 channelmenu.py:140 channelmenu.py:247
 msgid "Manual EPG Update"
@@ -224,20 +224,20 @@ msgstr "Lejátszási lista beállításai"
 
 #: channelmenu.py:111 channelmenu.py:144 channelmenu.py:251
 msgid "Show/Hide Channels"
-msgstr ""
+msgstr "Csatornák megjelenítése/elrejtése"
 
 #: channelmenu.py:112 channelmenu.py:146 channelmenu.py:253
 msgid "Account Info"
-msgstr ""
+msgstr "Fiók információ"
 
 #: channelmenu.py:114 channelmenu.py:148 channelmenu.py:257 playlists.py:63
 #: startmenu.py:582
 msgid "Manage Playlists"
-msgstr ""
+msgstr "Lejátszási listák kezelése"
 
 #: channelmenu.py:115 channelmenu.py:150 channelmenu.py:259
 msgid "Add New Playlist"
-msgstr ""
+msgstr "Új lejátszási lista hozzáadása"
 
 #: channelmenu.py:126 channelmenu.py:152 channelmenu.py:261 startmenu.py:587
 msgid "Download Manager"
@@ -246,7 +246,7 @@ msgstr "Letöltés kezelő"
 #: channelmenu.py:127 channelmenu.py:154 channelmenu.py:263 settings.py:68
 #: startmenu.py:584
 msgid "Global Settings"
-msgstr ""
+msgstr "Globális beállítások"
 
 #: channelmenu.py:171
 msgid "Recordings in progress. EPG not downloaded."
@@ -258,7 +258,7 @@ msgstr "EPG-k letöltése."
 
 #: channelmenu.py:239
 msgid "Live"
-msgstr ""
+msgstr "Élő"
 
 #: channelmenu.py:241
 msgid "Vod"
@@ -270,7 +270,7 @@ msgstr "Sorozatok"
 
 #: channelmenu.py:245
 msgid "Catchup"
-msgstr ""
+msgstr "Ketchup"
 
 #: downloadmanager.py:56 downloadmanager.py:402 downloadmanager.py:438
 msgid "Not Started"
@@ -294,7 +294,7 @@ msgstr "Szabad hely:"
 
 #: downloadmanager.py:238 downloadmanager.py:241
 msgid "of"
-msgstr "/"
+msgstr "of"
 
 #: downloadmanager.py:403 hidden.py:78
 msgid "Cancel"
@@ -366,7 +366,7 @@ msgstr "Élő kategóriák"
 
 #: live.py:156 startmenu.py:571
 msgid "Live TV"
-msgstr ""
+msgstr "Élő TV"
 
 #: live.py:565 vod.py:585
 msgid "FAVOURITES"
@@ -406,7 +406,7 @@ msgstr "Információ"
 
 #: playlists.py:107 startmenu.py:150
 msgid "No internet."
-msgstr ""
+msgstr "Nincs internet."
 
 #: playlists.py:327 playlists.py:403
 msgid "Not Authorised"
@@ -516,11 +516,11 @@ msgstr "Már használt név. Kérjük, adjon meg egy egyedi nevet."
 
 #: plugin.py:179 plugin.py:180
 msgid "Original"
-msgstr ""
+msgstr "Eredeti"
 
 #: plugin.py:180
 msgid "Added"
-msgstr ""
+msgstr "Hozzáadva"
 
 #: plugin.py:180 series.py:2052 series.py:2075 vod.py:510 vod.py:536
 #: vod.py:1684 vod.py:1704
@@ -529,7 +529,7 @@ msgstr "Rendezés: Év"
 
 #: plugin.py:180
 msgid "Year"
-msgstr ""
+msgstr "Év"
 
 #: plugin.py:277 plugin.py:385
 msgid "XKlass"
@@ -577,7 +577,7 @@ msgstr "Évszak "
 
 #: series.py:1640 vod.py:1357
 msgid "Rating: "
-msgstr ""
+msgstr "Értékelés: "
 
 #: series.py:1691 vod.py:1348
 msgid "Cast:"
@@ -589,7 +589,7 @@ msgstr "Igazgató:"
 
 #: series.py:1701 vod.py:1313
 msgid "Overview"
-msgstr ""
+msgstr "Áttekintés"
 
 #: server.py:49
 msgid "Add Playlist"
@@ -677,7 +677,7 @@ msgstr "Szerver eltolás:"
 
 #: serverinfo.py:83
 msgid "Unknown"
-msgstr ""
+msgstr "Ismeretlen"
 
 #: settings.py:119
 msgid ""
@@ -685,6 +685,9 @@ msgid ""
 "\n"
 "Pin cannot be 0000, 111, or 1234"
 msgstr ""
+"Kérjük, módosítsa az alapértelmezett szülői PIN-kódot.\n"
+"\n"
+"A PIN kód nem lehet 0000, 111 vagy 1234"
 
 #: settings.py:136
 msgid "You need to restart the GUI"
@@ -700,7 +703,7 @@ msgstr "Skin kiválasztása"
 
 #: settings.py:147
 msgid "Select fake web user-agent"
-msgstr ""
+msgstr "Válassza ki a hamis webes felhasználói ügynököt"
 
 #: settings.py:149
 msgid "playlists.txt location"
@@ -728,11 +731,11 @@ msgstr "Alapértelmezett VOD/SERIES adatfolyamtípus"
 
 #: settings.py:155
 msgid "Default VOD category sort order"
-msgstr ""
+msgstr "Alapértelmezett VOD kategória rendezési sorrend"
 
 #: settings.py:156
 msgid "Default VOD stream sort order"
-msgstr ""
+msgstr "Alapértelmezett VOD adatfolyam rendezési sorrend"
 
 #: settings.py:158
 msgid "XKlass parental control"
@@ -772,15 +775,15 @@ msgstr "Automatikus EPG letöltési idő"
 
 #: settings.py:167
 msgid "Show intro video"
-msgstr ""
+msgstr "Bevezető videó megjelenítése"
 
 #: settings.py:168
 msgid "Loop intro video"
-msgstr ""
+msgstr "Loop intro videó"
 
 #: settings.py:169
 msgid "Intro video selection"
-msgstr ""
+msgstr "Bevezető videó válogatás"
 
 #: settings.py:170
 msgid "Show channel picons"
@@ -804,11 +807,11 @@ msgstr "Az XKlass automatikus indítása rendszerindításkor"
 
 #: settings.py:175
 msgid "Play satellite channel audio in background"
-msgstr ""
+msgstr "Műholdas csatorna hangjának lejátszása a háttérben"
 
 #: settings.py:176
 msgid "Add speedtest plugin to main menu"
-msgstr ""
+msgstr "Adja hozzá a sebességteszt bővítményt a főmenühöz"
 
 #: settings.py:303
 msgid "Choose Directory:"
@@ -824,7 +827,7 @@ msgstr "Főmenü"
 
 #: startmenu.py:574 vod.py:121
 msgid "Movies"
-msgstr ""
+msgstr "Filmek"
 
 #: startmenu.py:580
 msgid "Catch Up TV"
@@ -832,11 +835,11 @@ msgstr "Catch Up TV"
 
 #: startmenu.py:590
 msgid "Reboot GUI"
-msgstr ""
+msgstr "Indítsa újra a GUI-t"
 
 #: startmenu.py:593
 msgid "Speed Test"
-msgstr ""
+msgstr "Sebesség teszt"
 
 #: startmenu.py:734
 msgid ""
@@ -863,6 +866,8 @@ msgid ""
 "The TMDB plugin is not installed!\n"
 "Please install it."
 msgstr ""
+"A TMDB bővítmény nincs telepítve!\n"
+"Kérjük, telepítse."
 
 #: vod.py:2147
 msgid ""
@@ -875,88 +880,3 @@ msgstr ""
 #: vodplayer.py:497
 msgid "VOD"
 msgstr "VOD"
-
-#~ msgid "Select Playlist"
-#~ msgstr "Lejátszási lista kiválasztása"
-
-#~ msgid "Playlists.txt location is invalid and has been reset."
-#~ msgstr ""
-#~ "A lejátszási listák.txt hely érvénytelen, és alaphelyzetbe lett állítva."
-
-#, fuzzy
-#~| msgid ""
-#~| "Please update your wget library to download https lines\n"
-#~| "\n"
-#~| "opkg update\n"
-#~| "opkg install wget"
-#~ msgid ""
-#~ "Please update your wget library to download https lines\n"
-#~ "\n"
-#~ "opkg update\n"
-#~ "apt-get -y install wget"
-#~ msgstr ""
-#~ "Kérjük, frissítse wget könyvtárát a https vonalak letöltéséhez\n"
-#~ "\n"
-#~ "OPKG frissítés\n"
-#~ "OPKG telepítse a WGET-t"
-
-#~ msgid "Live Streams"
-#~ msgstr "Élő közvetítések"
-
-#~ msgid "Reset JSON"
-#~ msgstr "JSON alaphelyzetbe állítása"
-
-#~ msgid "Main Settings"
-#~ msgstr "Fő beállítások"
-
-#~ msgid "No data, blocked or playlist not compatible with XKlass plugin."
-#~ msgstr ""
-#~ "Nincs adat, blokkolt vagy lejátszási lista, amely nem kompatibilis az "
-#~ "XKlass beépülő modullal."
-
-#~ msgid "Server Not Responding"
-#~ msgstr "A kiszolgáló nem válaszol"
-
-#~ msgid "Expires: "
-#~ msgstr "Lejár: "
-
-#~ msgid "Stream Source URL:"
-#~ msgstr "Stream forrás URL-címe:"
-
-#~ msgid "Video Type:"
-#~ msgstr "Videó típusa:"
-
-#~ msgid "Genre:"
-#~ msgstr "Műfaj:"
-
-#~ msgid "Duration:"
-#~ msgstr "Időtartam:"
-
-#~ msgid "Release Date:"
-#~ msgstr "Kiadás dátuma:"
-
-#~ msgid "Country:"
-#~ msgstr "Ország:"
-
-#~ msgid "Add Xtream Codes Playlist"
-#~ msgstr "Xtream kódok lejátszási listájának hozzáadása"
-
-#~ msgid "Preview LIVE streams in mini tv"
-#~ msgstr "ÉLŐ közvetítések előnézete mini tv-ben"
-
-#~ msgid "Stop stream on back button"
-#~ msgstr "Streamelés leállítása a Vissza gombon"
-
-#~ msgid "Skip playlist selection screen if only 1 playlist"
-#~ msgstr ""
-#~ "Hagyja ki a lejátszási lista kiválasztási képernyőjét, ha csak 1 "
-#~ "lejátszási lista"
-
-#~ msgid " of "
-#~ msgstr " / "
-
-#~ msgid "TV Series"
-#~ msgstr "TV Sorozat"
-
-#~ msgid "Download EPG on boot"
-#~ msgstr "EPG letöltése indításkor"
