@@ -66,9 +66,6 @@ class XKlass_HiddenCategories(Screen, ProtectedScreen):
         self.main_title = _("Hidden Categories")
         self["main_title"] = StaticText(self.main_title)
 
-        self.screen_title = _("Hidden Categories")
-        self["screen_title"] = StaticText(self.screen_title)
-
         self.startList = []
         self.drawList = []
         self["hidden_list"] = List(self.drawList, enableWrapAround=True)

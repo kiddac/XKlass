@@ -18,7 +18,6 @@ pintime = 0
 adultChannel = False
 categoryname = None
 ChoiceBoxDialog = None
-current_category = ""
 current_list = None
 current_level = None
 current_screen = None

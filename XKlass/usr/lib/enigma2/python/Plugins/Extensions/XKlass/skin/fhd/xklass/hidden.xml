@@ -1,20 +1,21 @@
 <screen name="XKlassHiddenCategories" position="0,0" size="1920,1080" backgroundColor="#0c145a" flags="wfNoBorder">
 	<ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XKlass/skin/fhd/xklass/images/background-plain.png" alphatest="off" position="0,0" size="1920,1080" zPosition="-1"/>
-	
 	<ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XKlass/skin/fhd/xklass/images/background-bokeh.png" alphatest="blend" position="0,0" size="1683,362" zPosition="1"/>
-	
-	<ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XKlass/skin/fhd/common/logo.png" position="30,30" size="320,120" alphatest="blend" zPosition="2"/>
-
-	<widget source="screen_title" render="Label" position="48,162" size="462,64" font="xklassregular;48" foregroundColor="#ffffff" backgroundColor="#0c145a" valign="top" halign="left" noWrap="1" transparent="1" zPosition="2"/>
-
+	<widget source="session.VideoPicture" render="Pig" position="33,30" size="480,270" backgroundColor="#ff000000" transparent="1" zPosition="3"/>
+	<eLabel position="33,30" size="472,266" backgroundColor="#ff000000" zPosition="4"/>
+	<eLabel position="33,30" size="472,2" backgroundColor="#7577b2" zPosition="5" transparent="0"/>
+	<eLabel position="35,32" size="468,2" backgroundColor="#0c145a" zPosition="5" transparent="0"/>
+	<eLabel position="33,294" size="472,2" backgroundColor="#7577b2" zPosition="5" transparent="0"/>
+	<eLabel position="35,292" size="468,2" backgroundColor="#0c145a" zPosition="5" transparent="0"/>
+	<eLabel position="33,30" size="2,266" backgroundColor="#7577b2" zPosition="5" transparent="0"/>
+	<eLabel position="35,32" size="2,262" backgroundColor="#0c145a" zPosition="5" transparent="0"/>
+	<eLabel position="503,30" size="2,266" backgroundColor="#7577b2" zPosition="5" transparent="0"/>
+	<eLabel position="501,32" size="2,262" backgroundColor="#0c145a" zPosition="5" transparent="0"/>
 	<widget source="main_title" render="Label" position="540,30" size="999,42" font="xklassregular;27" foregroundColor="#ffffff" backgroundColor="#751f7a" valign="top" halign="left" noWrap="1" transparent="1" zPosition="3"/>
-	
 	<widget source="global.CurrentTime" render="Label" position="1428,30" size="450,42" font="xklassregular;27" foregroundColor="#ffffff" backgroundColor="#71354a" valign="top" halign="right" transparent="1" zPosition="3">
 		<convert type="ClockToText">Format:%H:%M | %A %-d %b</convert>
 	</widget>
-
 	<ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XKlass/skin/fhd/xklass/images/list-bg.png" position="30,300" size="480,720" alphatest="blend" zPosition="1"/>
-	
 	<widget source="hidden_list" render="Listbox" position="30,300" size="480,720" foregroundColor="#ffffff" foregroundColorSelected="#ffffff" backgroundColor="#0c145a" backgroundColorSelected="#494f83" enableWrapAround="1" transparent="1" zPosition="3" selectionPixmap="/usr/lib/enigma2/python/Plugins/Extensions/XKlass/skin/fhd/xklass/images/list-selected.png" backgroundPixmap="/usr/lib/enigma2/python/Plugins/Extensions/XKlass/skin/fhd/common/blank.png" scrollbarMode="showNever">
 		<convert type="TemplatedMultiContent">{"template": [
 			MultiContentEntryPixmapAlphaBlend(pos = (18, 12), size = (38, 36), png = 0),
@@ -25,15 +26,11 @@
 			"scrollbarMode": "showNever"
 			}</convert>
 	</widget>
-
 	<ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XKlass/skin/fhd/common/button-bg.png" position="0,1020" size="1920,60" alphatest="blend" zPosition="1"/>
-	
 	<widget source="key_red" render="Pixmap" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XKlass/skin/fhd/common/key_red.png" position="504,1031" size="38,38" alphatest="blend" zPosition="2"/>
 	<widget source="key_red" render="Label" position="552,1020" size="225,60" font="xklassregular;24" foregroundColor="#ffffff" backgroundColor="#0a3162" valign="center" transparent="1" noWrap="1" zPosition="2"/>
-
 	<widget source="key_green" render="Pixmap" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XKlass/skin/fhd/common/key_green.png" position="777,1031" size="38,38" alphatest="blend" zPosition="2"/>
 	<widget source="key_green" render="Label" position="825,1020" size="225,60" font="xklassregular;24" foregroundColor="#ffffff" backgroundColor="#0a3162" valign="center" transparent="1" noWrap="1" zPosition="2"/>
-
 	<widget source="key_yellow" render="Pixmap" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XKlass/skin/fhd/common/key_yellow.png" position="1049,1031" size="38,38" alphatest="blend" zPosition="2"/>
 	<widget source="key_yellow" render="Label" position="1097,1020" size="225,60" font="xklassregular;24" foregroundColor="#ffffff" backgroundColor="#0a3162" valign="center" transparent="1" noWrap="1" zPosition="2"/>
 	<widget source="key_blue" render="Pixmap" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XKlass/skin/fhd/common/key_blue.png" position="1322,1031" size="38,38" alphatest="blend" zPosition="2"/>

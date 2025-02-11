@@ -2,11 +2,9 @@
 	<ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XKlass/skin/hd/xklass/images/background-plain.png" alphatest="off" position="0,0" size="1280,720" zPosition="-1"/>
 	<widget name="vod_backdrop" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XKlass/skin/hd/xklass/images/backdrop.png" position="426,0" size="853,480" alphatest="blend" zPosition="1"/>
 	<ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XKlass/skin/hd/xklass/images/background-bokeh.png" alphatest="blend" position="0,0" size="1122,241" zPosition="2"/>
-	
 	<widget name="splash" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XKlass/skin/hd/xklass/images/splash.png" alphatest="off" position="0,0" size="1280,720" zPosition="1000"/>
-	<ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XKlass/skin/hd/common/logo.png" position="20,20" size="213,80" alphatest="blend" zPosition="2"/>
-	<widget source="screen_title" render="Label" position="32,108" size="308,40" font="xklassregular;32" foregroundColor="#ffffff" backgroundColor="#0c145a" valign="top" halign="left" noWrap="1" transparent="1" zPosition="3"/>
-	<widget source="category" render="Label" position="32,158" size="308,28" font="xklassbold;18" foregroundColor="#57ffff" backgroundColor="#0c145a" valign="top" halign="left" noWrap="1" transparent="1" zPosition="3"/>
+	<widget source="session.VideoPicture" render="Pig" position="22,20" size="320,180" backgroundColor="#ff000000" transparent="1" zPosition="3"/>
+	<eLabel position="22,20" size="314,177" backgroundColor="#ff000000" zPosition="4"/>
 	<widget source="main_title" render="Label" position="360,20" size="666,28" font="xklassregular;18" foregroundColor="#ffffff" backgroundColor="#751f7a" valign="top" halign="left" noWrap="1" transparent="1" zPosition="3"/>
 	<ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XKlass/skin/hd/xklass/images/list-bg.png" position="20,200" size="320,480" alphatest="blend" zPosition="3"/>
 	<widget source="main_list" render="Listbox" position="20,200" size="320,480" foregroundColor="#ffffff" foregroundColorSelected="#ffffff" backgroundColor="#0c145a" backgroundColorSelected="#494f83" enableWrapAround="1" transparent="1" zPosition="4" selectionPixmap="/usr/lib/enigma2/python/Plugins/Extensions/XKlass/skin/hd/xklass/images/list-selected.png" backgroundPixmap="/usr/lib/enigma2/python/Plugins/Extensions/XKlass/skin/hd/common/blank.png" scrollbarMode="showNever">
@@ -34,16 +32,16 @@
 	<widget name="vod_cover" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XKlass/skin/hd/common/vod_cover.png" position="360,360" size="200,300" alphatest="blend" zPosition="3"/>
 	<!-- channels -->
 	<widget source="x_title" render="Label" position="360,200" size="900,60" font="xklassbold;32" foregroundColor="#ffffff" backgroundColor="#0c145a" halign="left" noWrap="1" transparent="1" zPosition="3"/>
-
-	<widget source="facts" render="Label" position="440,272" size="800,20" font="xklassregular;16" foregroundColor="#ffffff" backgroundColor="#0c145a"  halign="left"  valign="center" noWrap="1" transparent="1" zPosition="3" />
+	<widget source="facts" render="Label" position="440,272" size="800,20" font="xklassregular;16" foregroundColor="#ffffff" backgroundColor="#0c145a" halign="left" valign="center" noWrap="1" transparent="1" zPosition="3"/>
 	<widget source="tagline" render="Label" position="440,291" size="800,24" font="xklassregular;16" foregroundColor="#57ffff" backgroundColor="#0c145a" halign="left" valign="center" noWrap="1" transparent="1" zPosition="3"/>
-	
 	<widget source="overview" render="Label" position="580,356" size="680,40" font="xklassregular;20" foregroundColor="#ffffff" backgroundColor="#0c145a" halign="left" noWrap="1" transparent="1" zPosition="3"/>
 	<widget source="x_description" render="XKlassRunningText" options="movetype=running,startpoint=0,direction=top,steptime=80,repeat=0,always=0,oneshot=0,startdelay=6000,wrap" position="580,386" size="680,110" font="xklassregular;18" foregroundColor="#ffffff" backgroundColor="#0c145a" halign="left" transparent="1" zPosition="3"/>
 	<widget source="vod_cast_label" render="Label" position="580,528" size="160,22" font="xklassbold;16" foregroundColor="#ffffff" backgroundColor="#0c145a" halign="left" noWrap="1" transparent="1" zPosition="3"/>
 	<widget source="vod_cast" render="Label" position="580,552" size="680,48" font="xklassregular;16" foregroundColor="#ffffff" backgroundColor="#0c145a" halign="left" transparent="1" zPosition="3"/>
 	<widget source="vod_director_label" render="Label" position="580,614" size="160,40" font="xklassbold;16" foregroundColor="#ffffff" backgroundColor="#0c145a" halign="left" noWrap="1" transparent="1" zPosition="3"/>
 	<widget source="vod_director" render="Label" position="580,638" size="320,40" font="xklassregular;16" foregroundColor="#ffffff" backgroundColor="#0c145a" halign="left" noWrap="1" transparent="1" zPosition="3"/>
+	<widget source="vod_country_label" render="Label" position="900,614" size="160,40" font="xklassbold;16" foregroundColor="#ffffff" backgroundColor="#0c145a" halign="left" noWrap="1" transparent="1" zPosition="3"/>
+	<widget source="vod_country" render="Label" position="900,638" size="320,40" font="xklassregular;16" foregroundColor="#ffffff" backgroundColor="#0c145a" halign="left" noWrap="1" transparent="1" zPosition="3"/>
 	<ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XKlass/skin/hd/common/button-bg.png" position="0,680" size="1280,40" alphatest="blend" zPosition="2"/>
 	<widget source="key_red" render="Pixmap" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XKlass/skin/hd/common/key_red.png" position="336,687" size="25,25" alphatest="blend" zPosition="3"/>
 	<widget source="key_red" render="Label" position="368,680" size="150,40" font="xklassregular;16" foregroundColor="#ffffff" backgroundColor="#0a3162" valign="center" transparent="1" noWrap="1" zPosition="3"/>

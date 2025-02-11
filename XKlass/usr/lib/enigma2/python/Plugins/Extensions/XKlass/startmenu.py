@@ -31,7 +31,7 @@ from Components.config import configfile
 from . import _
 from . import xklass_globals as glob
 from . import processfiles as loadfiles
-from .plugin import (cfg, downloads_json, hasConcurrent, hasMultiprocessing, playlists_json, pythonFull, skin_directory, version, InternetSpeedTest_installed, NetSpeedTest_installed)
+from .plugin import cfg, downloads_json, hasConcurrent, hasMultiprocessing, playlists_json, pythonFull, skin_directory, version, InternetSpeedTest_installed, NetSpeedTest_installed, debugs
 from .xStaticText import StaticText
 from . import checkinternet
 
@@ -45,6 +45,8 @@ class XKlass_MainMenu(Screen):
     ALLOW_SUSPEND = True
 
     def __init__(self, session):
+        if debugs:
+            print("*** __init__ ***")
         Screen.__init__(self, session)
         self.session = session
 
@@ -126,6 +128,9 @@ class XKlass_MainMenu(Screen):
         self.setTitle(self.setup_title)
 
     def switchList(self):
+        if debugs:
+            print("*** switchList ***")
+
         self.toggle = not self.toggle
         instance1 = self["list"].master.master.instance
         instance2 = self["playlists"].master.master.instance
@@ -141,6 +146,9 @@ class XKlass_MainMenu(Screen):
             self["list2-bg"].show()
 
     def check_dependencies(self):
+        if debugs:
+            print("*** check_dependencies ***")
+
         try:
             import requests
             from PIL import Image
@@ -154,6 +162,9 @@ class XKlass_MainMenu(Screen):
             self.session.openWithCallback(self.start, Console, title="Checking Python Dependencies", cmdlist=[cmd], closeOnSuccess=True)
 
     def start(self, answer=None):
+        if debugs:
+            print("*** start ***")
+
         # print("*** start ***")
         if not checkinternet.check_internet():
             self.session.openWithCallback(self.quit, MessageBox, _("No internet."), type=MessageBox.TYPE_ERROR, timeout=5)
@@ -167,7 +178,9 @@ class XKlass_MainMenu(Screen):
             self.delayedDownload()
 
     def delayedDownload(self):
-        # print("*** delayed download ***")
+        if debugs:
+            print("*** delayedDownload ***")
+
         self.timer = eTimer()
         try:
             self.timer_conn = self.timer.timeout.connect(self.makePlaylistUrlList)
@@ -179,7 +192,9 @@ class XKlass_MainMenu(Screen):
         self.timer.start(20, True)
 
     def makePlaylistUrlList(self):
-        # print("*** makeplaylisturllist ***")
+        if debugs:
+            print("*** makePlaylistUrlList ***")
+
         self.url_list = []
         for index, playlists in enumerate(self.playlists_all):
             player_api = str(playlists["playlist_info"].get("player_api", ""))
@@ -194,7 +209,9 @@ class XKlass_MainMenu(Screen):
             self.processPlaylistDownloads()
 
     def processPlaylistDownloads(self):
-        # print("*** processplaylistsDownloads ***")
+        if debugs:
+            print("*** processPlaylistDownloads ***")
+
         threads = min(len(self.url_list), 20)
 
         if hasConcurrent:
@@ -209,7 +226,9 @@ class XKlass_MainMenu(Screen):
         self.buildPlaylistList()
 
     def concurrent_download(self, threads):
-        # print("*** concurrentdownloads ***")
+        if debugs:
+            print("*** concurrent_download ***")
+
         from concurrent.futures import ThreadPoolExecutor
         try:
             with ThreadPoolExecutor(max_workers=threads) as executor:
@@ -219,7 +238,9 @@ class XKlass_MainMenu(Screen):
             print("Concurrent execution error:", e)
 
     def multiprocessing_download(self, threads):
-        # print("*** multiprocessing_download ***")
+        if debugs:
+            print("*** multiprocessing_download ***")
+
         from multiprocessing.pool import ThreadPool
         try:
             pool = ThreadPool(threads)
@@ -235,13 +256,17 @@ class XKlass_MainMenu(Screen):
             print("Multiprocessing execution error:", e)
 
     def sequential_download(self):
-        # print("*** sequential_download ***")
+        if debugs:
+            print("*** sequential_download ***")
+
         for url in self.url_list:
             results = self.downloadUrl(url)
             self.update_playlists_with_results(results)
 
     def downloadUrl(self, url):
-        # print("*** downloadUrl ***", url)
+        if debugs:
+            print("*** downloadUrl ***")
+
         import requests
         index = url[1]
         response = None
@@ -290,7 +315,9 @@ class XKlass_MainMenu(Screen):
         return index, response
 
     def update_playlists_with_results(self, results):
-        # print("*** update 1 ***")
+        if debugs:
+            print("*** update_playlists_with_results ***")
+
         for index, response in results:
             if response:
                 self.playlists_all[index].update(response)
@@ -298,7 +325,9 @@ class XKlass_MainMenu(Screen):
                 self.playlists_all[index]["user_info"] = {}
 
     def buildPlaylistList(self):
-        # print("*** buildPlaylistList ***")
+        if debugs:
+            print("*** buildPlaylistList ***")
+
         for playlists in self.playlists_all:
             if "user_info" in playlists:
                 user_info = playlists["user_info"]
@@ -374,12 +403,15 @@ class XKlass_MainMenu(Screen):
         self.createSetupPlaylists()
 
     def writeJsonFile(self):
-        # print("*** writeJsonFile ***")
+        if debugs:
+            print("*** writeJsonFile ***")
+
         with open(playlists_json, "w") as f:
             json.dump(self.playlists_all, f)
 
     def createSetupPlaylists(self):
-        # print("*** createSetupPlaylists ***")
+        if debugs:
+            print("*** createSetupPlaylists ***")
         if cfg.introvideo.value:
             self.playVideo()
         else:
@@ -441,7 +473,8 @@ class XKlass_MainMenu(Screen):
             self.close()
 
     def set_last_playlist(self):
-        # print("*** set_last_playlist ***")
+        if debugs:
+            print("*** set_last_playlist ***")
 
         activeindex = 0
         found = False
@@ -490,7 +523,8 @@ class XKlass_MainMenu(Screen):
         return (index, text, str(url))
 
     def getCurrentEntry(self):
-        # print("*** getCurrentEntry ***")
+        if debugs:
+            print("*** getCurrentEntry ***")
         if self.list2:
             self["list"].setIndex(0)
             glob.active_playlist["data"]["live_categories"] = []
@@ -513,7 +547,9 @@ class XKlass_MainMenu(Screen):
             self.makeUrlCategoryList()
 
     def makeUrlCategoryList(self):
-        # print("*** makeUrlCategoryList ***")
+        if debugs:
+            print("*** makeUrlCategoryList ***")
+
         self.url_list = []
         glob.active_playlist["data"]["live_categories"] = []
         glob.active_playlist["data"]["vod_categories"] = []
@@ -551,7 +587,9 @@ class XKlass_MainMenu(Screen):
         self.processApiDownloads()
 
     def processApiDownloads(self):
-        # print("*** processApiDownloads ***")
+        if debugs:
+            print("*** processApiDownloads ***")
+
         threads = min(len(self.url_list), 4)
 
         if hasConcurrent:
@@ -566,7 +604,9 @@ class XKlass_MainMenu(Screen):
         self.createSetupOptions()
 
     def concurrent_api_download(self, threads):
-        # print("*** concurrent_api_download ***")
+        if debugs:
+            print("*** concurrent_api_download ***")
+
         from concurrent.futures import ThreadPoolExecutor
         try:
             with ThreadPoolExecutor(max_workers=threads) as executor:
@@ -576,7 +616,9 @@ class XKlass_MainMenu(Screen):
             print("Concurrent execution error:", e)
 
     def multiprocessing_api_download(self, threads):
-        # print("*** multiprocessing_download ***")
+        if debugs:
+            print("*** multiprocessing_api_download ***")
+
         from multiprocessing.pool import ThreadPool
         try:
             pool = ThreadPool(threads)
@@ -592,13 +634,17 @@ class XKlass_MainMenu(Screen):
             print("Multiprocessing execution error:", e)
 
     def sequential_api_download(self):
-        # print("*** sequential_api_download ***")
+        if debugs:
+            print("*** sequential_api_download ***")
+
         for url in self.url_list:
             results = self.downloadUrl(url)
             self.update_playlists_with_api_results(results)
 
     def update_playlists_with_api_results(self, results):
-        # print("*** update 2 ***")
+        if debugs:
+            print("*** update_playlists_with_api_results ***")
+
         for index, response in results:
             if response:
                 if index == 1:
@@ -614,7 +660,9 @@ class XKlass_MainMenu(Screen):
                     glob.active_playlist["data"]["live_streams"] = response
 
     def createSetupOptions(self):
-        # print("*** createSetupOptions ***")
+        if debugs:
+            print("*** createSetupOptions ***")
+
         self.list = []
         self.index = 0
         downloads_all = []
@@ -685,17 +733,16 @@ class XKlass_MainMenu(Screen):
         return index, str(title), num
 
     def __next__(self):
+        if debugs:
+            print("*** __next__ ***")
+
         if cfg.introvideo.value:
-            if cfg.backgroundsat.value:
 
-                try:
-                    if glob.currentPlayingServiceRefString:
-                        self.session.nav.playService(eServiceReference(glob.currentPlayingServiceRefString))
-                except Exception as e:
-                    print(e)
-
-            else:
-                self.session.nav.stopService()
+            try:
+                if glob.currentPlayingServiceRefString:
+                    self.session.nav.playService(eServiceReference(glob.currentPlayingServiceRefString))
+            except Exception as e:
+                print(e)
 
         current_entry = self["list"].getCurrent()
 
@@ -723,6 +770,9 @@ class XKlass_MainMenu(Screen):
                 self.runSpeedTest()
 
     def runSpeedTest(self):
+        if debugs:
+            print("*** runSpeedTest ***")
+
         if InternetSpeedTest_installed:
             from Plugins.Extensions.InternetSpeedTest.plugin import internetspeedtest
             self.session.openWithCallback(self.reload, internetspeedtest)
@@ -770,7 +820,9 @@ class XKlass_MainMenu(Screen):
         self.playOriginalChannel()
 
     def playOriginalChannel(self):
-        # self.stopVideo()
+        if debugs:
+            print("*** playOriginalChannel ***")
+
         try:
             if glob.currentPlayingServiceRefString:
                 self.session.nav.playService(eServiceReference(glob.currentPlayingServiceRefString))
@@ -780,12 +832,18 @@ class XKlass_MainMenu(Screen):
         self.close()
 
     def playVideo(self, result=None):
+        if debugs:
+            print("*** playVideo ***")
+
         self["background"].setText("")
         self.local_video_path = cfg.introvideoselection.value
         service = eServiceReference(4097, 0, self.local_video_path)
         self.session.nav.playService(service)
 
     def onEOF(self):
+        if debugs:
+            print("*** onEOF ***")
+
         if cfg.introvideo.value and cfg.introloop.value:
             self["background"].setText("")
             service = self.session.nav.getCurrentService()
@@ -814,6 +872,9 @@ class XKlass_MainMenu(Screen):
             self.getCurrentEntry()
 
     def resetData(self, answer=None):
+        if debugs:
+            print("*** resetData ***")
+
         if answer is None:
             self.session.openWithCallback(self.resetData, MessageBox, _("Warning: delete stored json data for all playlists... Settings, favourites etc. \nPlaylists will not be deleted.\nDo you wish to continue?"))
         elif answer:
@@ -826,6 +887,9 @@ class XKlass_MainMenu(Screen):
             self.quit()
 
     def reload(self, Answer=None):
+        if debugs:
+            print("*** reload ***")
+
         self["list"].setIndex(0)
 
         if cfg.introvideo.value:

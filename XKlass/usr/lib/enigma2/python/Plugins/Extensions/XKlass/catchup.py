@@ -146,14 +146,8 @@ class XKlass_Catchup_Categories(Screen):
 
         self.setup_title = _("Catch Up Categories")
 
-        self.main_title = ("")
+        self.main_title = _("Catchup TV")
         self["main_title"] = StaticText(self.main_title)
-
-        self.screen_title = _("Catchup TV")
-        self["screen_title"] = StaticText(self.screen_title)
-
-        self.category = ("")
-        self["category"] = StaticText(self.category)
 
         self.main_list = []  # displayed list
         self["main_list"] = List(self.main_list, enableWrapAround=True)
@@ -492,7 +486,6 @@ class XKlass_Catchup_Categories(Screen):
         self["splash"].hide()
         self["x_title"].setText("")
         self["x_description"].setText("")
-        self["category"].setText("{}".format(glob.current_category))
         if self.level == 1:
             self.getCategories()
         else:
@@ -977,7 +970,6 @@ class XKlass_Catchup_Categories(Screen):
 
             if self.level == 1:
                 if self.list1:
-                    glob.current_category = self["main_list"].getCurrent()[0]
                     category_id = self["main_list"].getCurrent()[3]
                     next_url = "{0}&action=get_live_streams&category_id={1}".format(self.player_api, category_id) if category_id != "0" else "{0}&action=get_live_streams".format(self.player_api)
                     self.level += 1
@@ -1025,8 +1017,6 @@ class XKlass_Catchup_Categories(Screen):
             self.resetButtons()
         else:
             del glob.nextlist[-1]
-            glob.current_category = ""
-            self["category"].setText("")
 
             if not glob.nextlist:
                 # self.stopStream()

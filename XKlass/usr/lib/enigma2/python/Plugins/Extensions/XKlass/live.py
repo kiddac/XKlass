@@ -142,6 +142,7 @@ class XKlass_Live_Categories(Screen):
         # print("*** live init ***")
         Screen.__init__(self, session)
         self.session = session
+        glob.categoryname = "live"
 
         self.skin_path = os.path.join(skin_directory, cfg.skin.value)
         skin = os.path.join(self.skin_path, "live_categories.xml")
@@ -153,16 +154,10 @@ class XKlass_Live_Categories(Screen):
 
         self.setup_title = _("Live Categories")
 
-        self.main_title = ("")
+        self.main_title = _("Live TV")
         self["main_title"] = StaticText(self.main_title)
 
-        self.screen_title = _("Live TV")
-        self["screen_title"] = StaticText(self.screen_title)
-
-        self.category = ("")
-        self["category"] = StaticText(self.category)
-
-        self.main_list = []  # displayed list
+        self.main_list = []
         self["main_list"] = List(self.main_list, enableWrapAround=True)
 
         self["x_title"] = StaticText()
@@ -332,8 +327,6 @@ class XKlass_Live_Categories(Screen):
             glob.nextlist.append({"next_url": next_url, "index": 0, "level": self.level, "sort": self.sortText, "filter": ""})
 
     def playOriginalChannel(self):
-        # self.stopVideo()
-
         try:
             if glob.currentPlayingServiceRefString:
                 self.session.nav.playService(eServiceReference(glob.currentPlayingServiceRefString))
@@ -541,7 +534,6 @@ class XKlass_Live_Categories(Screen):
         self["splash"].hide()
         self["x_title"].setText("")
         self["x_description"].setText("")
-        self["category"].setText("{}".format(glob.current_category))
 
         if self.level == 1:
             self.getCategories()
@@ -825,6 +817,18 @@ class XKlass_Live_Categories(Screen):
             if self.chosen_category == "favourites" or self.chosen_category == "recent":
                 self["key_menu"].setText("")
 
+    def stopStream(self):
+        # print("*** stop stream ***")
+        current_playing_ref = glob.currentPlayingServiceRefString
+        new_playing_ref = glob.newPlayingServiceRefString
+
+        if current_playing_ref and new_playing_ref and current_playing_ref != new_playing_ref:
+            currently_playing_service = self.session.nav.getCurrentlyPlayingServiceReference()
+            if currently_playing_service:
+                self.session.nav.stopService()
+            self.session.nav.playService(eServiceReference(current_playing_ref))
+            glob.newPlayingServiceRefString = current_playing_ref
+
     def selectionChanged(self):
         # print("*** selectionchanged ***")
         current_item = self["main_list"].getCurrent()
@@ -841,7 +845,7 @@ class XKlass_Live_Categories(Screen):
 
             self["page"].setText(_("Page: ") + "{}/{}".format(page, page_all))
             self["listposition"].setText("{}/{}".format(position, position_all))
-            self["main_title"].setText("{}".format(channel_title))
+            self["main_title"].setText("{}: {}".format(self.main_title, channel_title))
             self.loadBlankImage()
 
             if self.level == 2:
@@ -1193,7 +1197,6 @@ class XKlass_Live_Categories(Screen):
 
             if self.level == 1:
                 if self.list1:
-                    glob.current_category = self["main_list"].getCurrent()[0]
                     category_id = self["main_list"].getCurrent()[3]
 
                     next_url = "{0}&action=get_live_streams&category_id={1}".format(self.player_api, category_id)
@@ -1218,6 +1221,7 @@ class XKlass_Live_Categories(Screen):
                     self["key_yellow"].setText(_("Sort: A-Z"))
 
                     glob.nextlist.append({"next_url": next_url, "index": 0, "level": self.level, "sort": self["key_yellow"].getText(), "filter": ""})
+
                     self.createSetup()
                 else:
                     self.createSetup()
@@ -1240,11 +1244,55 @@ class XKlass_Live_Categories(Screen):
 
                     self.reference.setName(glob.currentchannellist[glob.currentchannellistindex][0])
 
-                    self.session.openWithCallback(self.setIndex, liveplayer.XKlass_StreamPlayer, str(next_url), str(streamtype), stream_id)
+                    if self.session.nav.getCurrentlyPlayingServiceReference():
+
+                        if self.session.nav.getCurrentlyPlayingServiceReference().toString() != self.reference.toString() and cfg.livepreview.value is True:
+                            try:
+                                self.session.nav.stopService()
+                            except Exception as e:
+                                print(e)
+
+                            try:
+                                self.session.nav.playService(self.reference)
+                            except Exception as e:
+                                print(e)
+
+                            if self.session.nav.getCurrentlyPlayingServiceReference():
+                                glob.newPlayingServiceRef = self.session.nav.getCurrentlyPlayingServiceReference()
+                                glob.newPlayingServiceRefString = glob.newPlayingServiceRef.toString()
+
+                            for channel in self.list2:
+                                if channel[2] == stream_id:
+                                    channel[17] = True  # set watching icon
+                                else:
+                                    channel[17] = False
+
+                            self.buildLists()
+
+                        else:
+                            for channel in self.list2:
+                                if channel[2] == stream_id:
+                                    channel[17] = True  # set watching icon
+                                else:
+                                    channel[17] = False
+
+                            self.buildLists()
+
+                            try:
+                                self.session.nav.stopService()
+                            except:
+                                pass
+
+                            self.session.openWithCallback(self.setIndex, liveplayer.XKlass_StreamPlayer, str(next_url), str(streamtype), stream_id)
+                    else:
+                        try:
+                            self.session.nav.stopService()
+                        except:
+                            pass
+
+                        self.session.openWithCallback(self.setIndex, liveplayer.XKlass_StreamPlayer, str(next_url), str(streamtype), stream_id)
 
                     self["category_actions"].setEnabled(False)
-                    # self["channel_actions"].setEnabled(False)
-                    # self["menu_actions"].setEnabled(False)
 
                 else:
                     self.createSetup()
@@ -1275,15 +1323,16 @@ class XKlass_Live_Categories(Screen):
             pass
 
         del glob.nextlist[-1]
-        glob.current_category = ""
-        self["category"].setText("")
 
         if not glob.nextlist:
+            self.stopStream()
             self.close()
 
         else:
             self["x_title"].setText("")
             self["x_description"].setText("")
+            if cfg.stopstream.value or not cfg.livepreview.value:
+                self.stopStream()
             self.level -= 1
 
             self["category_actions"].setEnabled(True)

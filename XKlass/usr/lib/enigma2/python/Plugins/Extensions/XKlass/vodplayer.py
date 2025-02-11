@@ -730,6 +730,11 @@ class XKlass_VodPlayer(
         except:
             pass
 
+        try:
+            self.session.nav.playService(eServiceReference(glob.currentPlayingServiceRefString))
+        except:
+            pass
+
         self.close()
 
     def toggleStreamType(self):

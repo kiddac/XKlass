@@ -43,4 +43,5 @@
 		<convert type="ConditionalShowHide"/>
 	</widget>
 	<widget source="key_yellow" render="Label" position="1097,1020" size="225,60" font="xklassregular;24" foregroundColor="#ffffff" backgroundColor="#0a3162" valign="center" transparent="1" noWrap="1" zPosition="2"/>
+	
 </screen>

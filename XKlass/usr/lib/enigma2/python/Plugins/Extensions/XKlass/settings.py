@@ -152,6 +152,9 @@ class XKlass_Settings(ConfigListScreen, Screen, ProtectedScreen):
         self.cfg_livetype = getConfigListEntry(_("Default LIVE stream type"), cfg.livetype)
         self.cfg_vodtype = getConfigListEntry(_("Default VOD/SERIES stream type"), cfg.vodtype)
 
+        self.cfg_livepreview = getConfigListEntry(_("Preview LIVE streams in mini tv"), cfg.livepreview)
+        self.cfg_stopstream = getConfigListEntry(_("Stop stream on back button"), cfg.stopstream)
+
         self.cfg_vodcategoryorder = getConfigListEntry(_("Default VOD category sort order"), cfg.vodcategoryorder)
         self.cfg_vodstreamorder = getConfigListEntry(_("Default VOD stream sort order"), cfg.vodstreamorder)
 
@@ -196,6 +199,9 @@ class XKlass_Settings(ConfigListScreen, Screen, ProtectedScreen):
 
             self.cfg_vodcategoryorder,
             self.cfg_vodstreamorder,
+
+            self.cfg_livepreview,
+            self.cfg_stopstream,
 
             self.cfg_wakeup,
             self.cfg_TMDB,
@@ -312,6 +318,7 @@ class XKlass_Settings(ConfigListScreen, Screen, ProtectedScreen):
             print(e)
 
     def openDirectoryBrowserCB(self, config_entry):
+
         def callback(path):
             if path is not None:
                 config_entry.setValue(path)

@@ -60,25 +60,6 @@ from . import xklass_globals as glob
 from .plugin import (cfg, common_path, dir_tmp, downloads_json, playlists_json, pythonVer, screenwidth, skin_directory, hasConcurrent, hasMultiprocessing)
 from .xStaticText import StaticText
 
-# HTTPS Twisted client hack
-try:
-    from twisted.internet import ssl
-    from twisted.internet._sslverify import ClientTLSOptions
-    sslverify = True
-except ImportError:
-    sslverify = False
-
-if sslverify:
-    class SNIFactory(ssl.ClientContextFactory):
-        def __init__(self, hostname=None):
-            self.hostname = hostname
-
-        def getContext(self):
-            ctx = self._contextFactory(self.method)
-            if self.hostname:
-                ClientTLSOptions(self.hostname, ctx)
-            return ctx
-
 hdr = {
     'User-Agent': str(cfg.useragent.value),
     'Accept-Encoding': 'gzip, deflate'
@@ -106,14 +87,9 @@ class XKlass_Series_Categories(Screen):
             self.skin = f.read()
 
         self.setup_title = _("Series Categories")
-        self.main_title = ("")
+
+        self.main_title = _("Series")
         self["main_title"] = StaticText(self.main_title)
-
-        self.screen_title = _("Series")
-        self["screen_title"] = StaticText(self.screen_title)
-
-        self.category = ("")
-        self["category"] = StaticText(self.category)
 
         self.main_list = []
         self["main_list"] = List(self.main_list, enableWrapAround=True)
@@ -133,10 +109,11 @@ class XKlass_Series_Categories(Screen):
         self["vod_logo"] = Pixmap()
         self["vod_logo"].hide()
         self["vod_director_label"] = StaticText()
+        self["vod_country_label"] = StaticText()
         self["vod_cast_label"] = StaticText()
         self["vod_director"] = StaticText()
+        self["vod_country"] = StaticText()
         self["vod_cast"] = StaticText()
-
         self["rating_text"] = StaticText()
         self["rating_percent"] = StaticText()
 
@@ -534,7 +511,6 @@ class XKlass_Series_Categories(Screen):
         self["splash"].hide()
         self["x_title"].setText("")
         self["x_description"].setText("")
-        self["category"].setText("{}".format(glob.current_category))
 
         if self.level == 1:
             self.getCategories()
@@ -582,7 +558,9 @@ class XKlass_Series_Categories(Screen):
         currentHidden = set(currentPlaylist.get("player_info", {}).get("serieshidden", []))
 
         hidden = "0" in currentHidden
+
         i = 0
+
         self.prelist.extend([
             [i, _("ALL"), "0", hidden]
         ])
@@ -620,7 +598,6 @@ class XKlass_Series_Categories(Screen):
         self.tmdbretry = 0
 
         if response:
-
             for index, channel in enumerate(response):
                 name = str(channel.get("name", ""))
 
@@ -631,11 +608,6 @@ class XKlass_Series_Categories(Screen):
                     parts = name.split('\" ', 1)
                     if len(parts) > 1:
                         name = parts[0]
-
-                # if "stream_type" in channel and channel["stream_type"] and channel["stream_type"] != "movie":
-                #   pattern = re.compile(r"[^\w\s()\[\]]", re.U)
-                #   name = re.sub(r"_", "", re.sub(pattern, "", name))
-                #   name = "** " + str(name) + " **"
 
                 if "stream_type" in channel and channel["stream_type"] and (channel["stream_type"] not in ["movie", "series"]):
                     continue
@@ -676,7 +648,6 @@ class XKlass_Series_Categories(Screen):
 
                 rating = str(channel.get("rating", ""))
 
-                # year not always available in hybrid apis
                 year = str(channel.get("year", ""))
 
                 if year == "":
@@ -1074,7 +1045,7 @@ class XKlass_Series_Categories(Screen):
     def selectionChanged(self):
         # print("*** selectionChanged ***")
 
-        self.tmdbresults = {}
+        self.tmdbresults = ""
         self.tmdbretry = 0
 
         if self.cover_download_deferred:
@@ -1091,8 +1062,6 @@ class XKlass_Series_Categories(Screen):
         if current_item:
             channel_title = current_item[0]
             current_index = self["main_list"].getIndex()
-            # glob.currentchannellistindex = current_index
-            # glob.nextlist[-1]["index"] = current_index
 
             position = current_index + 1
             position_all = len(self.pre_list) + len(self.main_list) if self.level == 1 else len(self.main_list)
@@ -1102,7 +1071,7 @@ class XKlass_Series_Categories(Screen):
             self["page"].setText(_("Page: ") + "{}/{}".format(page, page_all))
             self["listposition"].setText("{}/{}".format(position, position_all))
 
-            self["main_title"].setText("{}".format(channel_title))
+            self["main_title"].setText("{}: {}".format(self.main_title, channel_title))
 
             if self.level == 2:
                 self.loadDefaultCover()
@@ -1217,7 +1186,6 @@ class XKlass_Series_Categories(Screen):
 
     def getTMDB(self):
         # print("**** getTMDB ***")
-
         current_item = self["main_list"].getCurrent()
         if current_item:
             if self.level == 2:
@@ -1389,6 +1357,7 @@ class XKlass_Series_Categories(Screen):
         self.tmdbresults = {}
         self.tmdbdetails = []
         director = []
+
         logos = None
 
         try:
@@ -1487,12 +1456,12 @@ class XKlass_Series_Categories(Screen):
                             if logos:
                                 logo_path = logos[0].get("file_path")
 
-                            if screenwidth.width() <= 1280:
-                                self.tmdbresults["logo"] = "http://image.tmdb.org/t/p/w300" + str(logo_path)
-                            elif screenwidth.width() <= 1920:
-                                self.tmdbresults["logo"] = "http://image.tmdb.org/t/p/w300" + str(logo_path)
-                            else:
-                                self.tmdbresults["logo"] = "http://image.tmdb.org/t/p/w500" + str(logo_path)
+                                if screenwidth.width() <= 1280:
+                                    self.tmdbresults["logo"] = "http://image.tmdb.org/t/p/w300" + str(logo_path)
+                                elif screenwidth.width() <= 1920:
+                                    self.tmdbresults["logo"] = "http://image.tmdb.org/t/p/w300" + str(logo_path)
+                                else:
+                                    self.tmdbresults["logo"] = "http://image.tmdb.org/t/p/w500" + str(logo_path)
 
                     if self.level != 2:
                         if "air_date" in self.tmdbdetails and self.tmdbdetails["air_date"]:
@@ -1735,12 +1704,7 @@ class XKlass_Series_Categories(Screen):
             else:
                 self["overview"].setText("")
 
-            if self.level == 2 and cfg.channelcovers.value:
-                self.downloadCover()
-                self.downloadBackdrop()
-                self.downloadLogo()
-
-            if self.level == 3 and cfg.channelcovers.value:
+            if self.level in (2, 3) and cfg.channelcovers.value:
                 self.downloadCover()
                 self.downloadBackdrop()
                 self.downloadLogo()
@@ -1777,7 +1741,7 @@ class XKlass_Series_Categories(Screen):
                 pass
 
             if self.tmdbresults:
-                desc_image = str(self.tmdbresults.get("cover_big")).strip() or str(self.tmdbresults.get("movie_image")).strip() or self.storedcover or ""
+                desc_image = (str(self.tmdbresults.get("cover_big") or "").strip() or str(self.tmdbresults.get("movie_image") or "").strip() or self.storedcover or "")
 
             if self.cover_download_deferred and not self.cover_download_deferred.called:
                 self.cover_download_deferred.cancel()
@@ -1804,7 +1768,7 @@ class XKlass_Series_Categories(Screen):
             logo_image = ""
 
             if self.tmdbresults:  # tmbdb
-                logo_image = str(self.tmdbresults.get("logo")).strip() or self.storedlogo or ""
+                logo_image = str(self.tmdbresults.get("logo") or "").strip() or self.storedlogo or ""
 
                 if self.logo_download_deferred and not self.logo_download_deferred.called:
                     self.logo_download_deferred.cancel()
@@ -1844,10 +1808,12 @@ class XKlass_Series_Categories(Screen):
                     pass
 
             if self.tmdbresults:  # tmbdb
-                if isinstance(self.tmdbresults["backdrop_path"], list):
-                    backdrop_image = str(self.tmdbresults["backdrop_path"][0]).strip() or self.storedbackdrop or ""
+                # Check if "backdrop_path" exists and is not None
+                backdrop_path = self.tmdbresults.get("backdrop_path")
+                if backdrop_path:
+                    backdrop_image = str(backdrop_path[0] if isinstance(backdrop_path, list) else backdrop_path).strip() or self.storedbackdrop or ""
                 else:
-                    backdrop_image = str(self.tmdbresults.get("backdrop_path")).strip() or self.storedbackdrop or ""
+                    backdrop_image = self.storedbackdrop or ""
 
             if self.backdrop_download_deferred and not self.backdrop_download_deferred.called:
                 self.backdrop_download_deferred.cancel()
@@ -2267,7 +2233,6 @@ class XKlass_Series_Categories(Screen):
 
             if self.level == 1:
                 if self.list1:
-                    glob.current_category = self["main_list"].getCurrent()[0]
                     category_id = self["main_list"].getCurrent()[3]
 
                     next_url = "{0}&action=get_series&category_id={1}".format(self.player_api, category_id)
@@ -2391,9 +2356,6 @@ class XKlass_Series_Categories(Screen):
             print(e)
             self.close()
 
-        glob.current_category = ""
-        self["category"].setText("")
-
         if self.level == 3:
             self.series_info = ""
 
@@ -2452,8 +2414,10 @@ class XKlass_Series_Categories(Screen):
         self["tagline"].setText("")
         self["facts"].setText("")
         self["vod_director_label"].setText("")
+        self["vod_country_label"].setText("")
         self["vod_cast_label"].setText("")
         self["vod_director"].setText("")
+        self["vod_country"].setText("")
         self["vod_cast"].setText("")
         self["rating_text"].setText("")
         self["rating_percent"].setText("")
@@ -2466,6 +2430,7 @@ class XKlass_Series_Categories(Screen):
         self["tagline"].setText("")
         self["facts"].setText("")
         self["vod_director"].setText("")
+        self["vod_country"].setText("")
         self["vod_cast"].setText("")
         self["rating_text"].setText("")
         self["rating_percent"].setText("")

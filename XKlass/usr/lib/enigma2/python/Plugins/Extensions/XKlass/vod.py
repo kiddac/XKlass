@@ -60,24 +60,6 @@ from . import xklass_globals as glob
 from .plugin import (cfg, common_path, dir_tmp, downloads_json, playlists_json, pythonVer, screenwidth, skin_directory, hasConcurrent, hasMultiprocessing)
 from .xStaticText import StaticText
 
-# HTTPS Twisted client hack
-try:
-    from twisted.internet import ssl
-    from twisted.internet._sslverify import ClientTLSOptions
-    sslverify = True
-except ImportError:
-    sslverify = False
-
-if sslverify:
-    class SNIFactory(ssl.ClientContextFactory):
-        def __init__(self, hostname=None):
-            self.hostname = hostname
-
-        def getContext(self):
-            ctx = self._contextFactory(self.method)
-            if self.hostname:
-                ClientTLSOptions(self.hostname, ctx)
-            return ctx
 
 if os.path.exists("/var/lib/dpkg/status"):
     DreamOS = True
@@ -94,9 +76,6 @@ hdr = {
     'User-Agent': str(cfg.useragent.value),
     'Accept-Encoding': 'gzip, deflate'
 }
-
-agent = Agent(reactor)
-# downloader = DataDownloader(agent, pythonVer)
 
 
 class XKlass_Vod_Categories(Screen):
@@ -116,19 +95,19 @@ class XKlass_Vod_Categories(Screen):
         self.skin_path = os.path.join(skin_directory, cfg.skin.value)
         skin = os.path.join(self.skin_path, "vod_categories.xml")
 
+        # for other skins that have a skinny scrollbar
+        """
+        if os.path.exists("/var/lib/dpkg/status"):
+            skin = os.path.join(self.skin_path, "DreamOS/vod_categories.xml")
+            """
+
         with codecs.open(skin, "r", encoding="utf-8") as f:
             self.skin = f.read()
 
         self.setup_title = _("Vod Categories")
 
-        self.main_title = ("")
+        self.main_title = _("Movies")
         self["main_title"] = StaticText(self.main_title)
-
-        self.screen_title = _("Movies")
-        self["screen_title"] = StaticText(self.screen_title)
-
-        self.category = ("")
-        self["category"] = StaticText(self.category)
 
         self.main_list = []
         self["main_list"] = List(self.main_list, enableWrapAround=True)
@@ -148,8 +127,10 @@ class XKlass_Vod_Categories(Screen):
         self["vod_logo"] = Pixmap()
         self["vod_logo"].hide()
         self["vod_director_label"] = StaticText()
+        self["vod_country_label"] = StaticText()
         self["vod_cast_label"] = StaticText()
         self["vod_director"] = StaticText()
+        self["vod_country"] = StaticText()
         self["vod_cast"] = StaticText()
 
         self["rating_text"] = StaticText()
@@ -238,6 +219,7 @@ class XKlass_Vod_Categories(Screen):
         self["menu_actions"].setEnabled(False)
 
         self.coverLoad = ePicLoad()
+
         try:
             self.coverLoad.PictureData.get().append(self.DecodeCover)
         except:
@@ -438,7 +420,6 @@ class XKlass_Vod_Categories(Screen):
 
         return index, response
 
-
     def process_downloads(self):
         # print("*** process downloads ***")
         threads = min(len(self.url_list), 10)
@@ -520,7 +501,6 @@ class XKlass_Vod_Categories(Screen):
         self["splash"].hide()
         self["x_title"].setText("")
         self["x_description"].setText("")
-        self["category"].setText("{}".format(glob.current_category))
 
         if self.level == 1:
             self.getCategories()
@@ -714,6 +694,8 @@ class XKlass_Vod_Categories(Screen):
                     if matches:
                         year = str(matches[-1])
 
+                tmdb = str(channel.get("tmdb", ""))
+
                 next_url = "{}/movie/{}/{}/{}.{}".format(self.host, self.username, self.password, stream_id, container_extension)
 
                 favourite = False
@@ -725,7 +707,7 @@ class XKlass_Vod_Categories(Screen):
                 else:
                     glob.active_playlist["player_info"]["vodfavourites"] = []
 
-                self.list2.append([index, str(name), str(stream_id), str(cover), str(added), str(rating), str(next_url), favourite, container_extension, year, hidden])
+                self.list2.append([index, str(name), str(stream_id), str(cover), str(added), str(rating), str(next_url), favourite, container_extension, year, hidden, tmdb])
 
             glob.originalChannelList2 = self.list2[:]
 
@@ -760,27 +742,29 @@ class XKlass_Vod_Categories(Screen):
         else:
             self.pre_list = []
 
-        self.main_list = [buildCategoryList(x[0], x[1], x[2], x[3]) for x in self.list1 if not x[3]]
+        if self.list1:
+            self.main_list = [buildCategoryList(x[0], x[1], x[2], x[3]) for x in self.list1 if not x[3]]
 
-        self["main_list"].setList(self.pre_list + self.main_list)
+            self["main_list"].setList(self.pre_list + self.main_list)
 
-        if self["main_list"].getCurrent():
-            self["main_list"].setIndex(glob.nextlist[-1]["index"])
+            if self["main_list"].getCurrent():
+                self["main_list"].setIndex(glob.nextlist[-1]["index"])
 
     def buildVod(self):
         # print("*** buildVod ***")
         self.main_list = []
 
-        if self.chosen_category == "favourites":
-            self.main_list = [buildVodStreamList(x[0], x[1], x[2], x[3], x[4], x[5], x[6], x[7], x[8], x[10]) for x in self.list2 if x[7] is True]
-        else:
-            self.main_list = [buildVodStreamList(x[0], x[1], x[2], x[3], x[4], x[5], x[6], x[7], x[8], x[10]) for x in self.list2 if x[10] is False]
-        self["main_list"].setList(self.main_list)
+        if self.list2:
+            if self.chosen_category == "favourites":
+                self.main_list = [buildVodStreamList(x[0], x[1], x[2], x[3], x[4], x[5], x[6], x[7], x[8], x[10], x[11]) for x in self.list2 if x[7] is True]
+            else:
+                self.main_list = [buildVodStreamList(x[0], x[1], x[2], x[3], x[4], x[5], x[6], x[7], x[8], x[10], x[11]) for x in self.list2 if x[10] is False]
+            self["main_list"].setList(self.main_list)
 
-        self.showVod()
+            self.showVod()
 
-        if self["main_list"].getCurrent():
-            self["main_list"].setIndex(glob.nextlist[-1]["index"])
+            if self["main_list"].getCurrent():
+                self["main_list"].setIndex(glob.nextlist[-1]["index"])
 
     def downloadVodInfo(self):
         # print("*** downloadVodInfo ***")
@@ -879,9 +863,11 @@ class XKlass_Vod_Categories(Screen):
                 self.getTMDB()
             else:
                 self.displayTMDB()
+                """
                 if cfg.channelcovers.value is True:
                     self.downloadCover()
                     self.downloadBackdrop()
+                    """
 
     def selectionChanged(self):
         # print("*** selectionChanged ***")
@@ -912,8 +898,7 @@ class XKlass_Vod_Categories(Screen):
 
             self["page"].setText(_("Page: ") + "{}/{}".format(page, page_all))
             self["listposition"].setText("{}/{}".format(position, position_all))
-
-            self["main_title"].setText("{}".format(channel_title))
+            self["main_title"].setText("{}: {}".format(self.main_title, channel_title))
 
             self["vod_cover"].hide()
             self["vod_logo"].hide()
@@ -1019,58 +1004,65 @@ class XKlass_Vod_Categories(Screen):
 
     def getTMDB(self):
         # print("**** getTMDB ***")
-        title = ""
-        searchtitle = ""
-        self.searchtitle = ""
-        self.isIMDB = False
-        self.tmdb_id_exists = False
-        year = ""
 
-        try:
-            os.remove(os.path.join(dir_tmp, "search.txt"))
-        except:
-            pass
+        current_item = self["main_list"].getCurrent()
 
-        next_url = self["main_list"].getCurrent()[3]
+        if current_item:
+            title = ""
+            searchtitle = ""
+            self.searchtitle = ""
+            self.isIMDB = False
+            self.tmdb_id_exists = False
+            year = ""
 
-        if next_url != "None" and "/movie/" in next_url:
-            title = self["main_list"].getCurrent()[0]
+            next_url = current_item[3]
 
-            if self.tmdbresults:
-                if "name" in self.tmdbresults and self.tmdbresults["name"]:
-                    title = self.tmdbresults["name"]
-                elif "o_name" in self.tmdbresults and self.tmdbresults["o_name"]:
-                    title = self.tmdbresults["o_name"]
+            if next_url != "None" and "/movie/" in next_url:
+                title = current_item[0]
 
-                if "releasedate" in self.tmdbresults and self.tmdbresults["releasedate"]:
-                    year = self.tmdbresults["releasedate"]
-                    year = year[0:4]
+                if self.tmdbresults:
+                    if "name" in self.tmdbresults and self.tmdbresults["name"]:
+                        title = self.tmdbresults["name"]
+                    elif "o_name" in self.tmdbresults and self.tmdbresults["o_name"]:
+                        title = self.tmdbresults["o_name"]
 
-                if "tmdb_id" in self.tmdbresults and self.tmdbresults["tmdb_id"]:
-                    if str(self.tmdbresults["tmdb_id"])[:1].isdigit():
-                        self.getTMDBDetails(self.tmdbresults["tmdb_id"])
-                        return
-                    else:
-                        self.isIMDB = True
+                    if "releasedate" in self.tmdbresults and self.tmdbresults["releasedate"]:
+                        try:
+                            year = self.tmdbresults["releasedate"]
+                            year = year[0:4]
+                        except:
+                            year = ""
 
-        searchtitle = self.stripjunk(title, "TMDB")
-        searchtitle = quote(searchtitle, safe="")
+                    if "tmdb_id" in self.tmdbresults and self.tmdbresults["tmdb_id"]:
+                        if str(self.tmdbresults["tmdb_id"])[:1].isdigit():
+                            self.getTMDBDetails(self.tmdbresults["tmdb_id"])
+                            return
+                        else:
+                            self.isIMDB = True
 
-        if not self.isIMDB:
-            searchurl = 'http://api.themoviedb.org/3/search/movie?api_key={}&query={}'.format(self.check(self.token), searchtitle)
-            if year:
-                searchurl = 'http://api.themoviedb.org/3/search/movie?api_key={}&primary_release_year={}&query={}'.format(self.check(self.token), year, searchtitle)
-        else:
-            searchurl = 'http://api.themoviedb.org/3/find/{}?api_key={}&external_source=imdb_id'.format(self.tmdbresults["tmdb_id"], self.check(self.token))
+            try:
+                os.remove(os.path.join(dir_tmp, "search.txt"))
+            except:
+                pass
 
-        if pythonVer == 3:
-            searchurl = searchurl.encode()
+            searchtitle = self.stripjunk(title, "TMDB")
+            searchtitle = quote(searchtitle, safe="")
 
-        filepath = os.path.join(dir_tmp, "search.txt")
-        try:
-            downloadPage(searchurl, filepath, timeout=10).addCallback(self.processTMDB).addErrback(self.failed)
-        except Exception as e:
-            print("download TMDB error {}".format(e))
+            if not self.isIMDB:
+                searchurl = 'http://api.themoviedb.org/3/search/movie?api_key={}&query={}'.format(self.check(self.token), searchtitle)
+                if year:
+                    searchurl = 'http://api.themoviedb.org/3/search/movie?api_key={}&primary_release_year={}&query={}'.format(self.check(self.token), year, searchtitle)
+            else:
+                searchurl = 'http://api.themoviedb.org/3/find/{}?api_key={}&external_source=imdb_id'.format(self.tmdbresults["tmdb_id"], self.check(self.token))
+
+            if pythonVer == 3:
+                searchurl = searchurl.encode()
+
+            filepath = os.path.join(dir_tmp, "search.txt")
+            try:
+                downloadPage(searchurl, filepath, timeout=10).addCallback(self.processTMDB).addErrback(self.failed)
+            except Exception as e:
+                print("download TMDB error {}".format(e))
 
     def failed(self, data=None):
         # print("*** failed ***")
@@ -1100,9 +1092,11 @@ class XKlass_Vod_Categories(Screen):
 
                 if not resultid:
                     self.displayTMDB()
+                    """
                     if cfg.channelcovers.value:
                         # self.tmdbresults = ""
                         self.downloadCover()
+                        """
                     return
 
                 self.getTMDBDetails(resultid)
@@ -1141,6 +1135,7 @@ class XKlass_Vod_Categories(Screen):
         response = ""
         self.tmdbdetails = []
         director = []
+        country = []
         poster_path = ""
         backdrop_path = ""
         logo_path = ""
@@ -1159,11 +1154,11 @@ class XKlass_Vod_Categories(Screen):
             else:
                 if self.tmdbdetails:
 
-                    if "title" in self.tmdbdetails and self.tmdbdetails["title"].strip():
-                        self.tmdbresults["name"] = str(self.tmdbdetails["title"])
+                    if "title" in self.tmdbdetails and self.tmdbdetails["title"]:
+                        self.tmdbresults["name"] = str(self.tmdbdetails["title"].strip())
 
-                    if "original_title" in self.tmdbdetails and self.tmdbdetails["original_title"].strip():
-                        self.tmdbresults["o_name"] = str(self.tmdbdetails["original_title"])
+                    if "original_title" in self.tmdbdetails and self.tmdbdetails["original_title"]:
+                        self.tmdbresults["o_name"] = str(self.tmdbdetails["original_title"]).strip()
 
                     if "runtime" in self.tmdbdetails:
                         runtime = self.tmdbdetails["runtime"]
@@ -1176,14 +1171,14 @@ class XKlass_Vod_Categories(Screen):
                         country = ", ".join(str(pcountry["name"]) for pcountry in self.tmdbdetails["production_countries"])
                         self.tmdbresults["country"] = country
 
-                    if "release_date" in self.tmdbdetails and self.tmdbdetails["release_date"].strip():
-                        self.tmdbresults["releaseDate"] = str(self.tmdbdetails["release_date"])
+                    if "release_date" in self.tmdbdetails and self.tmdbdetails["release_date"]:
+                        self.tmdbresults["releaseDate"] = str(self.tmdbdetails["release_date"]).strip()
 
-                    if "poster_path" in self.tmdbdetails and self.tmdbdetails["poster_path"].strip():
-                        poster_path = self.tmdbdetails["poster_path"]
+                    if "poster_path" in self.tmdbdetails and self.tmdbdetails["poster_path"]:
+                        poster_path = str(self.tmdbdetails["poster_path"]).strip()
 
-                    if "backdrop_path" in self.tmdbdetails and self.tmdbdetails["backdrop_path"].strip():
-                        backdrop_path = self.tmdbdetails.get("backdrop_path", "")
+                    if "backdrop_path" in self.tmdbdetails and self.tmdbdetails["backdrop_path"]:
+                        backdrop_path = str(self.tmdbdetails["backdrop_path"]).strip()
 
                     if "images" in self.tmdbdetails and "logos" in self.tmdbdetails["images"]:
                         logos = self.tmdbdetails["images"]["logos"]
@@ -1220,11 +1215,11 @@ class XKlass_Vod_Categories(Screen):
                     if logo_path:
                         self.tmdbresults["logo"] = "http://image.tmdb.org/t/p/{}{}".format(logosize, logo_path)
 
-                    if "overview" in self.tmdbdetails and self.tmdbdetails["overview"].strip():
-                        self.tmdbresults["description"] = str(self.tmdbdetails["overview"])
+                    if "overview" in self.tmdbdetails and self.tmdbdetails["overview"]:
+                        self.tmdbresults["description"] = str(self.tmdbdetails["overview"]).strip()
 
-                    if "tagline" in self.tmdbdetails and self.tmdbdetails["tagline"].strip():
-                        self.tmdbresults["tagline"] = str(self.tmdbdetails["tagline"])
+                    if "tagline" in self.tmdbdetails and self.tmdbdetails["tagline"]:
+                        self.tmdbresults["tagline"] = str(self.tmdbdetails["tagline"]).strip()
 
                     if "vote_average" in self.tmdbdetails:
                         rating_str = self.tmdbdetails["vote_average"]
@@ -1262,7 +1257,7 @@ class XKlass_Vod_Categories(Screen):
                                     if release["iso_3166_1"] == language_code:
                                         return release["release_dates"][0].get("certification")
 
-                        # If no match found or language_code is blank, try the fallback codes
+                            # If no match found or language_code is blank, try the fallback codes
                             for fallback_code in fallback_codes:
                                 for release in data["release_dates"]["results"]:
                                     if "iso_3166_1" in release and "release_dates" in release:
@@ -1283,10 +1278,12 @@ class XKlass_Vod_Categories(Screen):
                     if certification:
                         self.tmdbresults["certification"] = str(certification)
 
+                    """
                     if cfg.channelcovers.value:
                         self.downloadCover()
                         self.downloadLogo()
                         self.downloadBackdrop()
+                        """
 
                     self.displayTMDB()
 
@@ -1387,6 +1384,14 @@ class XKlass_Vod_Categories(Screen):
                 else:
                     self["vod_director_label"].setText("")
 
+                if "country" in info:
+                    self["vod_country"].setText(str(info["country"]).strip())
+
+                if self["vod_country"].getText() != "":
+                    self["vod_country_label"].setText(_("Country:"))
+                else:
+                    self["vod_country_label"].setText("")
+
                 if "cast" in info:
                     self["vod_cast"].setText(str(info["cast"]).strip())
                 elif "actors" in info:
@@ -1413,6 +1418,11 @@ class XKlass_Vod_Categories(Screen):
 
                 self["facts"].setText(str(facts))
 
+                if self.level == 2 and cfg.channelcovers.value:
+                    self.downloadCover()
+                    self.downloadLogo()
+                    self.downloadBackdrop()
+
     def resetButtons(self):
         if glob.nextlist[-1]["filter"]:
             self["key_yellow"].setText("")
@@ -1433,6 +1443,15 @@ class XKlass_Vod_Categories(Screen):
             if self.chosen_category == "recents":
                 self["key_blue"].setText(_("Delete"))
 
+    def stopStream(self):
+        # print("*** stopStream ***")
+        if glob.currentPlayingServiceRefString != glob.newPlayingServiceRefString:
+            if glob.newPlayingServiceRefString != "":
+                if self.session.nav.getCurrentlyPlayingServiceReference():
+                    self.session.nav.stopService()
+                self.session.nav.playService(eServiceReference(glob.currentPlayingServiceRefString))
+                glob.newPlayingServiceRefString = glob.currentPlayingServiceRefString
+
     def downloadCover(self):
         # print("*** downloadCover ***")
         if cfg.channelcovers.value is False:
@@ -1447,7 +1466,7 @@ class XKlass_Vod_Categories(Screen):
             desc_image = ""
 
             if self.tmdbresults:  # tmdb
-                desc_image = str(self.tmdbresults.get("cover_big")).strip()
+                desc_image = str(self.tmdbresults.get("cover_big") or "").strip()
                 if self.cover_download_deferred and not self.cover_download_deferred.called:
                     self.cover_download_deferred.cancel()
 
@@ -1474,7 +1493,7 @@ class XKlass_Vod_Categories(Screen):
             logo_image = ""
 
             if self.tmdbresults:  # tmbdb
-                logo_image = str(self.tmdbresults.get("logo")).strip() or ""
+                logo_image = str(self.tmdbresults.get("logo") or "").strip()
 
                 if self.logo_download_deferred and not self.logo_download_deferred.called:
                     self.logo_download_deferred.cancel()
@@ -1502,7 +1521,7 @@ class XKlass_Vod_Categories(Screen):
             backdrop_image = ""
 
             if self.tmdbresults:  # tmbdb
-                backdrop_image = str(self.tmdbresults.get("backdrop_path")).strip() or ""
+                backdrop_image = str(self.tmdbresults.get("backdrop_path") or "").strip()
 
                 if self.backdrop_download_deferred and not self.backdrop_download_deferred.called:
                     self.backdrop_download_deferred.cancel()
@@ -1911,7 +1930,6 @@ class XKlass_Vod_Categories(Screen):
 
             if self.level == 1:
                 if self.list1:
-                    glob.current_category = self["main_list"].getCurrent()[0]
                     category_id = self["main_list"].getCurrent()[3]
 
                     next_url = "{0}&action=get_vod_streams&category_id={1}".format(self.player_api, category_id)
@@ -1981,8 +1999,6 @@ class XKlass_Vod_Categories(Screen):
                 self.backdrop_download_deferred.cancel()
 
         del glob.nextlist[-1]
-        glob.current_category = ""
-        self["category"].setText("")
 
         if not glob.nextlist:
             self.close()
@@ -2106,8 +2122,10 @@ class XKlass_Vod_Categories(Screen):
         self["tagline"].setText("")
         self["facts"].setText("")
         self["vod_director_label"].setText("")
+        self["vod_country_label"].setText("")
         self["vod_cast_label"].setText("")
         self["vod_director"].setText("")
+        self["vod_country"].setText("")
         self["vod_cast"].setText("")
         self["rating_text"].setText("")
         self["rating_percent"].setText("")
@@ -2120,6 +2138,7 @@ class XKlass_Vod_Categories(Screen):
         self["tagline"].setText("")
         self["facts"].setText("")
         self["vod_director"].setText("")
+        self["vod_country"].setText("")
         self["vod_cast"].setText("")
         self["rating_text"].setText("")
         self["rating_percent"].setText("")
@@ -2261,7 +2280,7 @@ def buildCategoryList(index, title, category_id, hidden):
     return (title, png, index, category_id, hidden)
 
 
-def buildVodStreamList(index, title, stream_id, cover, added, rating, next_url, favourite, container_extension, hidden):
+def buildVodStreamList(index, title, stream_id, cover, added, rating, next_url, favourite, container_extension, hidden, tmdb):
     png = LoadPixmap(os.path.join(common_path, "play.png"))
     if favourite:
         png = LoadPixmap(os.path.join(common_path, "favourite.png"))
@@ -2269,4 +2288,4 @@ def buildVodStreamList(index, title, stream_id, cover, added, rating, next_url, 
         if int(stream_id) == int(channel):
             png = LoadPixmap(os.path.join(common_path, "watched.png"))
 
-    return (title, png, index, next_url, stream_id, cover, added, rating, container_extension, hidden)
+    return (title, png, index, next_url, stream_id, cover, added, rating, container_extension, hidden, tmdb)
