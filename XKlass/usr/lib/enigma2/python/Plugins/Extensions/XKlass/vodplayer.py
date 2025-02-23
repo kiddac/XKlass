@@ -27,8 +27,8 @@ from PIL import Image, ImageFile, PngImagePlugin
 from twisted.web.client import downloadPage
 
 # Enigma2 components
-from Components.Label import Label
 from Components.ActionMap import ActionMap
+from Components.Label import Label
 from Components.Pixmap import MultiPixmap, Pixmap
 from Components.ServiceEventTracker import ServiceEventTracker, InfoBarBase
 from enigma import eTimer, eServiceReference, iPlayableService, ePicLoad
@@ -51,8 +51,9 @@ except ImportError as e:
 # Local application/library-specific imports
 from . import _
 from . import xklass_globals as glob
-from .plugin import cfg, dir_tmp, playlists_json, pythonVer, screenwidth, skin_directory
+from .plugin import cfg, dir_tmp, pythonVer, screenwidth, skin_directory
 from .xStaticText import StaticText
+
 
 if cfg.subs.value is True:
     try:
@@ -177,6 +178,9 @@ def clear_caches():
             drop_caches.write("1\n2\n3\n")
     except IOError:
         pass
+
+
+playlists_json = cfg.playlists_json.value
 
 
 class IPTVInfoBarShowHide():

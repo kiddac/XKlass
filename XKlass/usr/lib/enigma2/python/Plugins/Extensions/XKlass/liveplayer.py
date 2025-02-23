@@ -51,8 +51,8 @@ if sslverify:
             return ctx
 
 # Enigma2 components
-from Components.Label import Label
 from Components.ActionMap import ActionMap
+from Components.Label import Label
 from Components.ProgressBar import ProgressBar
 from Components.Pixmap import MultiPixmap, Pixmap
 from Components.ServiceEventTracker import ServiceEventTracker, InfoBarBase
@@ -73,7 +73,7 @@ except Exception:
 # Local application/library-specific imports
 from . import _
 from . import xklass_globals as glob
-from .plugin import cfg, common_path, dir_tmp, playlists_json, pythonVer, screenwidth, skin_directory
+from .plugin import cfg, common_path, dir_tmp, pythonVer, screenwidth, skin_directory
 from .xStaticText import StaticText
 
 if cfg.subs.value is True:
@@ -95,6 +95,8 @@ else:
     class SubsSupportStatus(object):
         def __init__(self, *args, **kwargs):
             pass
+
+playlists_json = cfg.playlists_json.value
 
 
 # png hack

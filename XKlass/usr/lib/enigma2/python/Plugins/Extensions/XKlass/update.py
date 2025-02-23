@@ -30,7 +30,7 @@ from twisted.web.client import downloadPage
 
 # Local application/library-specific imports
 from . import xklass_globals as glob
-from .plugin import playlists_json, pythonVer, cfg
+from .plugin import pythonVer, cfg
 
 # https twisted client hack #
 sslverify = False
@@ -51,22 +51,6 @@ if sslverify:
             if self.hostname:
                 ClientTLSOptions(self.hostname, ctx)
             return ctx
-
-"""
-from datetime import datetime, timedelta
-
-# Get the current system time
-system_time = datetime.now()
-
-# Get the current UTC time
-utc_time = datetime.utcnow()
-
-# Calculate the time difference
-time_difference = system_time - utc_time
-
-# Print the time difference
-print("Time difference between system time and UTC time:", time_difference)
-"""
 
 
 def quickptime(str):
@@ -89,6 +73,8 @@ hdr = {
     'User-Agent': str(cfg.useragent.value),
     'Accept-Encoding': 'gzip, deflate'
 }
+
+playlists_json = cfg.playlists_json.value
 
 
 class XKlass_Update:
@@ -300,5 +286,4 @@ class XKlass_Update:
                             yield channel.lower(), start, stop, title, desc
                     elem.clear()
         except Exception as e:
-            print("*** Error processing XML file: {} ***".format(fileobj))
             print(e)

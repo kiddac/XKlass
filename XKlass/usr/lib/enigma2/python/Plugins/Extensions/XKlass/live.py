@@ -56,7 +56,7 @@ from enigma import eEPGCache, eServiceReference, eTimer
 from . import _
 from . import liveplayer
 from . import xklass_globals as glob
-from .plugin import cfg, common_path, dir_tmp, playlists_json, pythonVer, screenwidth, skin_directory, hasConcurrent, hasMultiprocessing
+from .plugin import cfg, common_path, dir_tmp, pythonVer, screenwidth, skin_directory, hasConcurrent, hasMultiprocessing
 from .xStaticText import StaticText
 
 # HTTPS twisted client hack
@@ -77,6 +77,8 @@ if sslverify:
             if self.hostname:
                 ClientTLSOptions(self.hostname, ctx)
             return ctx
+
+playlists_json = cfg.playlists_json.value
 
 
 # png hack
@@ -153,7 +155,6 @@ class XKlass_Live_Categories(Screen):
             self.skin = f.read()
 
         self.setup_title = _("Live Categories")
-
         self.main_title = _("Live TV")
         self["main_title"] = StaticText(self.main_title)
 
@@ -302,8 +303,11 @@ class XKlass_Live_Categories(Screen):
         self.password = glob.active_playlist["playlist_info"]["password"]
         self.output = glob.active_playlist["playlist_info"]["output"]
         self.name = glob.active_playlist["playlist_info"]["name"]
+
         self.player_api = glob.active_playlist["playlist_info"]["player_api"]
+
         self.liveStreamsData = []
+
         full_url = glob.active_playlist["playlist_info"]["full_url"]
 
         self.p_live_categories_url = str(self.player_api) + "&action=get_live_categories"
@@ -708,7 +712,7 @@ class XKlass_Live_Categories(Screen):
         glob.originalChannelList2 = self.list2[:]
 
     def downloadApiData(self, url):
-        # print("**** downloadApiData ****")
+        # print("*** downloadApiData ***")
         retries = Retry(total=2, backoff_factor=1)
         adapter = HTTPAdapter(max_retries=retries)
 
@@ -846,6 +850,7 @@ class XKlass_Live_Categories(Screen):
             self["page"].setText(_("Page: ") + "{}/{}".format(page, page_all))
             self["listposition"].setText("{}/{}".format(position, position_all))
             self["main_title"].setText("{}: {}".format(self.main_title, channel_title))
+
             self.loadBlankImage()
 
             if self.level == 2:
@@ -1217,7 +1222,6 @@ class XKlass_Live_Categories(Screen):
                     self["category_actions"].setEnabled(False)
                     self["channel_actions"].setEnabled(True)
                     self["menu_actions"].setEnabled(False)
-
                     self["key_yellow"].setText(_("Sort: A-Z"))
 
                     glob.nextlist.append({"next_url": next_url, "index": 0, "level": self.level, "sort": self["key_yellow"].getText(), "filter": ""})
@@ -1959,7 +1963,7 @@ class XKlass_Live_Categories(Screen):
         from . import channelmenu
         glob.current_list = self.prelist + self.list1 if self.level == 1 else self.list2
         glob.current_level = self.level
-        if self.level == 1 or (self.level == 2 and self.chosen_category not in ["favourites", "recents"]):
+        if self.level == 1 or (self.level == 2 and self.chosen_category != "favourites" and self.chosen_category != "recents"):
             glob.current_screen = "live"
         else:
             glob.current_list = ""

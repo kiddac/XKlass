@@ -4,8 +4,6 @@
 # Standard library imports
 import os
 import json
-import requests
-from requests.adapters import HTTPAdapter, Retry
 
 try:
     from http.client import HTTPConnection
@@ -13,6 +11,11 @@ try:
 except ImportError:
     from httplib import HTTPConnection
     HTTPConnection.debuglevel = 0
+
+# Third-party imports
+import requests
+from requests.adapters import HTTPAdapter, Retry
+
 
 # Enigma2 components
 from Components.ActionMap import ActionMap
@@ -24,7 +27,7 @@ from Screens.Screen import Screen
 
 # Local application/library-specific imports
 from . import _
-from .plugin import skin_directory, playlist_file, cfg, playlists_json
+from .plugin import skin_directory, cfg
 from .xStaticText import StaticText
 
 
@@ -32,6 +35,9 @@ hdr = {
     'User-Agent': str(cfg.useragent.value),
     'Accept-Encoding': 'gzip, deflate'
 }
+
+playlist_file = cfg.playlist_file.value
+playlists_json = cfg.playlists_json.value
 
 
 class XKlass_AddServer(ConfigListScreen, Screen):
@@ -49,7 +55,7 @@ class XKlass_AddServer(ConfigListScreen, Screen):
         with open(skin, "r") as f:
             self.skin = f.read()
 
-        self.setup_title = _("Add Playlist")
+        self.setup_title = _("Add Xtream Codes Playlist")
 
         self.onChangedEntry = []
 

@@ -57,7 +57,7 @@ from enigma import ePicLoad, eServiceReference, eTimer
 from . import _
 from . import vodplayer
 from . import xklass_globals as glob
-from .plugin import (cfg, common_path, dir_tmp, downloads_json, playlists_json, pythonVer, screenwidth, skin_directory, hasConcurrent, hasMultiprocessing)
+from .plugin import (cfg, common_path, dir_tmp, downloads_json, pythonVer, screenwidth, skin_directory, hasConcurrent, hasMultiprocessing, debugs)
 from .xStaticText import StaticText
 
 hdr = {
@@ -65,12 +65,16 @@ hdr = {
     'Accept-Encoding': 'gzip, deflate'
 }
 
+playlists_json = cfg.playlists_json.value
+
 
 class XKlass_Series_Categories(Screen):
     ALLOW_SUSPEND = True
 
     def __init__(self, session):
-        # print("*** init ***")
+        if debugs:
+            print("*** init ***")
+
         Screen.__init__(self, session)
         self.session = session
         glob.categoryname = "series"
@@ -114,6 +118,7 @@ class XKlass_Series_Categories(Screen):
         self["vod_director"] = StaticText()
         self["vod_country"] = StaticText()
         self["vod_cast"] = StaticText()
+
         self["rating_text"] = StaticText()
         self["rating_percent"] = StaticText()
 
@@ -200,7 +205,9 @@ class XKlass_Series_Categories(Screen):
             "5": self.downloadVideo,
             "0": self.reset,
             "menu": self.showPopupMenu,
-            "1": self.clearWatched
+            "1": self.clearWatched,
+            "tv": self.favourite,
+            "stop": self.favourite,
         }, -2)
 
         self["channel_actions"].setEnabled(False)
@@ -276,7 +283,9 @@ class XKlass_Series_Categories(Screen):
         self.selectionChanged()
 
     def initGlobals(self):
-        # print("*** initglobals ***")
+        if debugs:
+            print("*** initglobals ***")
+
         self.host = glob.active_playlist["playlist_info"]["host"]
         self.username = glob.active_playlist["playlist_info"]["username"]
         self.password = glob.active_playlist["playlist_info"]["password"]
@@ -294,6 +303,8 @@ class XKlass_Series_Categories(Screen):
             glob.nextlist.append({"next_url": next_url, "index": 0, "level": self.level, "sort": self.sortText, "filter": ""})
 
     def playOriginalChannel(self):
+        if debugs:
+            print("*** playOriginalChannel ***")
         try:
             if glob.currentPlayingServiceRefString:
                 self.session.nav.playService(eServiceReference(glob.currentPlayingServiceRefString))
@@ -301,7 +312,8 @@ class XKlass_Series_Categories(Screen):
             print(e)
 
     def refresh(self):
-        # print("*** refresh ***")
+        if debugs:
+            print("*** refresh ***")
 
         if cfg.backgroundsat.value:
             self.delayTimer = eTimer()
@@ -366,7 +378,9 @@ class XKlass_Series_Categories(Screen):
             self.selectionChanged()
 
     def makeUrlList(self):
-        # print("*** makeurllist ***")
+        if debugs:
+            print("*** makeurllist ***")
+
         self.url_list = []
 
         player_api = str(glob.active_playlist["playlist_info"].get("player_api", ""))
@@ -383,6 +397,9 @@ class XKlass_Series_Categories(Screen):
         self.process_downloads()
 
     def download_url(self, url):
+        if debugs:
+            print("*** download_url ***")
+
         import requests
         index = url[1]
         response = None
@@ -431,7 +448,9 @@ class XKlass_Series_Categories(Screen):
         return index, response
 
     def process_downloads(self):
-        # print("*** process downloads ***")
+        if debugs:
+            print("*** process downloads ***")
+
         threads = min(len(self.url_list), 10)
 
         self.retry = 0
@@ -497,7 +516,9 @@ class XKlass_Series_Categories(Screen):
         self.writeJsonFile()
 
     def writeJsonFile(self):
-        # print("*** writejsonfile ***")
+        if debugs:
+            print("*** writejsonfile ***")
+
         with open(playlists_json, "r") as f:
             playlists_all = json.load(f)
 
@@ -507,7 +528,9 @@ class XKlass_Series_Categories(Screen):
             json.dump(playlists_all, f)
 
     def createSetup(self, data=None):
-        # print("*** createSetup ***")
+        if debugs:
+            print("*** createSetup ***")
+
         self["splash"].hide()
         self["x_title"].setText("")
         self["x_description"].setText("")
@@ -527,6 +550,9 @@ class XKlass_Series_Categories(Screen):
         self.buildLists()
 
     def buildLists(self):
+        if debugs:
+            print("*** buildLists ***")
+
         if self.level == 1 and self.list1:
             self.buildCategories()
 
@@ -547,7 +573,9 @@ class XKlass_Series_Categories(Screen):
             self.back()
 
     def getCategories(self):
-        # print("*** getCategories **")
+        if debugs:
+            print("*** getCategories **")
+
         index = 0
         self.list1 = []
         self.prelist = []
@@ -557,12 +585,14 @@ class XKlass_Series_Categories(Screen):
         currentCategoryList = currentPlaylist.get("data", {}).get("series_categories", [])
         currentHidden = set(currentPlaylist.get("player_info", {}).get("serieshidden", []))
 
+        hiddenfavourites = "-1" in currentHidden
         hidden = "0" in currentHidden
 
         i = 0
 
         self.prelist.extend([
-            [i, _("ALL"), "0", hidden]
+            [i, _("FAVOURITES"), "-1", hiddenfavourites],
+            [i + 1, _("ALL"), "0", hidden]
         ])
 
         for index, item in enumerate(currentCategoryList, start=len(self.prelist)):
@@ -574,9 +604,14 @@ class XKlass_Series_Categories(Screen):
         glob.originalChannelList1 = self.list1[:]
 
     def getSeries(self):
-        # print("*** getSeries ***")
-        # print("*** url ***", glob.nextlist[-1]["next_url"])
-        response = self.downloadApiData(glob.nextlist[-1]["next_url"])
+        if debugs:
+            print("*** getSeries ***")
+
+        if self.chosen_category == "favourites":
+            response = glob.active_playlist["player_info"].get("seriesfavourites", [])
+        else:
+            response = self.downloadApiData(glob.nextlist[-1]["next_url"])
+
         self.series_info = ""
         index = 0
         self.list2 = []
@@ -648,18 +683,6 @@ class XKlass_Series_Categories(Screen):
 
                 rating = str(channel.get("rating", ""))
 
-                year = str(channel.get("year", ""))
-
-                if year == "":
-                    pattern = r'\b\d{4}\b'
-                    matches = re.findall(pattern, name)
-                    if matches:
-                        year = str(matches[-1])
-                if year:
-                    self.storedyear = year
-                else:
-                    self.storedyear = ""
-
                 plot = str(channel.get("plot", ""))
 
                 cast = str(channel.get("cast", ""))
@@ -673,6 +696,24 @@ class XKlass_Series_Categories(Screen):
                 releaseDate = (channel.get("releaseDate") or channel.get("release_date") or channel.get("releasedate") or "")
                 releaseDate = str(releaseDate) if releaseDate is not None else ""
 
+                year = str(channel.get("year", ""))
+
+                if year == "":
+                    pattern = r'\b\d{4}\b'
+                    matches = re.findall(pattern, name)
+                    if matches:
+                        year = str(matches[-1])
+
+                if not year and releaseDate:
+                    year_match = re.match(r'(\d{4})', releaseDate)
+                    if year_match:
+                        year = year_match.group(1)
+
+                if year:
+                    self.storedyear = year
+                else:
+                    self.storedyear = ""
+
                 backdrop_path = channel.get("backdrop_path", "")
 
                 if backdrop_path:
@@ -681,19 +722,32 @@ class XKlass_Series_Categories(Screen):
                     except:
                         pass
 
+                favourite = False
+                if "seriesfavourites" in glob.active_playlist["player_info"]:
+                    for fav in glob.active_playlist["player_info"]["seriesfavourites"]:
+                        if str(series_id) == str(fav["series_id"]):
+                            favourite = True
+                            break
+                else:
+                    glob.active_playlist["player_info"]["vodfavourites"] = []
+
                 next_url = "{}&action=get_series_info&series_id={}".format(str(self.player_api), str(series_id))
 
                 # 0 index, 1 name, 2 series_id, 3 cover, 4 plot, 5 cast, 6 director, 7 genre, 8 releaseDate, 9 rating, 10 last_modified, 11 next_url, 12 tmdb, 13 hidden, 14 year, 15 backdrop
-                self.list2.append([index, str(name), str(series_id), str(cover), str(plot), str(cast), str(director), str(genre), str(releaseDate), str(rating), str(last_modified), str(next_url), str(tmdb), hidden, str(year), str(backdrop_path)])
+                self.list2.append([index, str(name), str(series_id), str(cover), str(plot), str(cast), str(director), str(genre), str(releaseDate), str(rating), str(last_modified), str(next_url), str(tmdb), hidden, str(year), str(backdrop_path), favourite])
 
             glob.originalChannelList2 = self.list2[:]
 
         else:
-            self.session.open(MessageBox, _("No series found in this category."), type=MessageBox.TYPE_ERROR, timeout=5)
+            if not self.chosen_category == "favourites":
+                self.session.open(MessageBox, _("No series found in this category."), type=MessageBox.TYPE_ERROR, timeout=5)
+            else:
+                self.session.open(MessageBox, _("No Favourites added."), type=MessageBox.TYPE_ERROR, timeout=5)
 
     def getSeasons(self):
-        # print("**** getSeasons ****")
-        # print("*** url ***", glob.nextlist[-1]["next_url"])
+        if debugs:
+            print("**** getSeasons ****")
+
         if not self.series_info:
             response = self.downloadApiData(glob.nextlist[-1]["next_url"])
             self.series_info = response
@@ -749,6 +803,9 @@ class XKlass_Series_Categories(Screen):
                         x += 1
 
                 if seasonlist:
+                    parent_index = glob.nextlist[1]["index"]
+                    parent_id = self.list2[parent_index][2]
+
                     for index, season in enumerate(seasonlist):
                         name = _("Season ") + str(season)
 
@@ -813,8 +870,8 @@ class XKlass_Series_Categories(Screen):
 
                         next_url = self.seasons_url
 
-                        # 0 index, 1 name, 2 series_id, 3 cover, 4 overview, 5 cast, 6 director, 7 genre, 8 airdate, 9 rating, 10 last_modified, 11 next_url, 12 tmdb, 13 hidden, 14 season_number, 15 backdrop
-                        self.list3.append([index, str(name), str(series_id), str(cover), str(overview), str(cast), str(director), str(genre), str(airdate), str(rating), str(last_modified), str(next_url), tmdb, hidden, season_number, str(backdrop_path)])
+                        # 0 index, 1 name, 2 series_id, 3 cover, 4 overview, 5 cast, 6 director, 7 genre, 8 airdate, 9 rating, 10 last_modified, 11 next_url, 12 tmdb, 13 hidden, 14 season_number, 15 backdrop, 16 parent_index, 17 parent_id
+                        self.list3.append([index, str(name), str(series_id), str(cover), str(overview), str(cast), str(director), str(genre), str(airdate), str(rating), str(last_modified), str(next_url), tmdb, hidden, season_number, str(backdrop_path), parent_index, str(parent_id)])
 
                 self.list3.sort(key=self.natural_keys)
 
@@ -824,8 +881,9 @@ class XKlass_Series_Categories(Screen):
             glob.originalChannelList3 = self.list3[:]
 
     def getEpisodes(self):
-        # print("**** getEpisodes ****")
-        # print("*** url ***", glob.nextlist[-1]["next_url"])
+        if debugs:
+            print("**** getEpisodes ****")
+
         response = self.series_info
         index = 0
         self.list4 = []
@@ -884,6 +942,9 @@ class XKlass_Series_Categories(Screen):
                     season_number = str(self.storedseason)
                     if self.isdict is False:
                         season_number = int(self.storedseason)
+
+                    parent_index = glob.nextlist[1]["index"]
+                    parent_id = self.list2[parent_index][2]
 
                     for index, item in enumerate(currentChannelList["episodes"][season_number]):
                         title = ""
@@ -957,13 +1018,16 @@ class XKlass_Series_Categories(Screen):
                         hidden = str(stream_id) in glob.active_playlist["player_info"]["seriesepisodeshidden"]
 
                         next_url = "{}/series/{}/{}/{}.{}".format(self.host, self.username, self.password, stream_id, container_extension)
-                        # 0 index, 1 title, 2 stream_id, 3 cover, 4 plot, 5 cast, 6 director, 7 genre, 8 releasedate, 9 rating, 10 last_modified, 11 next_url, 12 tmdb_id, 13 hidden, 14 duration, 15 container_extension, 16 shorttitle, 17 episode_num
-                        self.list4.append([index, str(title), str(stream_id), str(cover), str(plot), str(cast), str(director), str(genre), str(releasedate), str(rating), str(last_modified), str(next_url), str(tmdb_id), hidden, str(duration), str(container_extension),  str(shorttitle), episode_num])
+
+                        # 0 index, 1 title, 2 stream_id, 3 cover, 4 plot, 5 cast, 6 director, 7 genre, 8 releasedate, 9 rating, 10 last_modified, 11 next_url, 12 tmdb_id, 13 hidden, 14 duration, 15 container_extension, 16 shorttitle, 17 episode_num, 18 parent_index, 19 parent_id
+                        self.list4.append([index, str(title), str(stream_id), str(cover), str(plot), str(cast), str(director), str(genre), str(releasedate), str(rating), str(last_modified), str(next_url), str(tmdb_id), hidden, str(duration), str(container_extension),  str(shorttitle), episode_num, parent_index, str(parent_id)])
 
             glob.originalChannelList4 = self.list4[:]
 
     def downloadApiData(self, url):
-        # print("*** downloadapidata ***", url)
+        if debugs:
+            print("*** downloadApiData ***", url)
+
         retries = Retry(total=2, backoff_factor=1)
         adapter = HTTPAdapter(max_retries=retries)
 
@@ -986,7 +1050,9 @@ class XKlass_Series_Categories(Screen):
                 self.session.openWithCallback(self.back, MessageBox, _("Server error or invalid link."), MessageBox.TYPE_ERROR, timeout=3)
 
     def buildCategories(self):
-        # print("*** buildCategories ***")
+        if debugs:
+            print("*** buildCategories ***")
+
         self.hideVod()
 
         if self["key_blue"].getText() != _("Reset Search"):
@@ -1003,34 +1069,50 @@ class XKlass_Series_Categories(Screen):
                 self["main_list"].setIndex(glob.nextlist[-1]["index"])
 
     def buildSeries(self):
-        # print("*** buildSeries ***")
+        if debugs:
+            print("*** buildSeries ***")
+
+        self.main_list = []
+
         if self.list2:
             # 0 index, 1 name, 2 series_id, 3, cover, 4 plot, 5 cast, 6 director, 7 genre, 8 releasedate, 9 last modified, 10 rating, 11 backdrop_path, 12 tmdb, 13 year, 14 next url, 15 hidden
-            self.main_list = [buildSeriesTitlesList(x[0], x[1], x[2], x[3], x[4], x[5], x[6], x[7], x[8], x[9], x[10], x[11], x[12], x[13], x[14], x[15]) for x in self.list2 if not x[13]]
+            self.main_list = [buildSeriesTitlesList(x[0], x[1], x[2], x[3], x[4], x[5], x[6], x[7], x[8], x[9], x[10], x[11], x[12], x[13], x[14], x[15], x[16]) for x in self.list2 if not x[13]]
             self["main_list"].setList(self.main_list)
 
             self.showVod()
+
             if self["main_list"].getCurrent():
                 self["main_list"].setIndex(glob.nextlist[-1]["index"])
 
     def buildSeasons(self):
-        # print("*** buildSeasons ***")
+        if debugs:
+            print("*** buildSeasons ***")
+
+        self.main_list = []
+
         if self.list3:
-            self.main_list = [buildSeriesSeasonsList(x[0], x[1], x[2], x[3], x[4], x[5], x[6], x[7], x[8], x[9], x[10], x[11], x[12], x[13], x[14], x[15]) for x in self.list3 if not x[13]]
+            self.main_list = [buildSeriesSeasonsList(x[0], x[1], x[2], x[3], x[4], x[5], x[6], x[7], x[8], x[9], x[10], x[11], x[12], x[13], x[14], x[15], x[16], x[17]) for x in self.list3 if not x[13]]
             self["main_list"].setList(self.main_list)
+
             if self["main_list"].getCurrent():
                 self["main_list"].setIndex(glob.nextlist[-1]["index"])
 
     def buildEpisodes(self):
-        # print("*** buildEpisodes ***")
+        if debugs:
+            print("*** buildEpisodes ***")
+
+        self.main_list = []
+
         if self.list4:
-            self.main_list = [buildSeriesEpisodesList(x[0], x[1], x[2], x[3], x[4], x[5], x[6], x[7], x[8], x[9], x[10], x[11], x[12], x[13], x[14], x[15], x[16], x[17]) for x in self.list4 if not x[13]]
+            self.main_list = [buildSeriesEpisodesList(x[0], x[1], x[2], x[3], x[4], x[5], x[6], x[7], x[8], x[9], x[10], x[11], x[12], x[13], x[14], x[15], x[16], x[17], x[18], x[19]) for x in self.list4 if not x[13]]
             self["main_list"].setList(self.main_list)
             if self["main_list"].getCurrent():
                 self["main_list"].setIndex(glob.nextlist[-1]["index"])
 
     def displaySeriesData(self):
-        # print("*** displaySeriesData ***")
+        if debugs:
+            print("*** displaySeriesData ***")
+
         if self["main_list"].getCurrent():
             if cfg.TMDB.value is True:
                 if self.level != 1:
@@ -1039,11 +1121,11 @@ class XKlass_Series_Categories(Screen):
                     self.getTMDB()
 
             else:
-                # self.tmdbresults = ""
                 self.displayTMDB()
 
     def selectionChanged(self):
-        # print("*** selectionChanged ***")
+        if debugs:
+            print("*** selectionChanged ***")
 
         self.tmdbresults = ""
         self.tmdbretry = 0
@@ -1062,6 +1144,9 @@ class XKlass_Series_Categories(Screen):
         if current_item:
             channel_title = current_item[0]
             current_index = self["main_list"].getIndex()
+
+            glob.currentchannellistindex = current_index
+            glob.nextlist[-1]["index"] = current_index
 
             position = current_index + 1
             position_all = len(self.pre_list) + len(self.main_list) if self.level == 1 else len(self.main_list)
@@ -1185,8 +1270,11 @@ class XKlass_Series_Categories(Screen):
         return str(searchtitle)
 
     def getTMDB(self):
-        # print("**** getTMDB ***")
+        if debugs:
+            print("**** getTMDB ***")
+
         current_item = self["main_list"].getCurrent()
+
         if current_item:
             if self.level == 2:
                 title = current_item[0]
@@ -1249,14 +1337,18 @@ class XKlass_Series_Categories(Screen):
                 print("download TMDB error {}".format(e))
 
     def failed(self, data=None):
-        # print("*** failed ***")
+        if debugs:
+            print("*** failed ***")
+
         if data:
             print(data)
             self.tmdbValid = False
             self.getTMDB()
 
     def processTMDB(self, result=None):
-        # print("*** processTMDB ***")
+        if debugs:
+            print("*** processTMDB ***")
+
         resultid = ""
         search_file_path = os.path.join(dir_tmp, "search.txt")
         try:
@@ -1270,20 +1362,17 @@ class XKlass_Series_Categories(Screen):
                     self.tmdb2 = resultid
 
                     if not resultid:
-                        # self.tmdbresults = ""
                         self.displayTMDB()
                         return
 
                     self.getTMDBDetails(resultid)
                 else:
-                    # self.tmdbValid = False
                     self.storedyear = ""
                     self.tmdbretry += 1
                     if self.tmdbretry < 2:
                         self.getTMDB()
                     else:
                         self.tmdbretry = 0
-                        # self.tmdbresults = ""
                         self.displayTMDB()
                         return
 
@@ -1291,7 +1380,9 @@ class XKlass_Series_Categories(Screen):
             print("Error processing TMDB response:", e)
 
     def getTMDBDetails(self, resultid=None):
-        # print(" *** getTMDBDetails ***")
+        if debugs:
+            print(" *** getTMDBDetails ***")
+
         detailsurl = ""
 
         try:
@@ -1327,15 +1418,15 @@ class XKlass_Series_Categories(Screen):
 
         filepath = os.path.join(dir_tmp, "search.txt")
 
-        # print("*** getTMDBDetails detailurl ***", detailsurl)
-
         try:
             downloadPage(detailsurl, filepath, timeout=10).addCallback(self.processTMDBDetails).addErrback(self.failed2)
         except Exception as e:
             print("download TMDB details error:", e)
 
     def failed2(self, data=None):
-        # print("*** failed 2 ***")
+        if debugs:
+            print("*** failed 2 ***")
+
         if data:
             print(data)
             if self.level == 2:
@@ -1345,18 +1436,20 @@ class XKlass_Series_Categories(Screen):
                     self.repeatcount += 1
 
             else:
-                # self.tmdbresults = ""
                 self.displayTMDB()
                 return
 
     def processTMDBDetails(self, result=None):
-        # print("*** processTMDBDetails ***")
+        if debugs:
+            print("*** processTMDBDetails ***")
+
         self.repeatcount = 0
         response = ""
 
         self.tmdbresults = {}
         self.tmdbdetails = []
         director = []
+        country = []
 
         logos = None
 
@@ -1379,20 +1472,18 @@ class XKlass_Series_Categories(Screen):
                     if "overview" in self.tmdbdetails and self.tmdbdetails["overview"]:
                         self.tmdbresults["description"] = str(self.tmdbdetails["overview"])
 
-                    # self.tmdbresults["description"] = str(self.tmdbdetails.get("overview") or self.storeddescription or "")
-
                     if "vote_average" in self.tmdbdetails and self.tmdbdetails["vote_average"]:
                         rating_str = str(self.tmdbdetails["vote_average"])
 
-                    if rating_str not in [None, 0, 0.0, "0", "0.0"]:
-                        try:
-                            rating = float(rating_str)
-                            rounded_rating = round(rating, 1)
-                            self.tmdbresults["rating"] = "{:.1f}".format(rounded_rating)
-                        except ValueError:
-                            self.tmdbresults["rating"] = rating_str
-                    else:
-                        self.tmdbresults["rating"] = 0
+                        if rating_str not in [None, 0, 0.0, "0", "0.0"]:
+                            try:
+                                rating = float(rating_str)
+                                rounded_rating = round(rating, 1)
+                                self.tmdbresults["rating"] = "{:.1f}".format(rounded_rating)
+                            except ValueError:
+                                self.tmdbresults["rating"] = rating_str
+                        else:
+                            self.tmdbresults["rating"] = 0
 
                     if self.level == 2:
                         if "original_name" in self.tmdbdetails and self.tmdbdetails["original_name"]:
@@ -1419,6 +1510,17 @@ class XKlass_Series_Categories(Screen):
                                 genre.append(str(genreitem["name"]))
                             genre = " / ".join(map(str, genre))
                             self.tmdbresults["genre"] = genre
+
+                        if "origin_country" in self.tmdbdetails and self.tmdbdetails["origin_country"]:
+                            try:
+                                country = self.tmdbdetails["origin_country"][0]
+                                self.tmdbresults["country"] = country
+                            except:
+                                pass
+
+                        if not country and "production_countries" in self.tmdbdetails and self.tmdbdetails["production_countries"]:
+                            country = ", ".join(str(pcountry["name"]) for pcountry in self.tmdbdetails["production_countries"])
+                            self.tmdbresults["country"] = country
 
                     if self.level != 4:
                         if "credits" in self.tmdbdetails:
@@ -1517,10 +1619,9 @@ class XKlass_Series_Categories(Screen):
                     self.displayTMDB()
 
     def displayTMDB(self):
-        # print("*** displayTMDB ***")
+        if debugs:
+            print("*** displayTMDB ***")
 
-        # title = ""
-        # description = ""
         director = ""
         cast = ""
         facts = []
@@ -1531,6 +1632,7 @@ class XKlass_Series_Categories(Screen):
         genre = ""
         duration = ""
         rating = "0"
+        country = ""
 
         current_item = self["main_list"].getCurrent()
 
@@ -1631,6 +1733,9 @@ class XKlass_Series_Categories(Screen):
                 if "director" in info:
                     director = str(info["director"]).strip()
 
+                if "country" in info:
+                    country = str(info["country"]).strip()
+
                 if "cast" in info:
                     cast = str(info["cast"]).strip()
                 elif "actors" in info:
@@ -1689,6 +1794,8 @@ class XKlass_Series_Categories(Screen):
 
             self["vod_director"].setText(str(director).strip())
 
+            self["vod_country"].setText(str(country).strip())
+
             if self["vod_cast"].getText() != "":
                 self["vod_cast_label"].setText(_("Cast:"))
             else:
@@ -1698,6 +1805,11 @@ class XKlass_Series_Categories(Screen):
                 self["vod_director_label"].setText(_("Director:"))
             else:
                 self["vod_director_label"].setText("")
+
+            if self["vod_country"].getText() != "":
+                self["vod_country_label"].setText(_("Country:"))
+            else:
+                self["vod_country_label"].setText("")
 
             if self["x_description"].getText() != "":
                 self["overview"].setText(_("Overview"))
@@ -1710,6 +1822,9 @@ class XKlass_Series_Categories(Screen):
                 self.downloadLogo()
 
     def resetButtons(self):
+        if debugs:
+            print("*** resetButtons ***")
+
         if glob.nextlist[-1]["filter"]:
             self["key_yellow"].setText("")
             self["key_blue"].setText(_("Reset Search"))
@@ -1723,8 +1838,13 @@ class XKlass_Series_Categories(Screen):
             self["key_yellow"].setText(_(glob.nextlist[-1]["sort"]))
             self["key_menu"].setText("+/-")
 
+            if self.chosen_category == "favourites":
+                self["key_menu"].setText("")
+
     def downloadCover(self):
-        # print("*** downloadCover ***")
+        if debugs:
+            print("*** downloadCover ***")
+
         if cfg.channelcovers.value is False:
             return
 
@@ -1755,7 +1875,9 @@ class XKlass_Series_Categories(Screen):
                 self.loadDefaultCover()
 
     def downloadLogo(self):
-        # print("*** downloadLogo ***")
+        if debugs:
+            print("*** downloadLogo ***")
+
         if cfg.channelcovers.value is False:
             return
 
@@ -1783,7 +1905,9 @@ class XKlass_Series_Categories(Screen):
                 self.loadDefaultLogo()
 
     def downloadBackdrop(self):
-        # print("*** downloadBackdrop ***")
+        if debugs:
+            print("*** downloadBackdrop ***")
+
         if cfg.channelcovers.value is False:
             return
 
@@ -1826,6 +1950,9 @@ class XKlass_Series_Categories(Screen):
                 self.loadDefaultBackdrop()
 
     def downloadCoverFromUrl(self, url):
+        if debugs:
+            print("*** downloadCoverFromUrl ***")
+
         self.cover_download_deferred = self.agent.request(
             b'GET',
             url.encode(),
@@ -1835,7 +1962,9 @@ class XKlass_Series_Categories(Screen):
         self.cover_download_deferred.addErrback(self.handleCoverError)
 
     def handleCoverResponse(self, response):
-        # print("*** handlecoverresponse ***")
+        if debugs:
+            print("*** handleCoverResponse ***")
+
         if response.code == 200:
             d = readBody(response)
             d.addCallback(self.handleCoverBody)
@@ -1849,72 +1978,93 @@ class XKlass_Series_Categories(Screen):
             self.handleCoverError("HTTP error code: %s" % response.code)
 
     def handleLogoResponse(self, response):
-        # print("*** handlelogoresponse ***")
+        if debugs:
+            print("*** handleLogoResponse ***")
+
         if response.code == 200:
             d = readBody(response)
             d.addCallback(self.handleLogoBody)
             return d
 
     def handleBackdropResponse(self, response):
-        # print("*** handlebackdropresponse ***")
+        if debugs:
+            print("*** handleBackdropResponse ***")
+
         if response.code == 200:
             d = readBody(response)
             d.addCallback(self.handleBackdropBody)
             return d
 
     def handleCoverBody(self, body):
-        # print("*** handlecoverbody ***")
+        if debugs:
+            print("*** handleCoverBody ***")
+
         temp = os.path.join(dir_tmp, "cover.jpg")
         with open(temp, 'wb') as f:
             f.write(body)
         self.resizeCover(temp)
 
     def handleLogoBody(self, body):
-        # print("*** handlelogobody ***")
+        if debugs:
+            print("***  handleLogoBody ***")
         temp = os.path.join(dir_tmp, "logo.png")
         with open(temp, 'wb') as f:
             f.write(body)
         self.resizeLogo(temp)
 
     def handleBackdropBody(self, body):
-        # print("*** handlebackdropbody ***")
+        if debugs:
+            print("*** handleBackdropBody ***")
         temp = os.path.join(dir_tmp, "backdrop.jpg")
         with open(temp, 'wb') as f:
             f.write(body)
         self.resizeBackdrop(temp)
 
     def handleCoverError(self, error):
-        # print("*** handle error ***")
+        if debugs:
+            print("*** handleCoverError ***")
+
         print(error)
         self.loadDefaultCover()
 
     def handleLogoError(self, error):
-        # print("*** handle error ***")
+        if debugs:
+            print("*** handleLogoError ***")
+
         print(error)
         self.loadDefaultLogo()
 
     def handleBackdropError(self, error):
-        # print("*** handle error ***")
+        if debugs:
+            print("*** handleBackdropError ***")
+
         print(error)
         self.loadDefaultBackdrop()
 
     def loadDefaultCover(self, data=None):
-        # print("*** loadDefaultCover ***")
+        if debugs:
+            print("*** loadDefaultCover ***")
+
         if self["vod_cover"].instance:
             self["vod_cover"].instance.setPixmapFromFile(os.path.join(skin_directory, "common/blank.png"))
 
     def loadDefaultLogo(self, data=None):
-        # print("*** loadDefaultLogo ***")
+        if debugs:
+            print("*** loadDefaultLogo ***")
+
         if self["vod_logo"].instance:
             self["vod_logo"].instance.setPixmapFromFile(os.path.join(skin_directory, "common/blank.png"))
 
     def loadDefaultBackdrop(self, data=None):
-        # print("*** loadDefaultBackdrop ***")
+        if debugs:
+            print("*** loadDefaultBackdrop ***")
+
         if self["vod_backdrop"].instance:
             self["vod_backdrop"].instance.setPixmapFromFile(os.path.join(skin_directory, "common/blank.png"))
 
     def resizeCover(self, data=None):
-        # print("*** resizeCover ***")
+        if debugs:
+            print("*** resizeCover ***")
         if self["main_list"].getCurrent() and self["vod_cover"].instance:
             preview = os.path.join(dir_tmp, "cover.jpg")
             if os.path.isfile(preview):
@@ -1925,7 +2075,9 @@ class XKlass_Series_Categories(Screen):
                     print(e)
 
     def resizeLogo(self, data=None):
-        # print("*** resizeLogo ***")
+        if debugs:
+            print("*** resizeLogo ***")
+
         if self["main_list"].getCurrent() and self["vod_logo"].instance:
             preview = os.path.join(dir_tmp, "logo.png")
             if os.path.isfile(preview):
@@ -1959,7 +2111,9 @@ class XKlass_Series_Categories(Screen):
                     self["vod_logo"].hide()
 
     def resizeBackdrop(self, data=None):
-        # print("*** resizeBackdrop ***")
+        if debugs:
+            print("*** resizeBackdrop ***")
+
         if not (self["main_list"].getCurrent() and self["vod_backdrop"].instance):
             return
 
@@ -2001,7 +2155,9 @@ class XKlass_Series_Categories(Screen):
             self["vod_backdrop"].hide()
 
     def DecodeCover(self, PicInfo=None):
-        # print("*** decodecover ***")
+        if debugs:
+            print("*** DecodeCover ***")
+
         ptr = self.coverLoad.getData()
         if ptr is not None and self.level != 1:
             self["vod_cover"].instance.setPixmap(ptr)
@@ -2010,7 +2166,9 @@ class XKlass_Series_Categories(Screen):
             self["vod_cover"].hide()
 
     def DecodeLogo(self, PicInfo=None):
-        # print("*** decodelogo ***")
+        if debugs:
+            print("*** DecodeLogo ***")
+
         ptr = self.logoLoad.getData()
         if ptr is not None and self.level != 2:
             self["vod_logo"].instance.setPixmap(ptr)
@@ -2019,7 +2177,9 @@ class XKlass_Series_Categories(Screen):
             self["vod_logo"].hide()
 
     def DecodeBackdrop(self, PicInfo=None):
-        # print("*** decodebackdrop ***")
+        if debugs:
+            print("*** DecodeBackdrop ***")
+
         ptr = self.backdropLoad.getData()
         if ptr is not None and self.level != 2:
             self["vod_backdrop"].instance.setPixmap(ptr)
@@ -2028,6 +2188,9 @@ class XKlass_Series_Categories(Screen):
             self["vod_backdrop"].hide()
 
     def sort(self):
+        if debugs:
+            print("*** sort ***")
+
         current_sort = self["key_yellow"].getText()
         if not current_sort:
             return
@@ -2099,7 +2262,9 @@ class XKlass_Series_Categories(Screen):
         self.buildLists()
 
     def search(self, result=None):
-        # print("*** search ***")
+        if debugs:
+            print("*** search ***")
+
         if not self["key_blue"].getText():
             return
 
@@ -2112,7 +2277,8 @@ class XKlass_Series_Categories(Screen):
             self.session.openWithCallback(self.filterChannels, VirtualKeyBoard, title=_("Filter this category..."), text=self.searchString)
 
     def filterChannels(self, result=None):
-        # print("*** filterChannels ***")
+        if debugs:
+            print("*** filterChannels ***")
 
         activelist = []
 
@@ -2158,7 +2324,9 @@ class XKlass_Series_Categories(Screen):
                 self.buildLists()
 
     def resetSearch(self):
-        # print("*** resetSearch ***")
+        if debugs:
+            print("*** resetSearch ***")
+
         self["key_blue"].setText(_("Search"))
         self["key_yellow"].setText(self.sortText)
 
@@ -2184,7 +2352,9 @@ class XKlass_Series_Categories(Screen):
         self.buildLists()
 
     def pinEntered(self, result=None):
-        # print("*** pinEntered ***")
+        if debugs:
+            print("*** pinEntered ***")
+
         if not result:
             self.pin = False
             self.session.open(MessageBox, _("Incorrect pin code."), type=MessageBox.TYPE_ERROR, timeout=5)
@@ -2200,7 +2370,9 @@ class XKlass_Series_Categories(Screen):
             return
 
     def parentalCheck(self):
-        # print("*** parentalcheck ***")
+        if debugs:
+            print("*** parentalCheck ***")
+
         self.pin = True
         nowtime = int(time.mktime(datetime.now().timetuple())) if pythonVer == 2 else int(datetime.timestamp(datetime.now()))
 
@@ -2224,7 +2396,9 @@ class XKlass_Series_Categories(Screen):
             self.next()
 
     def next(self):
-        # print("*** next ***")
+        if debugs:
+            print("*** next ***")
+
         if self["main_list"].getCurrent():
             current_index = self["main_list"].getIndex()
             glob.nextlist[-1]["index"] = current_index
@@ -2241,6 +2415,9 @@ class XKlass_Series_Categories(Screen):
                     if category_id == "0":
                         next_url = "{0}&action=get_series".format(self.player_api)
                         self.chosen_category = "all"
+
+                    elif category_id == "-1":
+                        self.chosen_category = "favourites"
 
                     self.level += 1
                     self["main_list"].setIndex(0)
@@ -2268,6 +2445,7 @@ class XKlass_Series_Categories(Screen):
                     self.releaseDate2 = self["main_list"].getCurrent()[10]
                     self.rating2 = self["main_list"].getCurrent()[11]
                     self.backdrop_path2 = self["main_list"].getCurrent()[15]
+
                     if self["main_list"].getCurrent()[14] and self["main_list"].getCurrent()[14] != "0":
                         self.tmdb2 = self["main_list"].getCurrent()[14]
                     else:
@@ -2322,13 +2500,16 @@ class XKlass_Series_Categories(Screen):
                     self.createSetup()
 
     def setIndex(self, data=None):
-        # print("*** set index ***")
+        if debugs:
+            print("*** setIndex ***")
+
         if self["main_list"].getCurrent():
             self["main_list"].setIndex(glob.currentchannellistindex)
             self.createSetup()
 
     def back(self, data=None):
-        # print("*** back ***")
+        if debugs:
+            print("*** back ***")
 
         try:
             self.closeChoiceBoxDialog()
@@ -2364,12 +2545,13 @@ class XKlass_Series_Categories(Screen):
         else:
             self["x_title"].setText("")
             self["x_description"].setText("")
+            self["key_epg"].setText("")
             self.level -= 1
             glob.current_level = self.level
-            self["category_actions"].setEnabled(True)
-            self["channel_actions"].setEnabled(False)
+            if self.level == 1:
+                self["category_actions"].setEnabled(True)
+                self["channel_actions"].setEnabled(False)
             self["menu_actions"].setEnabled(False)
-            self["key_epg"].setText("")
             self.buildLists()
 
             self.loadDefaultCover()
@@ -2377,6 +2559,9 @@ class XKlass_Series_Categories(Screen):
             self.loadDefaultBackdrop()
 
     def clearWatched(self):
+        if debugs:
+            print("*** clearWatched ***")
+
         if self.level == 4:
             current_id = str(self["main_list"].getCurrent()[4])
             watched_list = glob.active_playlist["player_info"].get("serieswatched", [])
@@ -2404,8 +2589,98 @@ class XKlass_Series_Categories(Screen):
 
         self.buildLists()
 
+    def favourite(self):
+        if debugs:
+            print("*** favourite ***")
+
+        print("*** self.level ***", self.level)
+
+        if not self["main_list"].getCurrent():
+            return
+
+        if self.chosen_category == "favourites" and not self.level == 2:
+            return
+
+        current_index = self["main_list"].getIndex()
+        favExists = False
+        favStream_id = None
+
+        if self.level == 2:
+            series_id = str(self["main_list"].getCurrent()[4])
+            current_index = self["main_list"].getIndex()
+
+        elif self.level == 3:
+            current_index = self["main_list"].getCurrent()[17]
+            series_id = str(self["main_list"].getCurrent()[18])
+
+        elif self.level == 4:
+            current_index = self["main_list"].getCurrent()[19]
+            series_id = str(self["main_list"].getCurrent()[20])
+
+        self.list2[current_index][16] = not self.list2[current_index][16]
+
+        for fav in glob.active_playlist["player_info"]["seriesfavourites"]:
+            if str(series_id) == str(fav["series_id"]):
+                favExists = True
+                favStream_id = str(fav["series_id"])
+                break
+
+        # remove for glob favourites
+
+        if favExists:
+            if self.level == 2:
+                glob.active_playlist["player_info"]["seriesfavourites"] = [x for x in glob.active_playlist["player_info"]["seriesfavourites"] if str(x["series_id"]) != str(favStream_id)]
+        else:
+            newfavourite = {
+                "name": self.list2[current_index][1],
+                "series_id": self.list2[current_index][2],
+                "cover": self.list2[current_index][3],
+                "plot": self.list2[current_index][4],
+                "cast": self.list2[current_index][5],
+                "director": self.list2[current_index][6],
+                "genre": self.list2[current_index][7],
+                "releaseDate": self.list2[current_index][8],
+                "rating": self.list2[current_index][9],
+                "last_modified": self.list2[current_index][10],
+                "tmdb": self.list2[current_index][12],
+                "year": self.list2[current_index][14],
+                "backdrop": self.list2[current_index][15]
+            }
+
+            glob.active_playlist["player_info"]["seriesfavourites"].insert(0, newfavourite)
+
+            self.hideVod()
+
+        with open(playlists_json, "r") as f:
+            try:
+                self.playlists_all = json.load(f)
+            except:
+                os.remove(playlists_json)
+                self.playlists_all = []
+
+        if self.playlists_all:
+            for playlists in self.playlists_all:
+                if (playlists["playlist_info"]["domain"] == glob.active_playlist["playlist_info"]["domain"]
+                        and playlists["playlist_info"]["username"] == glob.active_playlist["playlist_info"]["username"]
+                        and playlists["playlist_info"]["password"] == glob.active_playlist["playlist_info"]["password"]):
+                    playlists.update(glob.active_playlist)
+                    break
+
+        with open(playlists_json, "w") as f:
+            json.dump(self.playlists_all, f)
+
+        if self.level == 2:
+            self.createSetup()
+        else:
+            if not favExists:
+                self.session.open(MessageBox, _("Series group added to favourites."), type=MessageBox.TYPE_INFO, timeout=2)
+            else:
+                self.session.open(MessageBox, _("Series group removed from favourites."), type=MessageBox.TYPE_INFO, timeout=2)
+
     def hideVod(self):
-        # print("*** hideVod ***")
+        if debugs:
+            print("*** hideVod ***")
+
         self["vod_cover"].hide()
         self["vod_logo"].hide()
         self["vod_backdrop"].hide()
@@ -2424,7 +2699,9 @@ class XKlass_Series_Categories(Screen):
         self["overview"].setText("")
 
     def clearVod(self):
-        # print("*** clearVod ***")
+        if debugs:
+            print("*** clearVod ***")
+
         self["x_title"].setText("")
         self["x_description"].setText("")
         self["tagline"].setText("")
@@ -2436,13 +2713,17 @@ class XKlass_Series_Categories(Screen):
         self["rating_percent"].setText("")
 
     def showVod(self):
-        # print("*** showVod ***")
+        if debugs:
+            print("*** showVod ***")
+
         self["vod_cover"].show()
         self["vod_logo"].show()
         self["vod_backdrop"].show()
 
     def downloadVideo(self):
-        # print("*** downloadVideo ***")
+        if debugs:
+            print("*** downloadVideo ***")
+
         if self.level != 4:
             return
 
@@ -2476,6 +2757,9 @@ class XKlass_Series_Categories(Screen):
                 self.session.open(MessageBox, _(title) + "\n\n" + _("Already added to download manager"), MessageBox.TYPE_ERROR, timeout=5)
 
     def opendownloader(self, answer=None):
+        if debugs:
+            print("*** opendownloader ***")
+
         if not answer:
             return
         else:
@@ -2496,7 +2780,8 @@ class XKlass_Series_Categories(Screen):
         return [self.atoi(c) for c in re.split(r"(\d+)", text[1])]
 
     def buildFacts(self, certification, release_date, genre, duration, stream_format):
-        # print("*** buildfacts ***")
+        if debugs:
+            print("*** buildFacts ***")
 
         facts = []
 
@@ -2514,6 +2799,9 @@ class XKlass_Series_Categories(Screen):
         return " • ".join(facts)
 
     def showChoiceBoxDialog(self, Answer=None):
+        if debugs:
+            print("*** showChoiceBoxDialog ***")
+
         self["channel_actions"].setEnabled(False)
         self["category_actions"].setEnabled(False)
         glob.ChoiceBoxDialog['dialogactions'].execBegin()
@@ -2521,6 +2809,9 @@ class XKlass_Series_Categories(Screen):
         self["menu_actions"].setEnabled(True)
 
     def closeChoiceBoxDialog(self, Answer=None):
+        if debugs:
+            print("*** closeChoiceBoxDialog ***")
+
         if glob.ChoiceBoxDialog:
             self["menu_actions"].setEnabled(False)
             glob.ChoiceBoxDialog.hide()
@@ -2536,11 +2827,14 @@ class XKlass_Series_Categories(Screen):
                 self["channel_actions"].setEnabled(True)
 
     def showPopupMenu(self):
+        if debugs:
+            print("*** showPopupMenu ***")
+
         from . import channelmenu
         glob.current_list = self.prelist + self.list1 if self.level == 1 else self.list2
         glob.current_level = self.level
         glob.current_screen = "series"
-        if self.level == 1 or (self.level == 2 and self.chosen_category not in ["favourites", "recents"]):
+        if self.level == 1 or (self.level == 2 and self.chosen_category != "favourites" and self.chosen_category != "recents"):
             glob.current_list = self.prelist + self.list1 if self.level == 1 else self.list2
             glob.current_level = self.level
             glob.current_screen = "series"
@@ -2560,24 +2854,26 @@ def buildCategoryList(index, title, category_id, hidden):
 # 0 index, 1 title, 2 stream_id, 3 cover, 4 plot, 5 cast, 6 director, 7 genre, 8 releasedate, 9 rating, 10 last_modified, 11 next_url, 12 tmdb_id, 13 hidden, 14 duration, 15 container_extension, 16 shorttitle, 17 episode_num
 
 
-def buildSeriesTitlesList(index, title, series_id, cover, plot, cast, director, genre, releaseDate, rating, lastmodified, next_url, tmdb, hidden, year, backdrop_path):
+def buildSeriesTitlesList(index, title, series_id, cover, plot, cast, director, genre, releaseDate, rating, lastmodified, next_url, tmdb, hidden, year, backdrop_path, favourite):
     png = LoadPixmap(os.path.join(common_path, "more.png"))
-    return (title, png, index, next_url, series_id, cover, plot, cast, director, genre, releaseDate, rating, lastmodified, year, tmdb, backdrop_path, hidden)
+    if favourite:
+        png = LoadPixmap(os.path.join(common_path, "favourite.png"))
+    return (title, png, index, next_url, series_id, cover, plot, cast, director, genre, releaseDate, rating, lastmodified, year, tmdb, backdrop_path, hidden, favourite)
 
 
-def buildSeriesSeasonsList(index, title, series_id, cover, plot, cast, director, genre, airDate, rating, lastmodified, next_url, tmdb, hidden, season_number, backdrop_path):
+def buildSeriesSeasonsList(index, title, series_id, cover, plot, cast, director, genre, airDate, rating, lastmodified, next_url, tmdb, hidden, season_number, backdrop_path, parent_index, parent_id):
     png = LoadPixmap(os.path.join(common_path, "more.png"))
     try:
         title = _("Season ") + str(int(title))
     except:
         pass
 
-    return (title, png, index, next_url, series_id, cover, plot, cast, director, genre, airDate, rating, season_number, lastmodified, hidden, tmdb, backdrop_path)
+    return (title, png, index, next_url, series_id, cover, plot, cast, director, genre, airDate, rating, season_number, lastmodified, hidden, tmdb, backdrop_path, parent_index, parent_id)
 
 
-def buildSeriesEpisodesList(index, title, series_id, cover, plot, cast, director, genre, releaseDate, rating, lastmodified, next_url, tmdb_id, hidden, duration, container_extension, shorttitle, episode_number):
+def buildSeriesEpisodesList(index, title, series_id, cover, plot, cast, director, genre, releaseDate, rating, lastmodified, next_url, tmdb_id, hidden, duration, container_extension, shorttitle, episode_number, parent_index, parent_id):
     png = LoadPixmap(os.path.join(common_path, "play.png"))
     for channel in glob.active_playlist["player_info"]["serieswatched"]:
         if int(series_id) == int(channel):
             png = LoadPixmap(os.path.join(common_path, "watched.png"))
-    return (title, png, index, next_url, series_id, cover, plot, cast, director, genre, releaseDate, rating, duration, container_extension, tmdb_id, shorttitle, lastmodified, hidden, episode_number)
+    return (title, png, index, next_url, series_id, cover, plot, cast, director, genre, releaseDate, rating, duration, container_extension, tmdb_id, shorttitle, lastmodified, hidden, episode_number, parent_index, parent_id)

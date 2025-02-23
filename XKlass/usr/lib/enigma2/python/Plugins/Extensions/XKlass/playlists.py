@@ -35,7 +35,7 @@ from Components.config import configfile
 # Local application/library-specific imports
 from . import _
 from . import xklass_globals as glob
-from .plugin import skin_directory, playlists_json, playlist_file, cfg, common_path, version, hasConcurrent, hasMultiprocessing
+from .plugin import skin_directory, cfg, common_path, version, hasConcurrent, hasMultiprocessing
 from .xStaticText import StaticText
 from . import checkinternet
 
@@ -46,6 +46,9 @@ hdr = {
     'User-Agent': str(cfg.useragent.value),
     'Accept-Encoding': 'gzip, deflate'
 }
+
+playlist_file = cfg.playlist_file.value
+playlists_json = cfg.playlists_json.value
 
 
 class XKlass_Playlists(Screen):

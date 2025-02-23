@@ -19,8 +19,10 @@ from Tools.BoundFunction import boundFunction
 # Local application/library-specific imports
 from . import _
 from . import xklass_globals as glob
-from .plugin import skin_directory, common_path, playlists_json, cfg
+from .plugin import skin_directory, common_path, cfg
 from .xStaticText import StaticText
+
+playlists_json = cfg.playlists_json.value
 
 
 class ProtectedScreen:

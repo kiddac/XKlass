@@ -48,7 +48,7 @@ from enigma import eTimer, eServiceReference
 from . import _
 from . import catchupplayer
 from . import xklass_globals as glob
-from .plugin import cfg, common_path, dir_tmp, downloads_json, playlists_json, pythonVer, screenwidth, skin_directory, hasConcurrent, hasMultiprocessing
+from .plugin import cfg, common_path, dir_tmp, downloads_json, pythonVer, screenwidth, skin_directory, hasConcurrent, hasMultiprocessing
 
 from .xStaticText import StaticText
 
@@ -71,6 +71,8 @@ if sslverify:
             if self.hostname:
                 ClientTLSOptions(self.hostname, ctx)
             return ctx
+
+playlists_json = cfg.playlists_json.value
 
 
 # png hack
@@ -145,8 +147,7 @@ class XKlass_Catchup_Categories(Screen):
             self.skin = f.read()
 
         self.setup_title = _("Catch Up Categories")
-
-        self.main_title = _("Catchup TV")
+        self.main_title = _("Catch Up TV")
         self["main_title"] = StaticText(self.main_title)
 
         self.main_list = []  # displayed list
@@ -180,6 +181,7 @@ class XKlass_Catchup_Categories(Screen):
 
         self.searchString = ""
         self.filterresult = ""
+
         self.pin = False
 
         self.sortindex = 0
@@ -275,6 +277,7 @@ class XKlass_Catchup_Categories(Screen):
         self.player_api = glob.active_playlist["playlist_info"]["player_api"]
 
         self.liveStreamsData = []
+
         self.p_live_categories_url = str(self.player_api) + "&action=get_live_categories"
         self.p_vod_categories_url = str(self.player_api) + "&action=get_vod_categories"
         self.p_series_categories_url = str(self.player_api) + "&action=get_series_categories"
@@ -486,6 +489,7 @@ class XKlass_Catchup_Categories(Screen):
         self["splash"].hide()
         self["x_title"].setText("")
         self["x_description"].setText("")
+
         if self.level == 1:
             self.getCategories()
         else:
@@ -553,9 +557,11 @@ class XKlass_Catchup_Categories(Screen):
         response = self.downloadApiData(glob.nextlist[-1]["next_url"])
 
         index = 0
-
         self.list2 = []
+
         if response:
+            catchup_hidden_channels = set(glob.active_playlist["player_info"]["catchupchannelshidden"])
+
             for index, channel in enumerate(response):
 
                 if channel.get("tv_archive") == 0 or channel.get("tv_archive") == "0" or channel.get("tv_archive_duration") == "0" or channel.get("tv_archive_duration") == 0:
@@ -575,7 +581,7 @@ class XKlass_Catchup_Categories(Screen):
                 if not stream_id:
                     continue
 
-                hidden = str(stream_id) in glob.active_playlist["player_info"]["catchupchannelshidden"]
+                hidden = str(stream_id) in catchup_hidden_channels
 
                 stream_icon = str(channel.get("stream_icon", ""))
 
@@ -662,6 +668,17 @@ class XKlass_Catchup_Categories(Screen):
                 self["key_yellow"].setText(_(glob.nextlist[-1]["sort"]))
                 self["key_menu"].setText("+/-")
 
+    def stopStream(self):
+        current_playing_ref = glob.currentPlayingServiceRefString
+        new_playing_ref = glob.newPlayingServiceRefString
+
+        if current_playing_ref and new_playing_ref and current_playing_ref != new_playing_ref:
+            currently_playing_service = self.session.nav.getCurrentlyPlayingServiceReference()
+            if currently_playing_service:
+                self.session.nav.stopService()
+            self.session.nav.playService(eServiceReference(current_playing_ref))
+            glob.newPlayingServiceRefString = current_playing_ref
+
     def selectionChanged(self):
         current_item = self["main_list"].getCurrent()
         if current_item:
@@ -677,7 +694,8 @@ class XKlass_Catchup_Categories(Screen):
 
             self["page"].setText(_("Page: ") + "{}/{}".format(page, page_all))
             self["listposition"].setText("{}/{}".format(position, position_all))
-            self["main_title"].setText("{}".format(channel_title))
+            self["main_title"].setText("{}: {}".format(self.main_title, channel_title))
+
             self.loadBlankImage()
 
             if self.level == 2:
@@ -853,7 +871,8 @@ class XKlass_Catchup_Categories(Screen):
 
         elif current_sort == _("Sort: Added"):
             if self.level != 1:
-                activelist.sort(key=lambda x: x[5], reverse=True)
+                activelist.sort(key=lambda x: x[1].lower(), reverse=False)
+                activelist.sort(key=lambda x: (x[5] or ""), reverse=True)
 
         elif current_sort == _("Sort: Original"):
             activelist.sort(key=lambda x: x[0], reverse=False)
@@ -978,9 +997,7 @@ class XKlass_Catchup_Categories(Screen):
                     self["channel_actions"].setEnabled(True)
                     self["menu_actions"].setEnabled(False)
                     self["key_yellow"].setText(_("Sort: A-Z"))
-
                     glob.nextlist.append({"next_url": next_url, "index": 0, "level": self.level, "sort": self["key_yellow"].getText(), "filter": ""})
-
                     self.createSetup()
                 else:
                     self.createSetup()
@@ -1019,14 +1036,12 @@ class XKlass_Catchup_Categories(Screen):
             del glob.nextlist[-1]
 
             if not glob.nextlist:
-                # self.stopStream()
-
+                self.stopStream()
                 self.close()
             else:
                 self["x_title"].setText("")
                 self["x_description"].setText("")
-
-                # self.stopStream()
+                self.stopStream()
                 self.level -= 1
 
                 self["category_actions"].setEnabled(True)
@@ -1169,7 +1184,7 @@ class XKlass_Catchup_Categories(Screen):
             return
 
         next_url = current_item[3]
-        if not next_url and next_url == "None" or "/live/" not in next_url:
+        if not next_url or next_url == "None" or "/live/" not in next_url:
             return
 
         stream_id = next_url.rpartition("/")[-1].partition(".")[0]
@@ -1177,21 +1192,22 @@ class XKlass_Catchup_Categories(Screen):
         url = "{}{}".format(self.simpledatatable, stream_id)
         url = self.checkRedirect(url)
 
-        try:
-            with requests.Session() as http:
-                retries = Retry(total=3, backoff_factor=1)
-                adapter = HTTPAdapter(max_retries=retries)
-                http.mount("http://", adapter)
-                http.mount("https://", adapter)
+        retries = Retry(total=3, backoff_factor=1)
+        adapter = HTTPAdapter(max_retries=retries)
 
+        with requests.Session() as http:
+            http.mount("http://", adapter)
+            http.mount("https://", adapter)
+
+            try:
                 response = http.get(url, headers=hdr, timeout=(10, 20), verify=False)
                 response.raise_for_status()
                 if response.status_code == requests.codes.ok:
                     shortEPGJson = response.json()
 
-        except Exception as e:
-            print("Error fetching catchup EPG:", e)
-            return
+            except Exception as e:
+                print("Error fetching catchup EPG:", e)
+                return
 
         if "epg_listings" not in shortEPGJson or not shortEPGJson["epg_listings"]:
             self.session.open(MessageBox, _("Catchup currently not available. Missing EPG data"), type=MessageBox.TYPE_INFO, timeout=2)

@@ -10,7 +10,6 @@ try:
 except ImportError:
     from urllib.parse import urlparse, parse_qs
 
-
 # Enigma2 components
 from Components.ActionMap import ActionMap
 from Components.ConfigList import ConfigListScreen
@@ -19,12 +18,14 @@ from Components.Pixmap import Pixmap
 from Screens.MessageBox import MessageBox
 from Screens.Screen import Screen
 
-
 # Local application/library-specific imports
 from . import _
 from . import xklass_globals as glob
-from .plugin import skin_directory, playlist_file, playlists_json, cfg
+from .plugin import skin_directory, cfg
 from .xStaticText import StaticText
+
+playlist_file = cfg.playlist_file.value
+playlists_json = cfg.playlists_json.value
 
 
 class XKlass_Settings(ConfigListScreen, Screen):

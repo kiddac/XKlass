@@ -1,10 +1,9 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+# Standard library imports
 from __future__ import absolute_import, print_function
 from __future__ import division
-
-# Standard library imports
 import os
 import re
 from itertools import cycle, islice
@@ -46,16 +45,16 @@ if sslverify:
             return ctx
 
 # Enigma2 components
-from Components.Label import Label
 from Components.ActionMap import ActionMap
+from Components.Label import Label
 from Components.Pixmap import MultiPixmap, Pixmap
 from Components.ServiceEventTracker import ServiceEventTracker, InfoBarBase
 from enigma import eTimer, eServiceReference, iPlayableService
-from Tools import Notifications
-from Tools.BoundFunction import boundFunction
 from Screens.InfoBarGenerics import InfoBarSeek, InfoBarAudioSelection, InfoBarMoviePlayerSummarySupport, InfoBarSubtitleSupport, InfoBarNotifications
 from Screens.MessageBox import MessageBox
 from Screens.Screen import Screen
+from Tools import Notifications
+from Tools.BoundFunction import boundFunction
 
 try:
     from enigma import eAVSwitch

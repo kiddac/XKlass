@@ -13,7 +13,10 @@ except ImportError:
     from urlparse import urlparse, parse_qs
 
 # Local application/library-specific imports
-from .plugin import playlists_json, playlist_file, cfg
+from .plugin import cfg
+
+playlist_file = cfg.playlist_file.value
+playlists_json = cfg.playlists_json.value
 
 
 def process_files():
@@ -93,9 +96,10 @@ def process_files():
         epgalternativeurl = ""
         customsids = False
         fail_count = 0
+        seriesfavourites = []
 
         if line.startswith("http"):
-            line = line.strip()
+            line = line.strip(" ")
             parsed_uri = urlparse(line)
             protocol = parsed_uri.scheme + "://"
 
@@ -144,8 +148,12 @@ def process_files():
 
             for playlist in playlists_all:
                 # Extra check in case playlists.txt details have been amended
-                if ("domain" in playlist["playlist_info"] and "username" in playlist["playlist_info"] and "password" in playlist["playlist_info"]):
-                    if (playlist["playlist_info"]["domain"] == domain and playlist["playlist_info"]["username"] == username and playlist["playlist_info"]["password"] == password):
+                if ("domain" in playlist["playlist_info"]
+                        and "username" in playlist["playlist_info"]
+                        and "password" in playlist["playlist_info"]):
+                    if (playlist["playlist_info"]["domain"] == domain
+                            and playlist["playlist_info"]["username"] == username
+                            and playlist["playlist_info"]["password"] == password):
 
                         playlist_exists = True
 
@@ -168,6 +176,7 @@ def process_files():
                                 "vodrecents": vodrecents,
                                 "vodwatched": vodwatched,
                                 "serieswatched": serieswatched,
+                                "seriesfavourites": seriesfavourites,
                             },
                             "data": {
                                 "live_streams": live_streams,
@@ -231,6 +240,7 @@ def process_files():
                         ("catchupchannelshidden", catchupchannelshidden),
                         ("livefavourites", livefavourites),
                         ("vodfavourites", vodfavourites),
+                        ("seriesfavourites", seriesfavourites),
                         ("liverecents", liverecents),
                         ("vodrecents", vodrecents),
                         ("vodwatched", vodwatched),

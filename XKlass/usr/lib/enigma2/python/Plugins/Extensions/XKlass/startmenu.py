@@ -31,7 +31,7 @@ from Components.config import configfile
 from . import _
 from . import xklass_globals as glob
 from . import processfiles as loadfiles
-from .plugin import cfg, downloads_json, hasConcurrent, hasMultiprocessing, playlists_json, pythonFull, skin_directory, version, InternetSpeedTest_installed, NetSpeedTest_installed, debugs
+from .plugin import cfg, downloads_json, hasConcurrent, hasMultiprocessing, pythonFull, skin_directory, version, InternetSpeedTest_installed, NetSpeedTest_installed, debugs
 from .xStaticText import StaticText
 from . import checkinternet
 
@@ -39,6 +39,8 @@ hdr = {
     'User-Agent': str(cfg.useragent.value),
     'Accept-Encoding': 'gzip, deflate'
 }
+
+playlists_json = cfg.playlists_json.value
 
 
 class XKlass_MainMenu(Screen):
