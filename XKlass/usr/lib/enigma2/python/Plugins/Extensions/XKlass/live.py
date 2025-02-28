@@ -1825,6 +1825,10 @@ class XKlass_Live_Categories(Screen):
         safeName = re.sub(r"_+", "_", safeName)
 
         filepath = "/etc/epgimport/"
+
+        if not os.path.exists(filepath):
+            os.makedirs(filepath)
+
         epgfilename = "xklass." + str(safeName) + ".channels.xml"
         channelpath = os.path.join(filepath, epgfilename)
 
@@ -1848,7 +1852,10 @@ class XKlass_Live_Categories(Screen):
         try:
             import xml.etree.ElementTree as ET
 
-            tree = ET.parse(sourcefile, parser=ET.XMLParser(encoding="utf-8"))
+            try:
+                tree = ET.parse(sourcefile, parser=ET.XMLParser(encoding="utf-8"))
+            except:
+                return
             root = tree.getroot()
             sourcecat = root.find("sourcecat")
 
@@ -1879,6 +1886,7 @@ class XKlass_Live_Categories(Screen):
                 f.write(xml_output)
         except Exception as e:
             print(e)
+            return
 
         # buildXMLTVChannelFile
         with open(channelpath, "w") as f:

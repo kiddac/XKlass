@@ -706,6 +706,8 @@ class XKlass_MainMenu(Screen):
         if show_catchup and glob.active_playlist["data"]["catchup"]:
             self.list.append(["", _("Catch Up TV"), 3])
 
+        self.list.append(["", _("Add Playlist"), 9])
+
         self.list.append(["", _("Manage Playlists"), 6])
 
         self.list.append(["", _("Global Settings"), 4])
@@ -770,6 +772,8 @@ class XKlass_MainMenu(Screen):
                 self.ExecuteRestart()
             elif index == 8:
                 self.runSpeedTest()
+            elif index == 9:
+                self.addServer()
 
     def runSpeedTest(self):
         if debugs:
