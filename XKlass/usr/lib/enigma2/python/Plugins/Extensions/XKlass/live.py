@@ -339,15 +339,6 @@ class XKlass_Live_Categories(Screen):
 
     def refresh(self):
         # print("*** refresh ***")
-
-        if cfg.backgroundsat.value:
-            self.delayTimer = eTimer()
-            try:
-                self.delayTimer_conn = self.delayTimer.timeout.connect(self.playOriginalChannel)
-            except:
-                self.delayTimer.callback.append(self.playOriginalChannel)
-            self.delayTimer.start(1000, True)
-
         self.level = glob.current_level
         self.xmltvdownloaded = False
 
@@ -1335,7 +1326,7 @@ class XKlass_Live_Categories(Screen):
         else:
             self["x_title"].setText("")
             self["x_description"].setText("")
-            if cfg.stopstream.value or not cfg.livepreview.value:
+            if cfg.stopstream.value:
                 self.stopStream()
             self.level -= 1
 

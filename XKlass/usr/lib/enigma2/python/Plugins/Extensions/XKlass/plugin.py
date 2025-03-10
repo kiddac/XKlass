@@ -174,7 +174,6 @@ cfg.infobarcovers = ConfigYesNo(default=True)
 cfg.introvideo = ConfigYesNo(default=True)
 cfg.introloop = ConfigYesNo(default=False)
 cfg.introvideoselection = ConfigSelection(choices=video_list)
-cfg.backgroundsat = ConfigYesNo(default=False)
 cfg.speedtest = ConfigYesNo(default=False)
 
 cfg.boot = ConfigYesNo(default=False)
@@ -183,6 +182,9 @@ cfg.lastplaylist = ConfigText()
 
 cfg.vodcategoryorder = ConfigSelection(default=(_("Sort: Original")), choices=[(_("Sort: A-Z"), "A-Z"), (_("Sort: Z-A"), "Z-A"), (_("Sort: Original"), _("Original"))])
 cfg.vodstreamorder = ConfigSelection(default=(_("Sort: Original")), choices=[(_("Sort: A-Z"), "A-Z"), (_("Sort: Z-A"), "Z-A"), (_("Sort: Added"), _("Added")), (_("Sort: Year"), _("Year")), (_("Sort: Original"), _("Original"))])
+
+cfg.seriescategoryorder = ConfigSelection(default=(_("Sort: Original")), choices=[(_("Sort: A-Z"), "A-Z"), (_("Sort: Z-A"), "Z-A"), (_("Sort: Original"), _("Original"))])
+cfg.seriesorder = ConfigSelection(default=(_("Sort: Original")), choices=[(_("Sort: A-Z"), "A-Z"), (_("Sort: Z-A"), "Z-A"), (_("Sort: Added"), _("Added")), (_("Sort: Year"), _("Year")), (_("Sort: Original"), _("Original"))])
 
 # Set default file paths
 playlist_file = os.path.join(dir_etc, "playlists.txt")

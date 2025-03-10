@@ -120,9 +120,6 @@ class XKlass_MainMenu(Screen):
             iPlayableService.evEOF: self.onEOF
         })
 
-        if not cfg.backgroundsat.value:
-            self.session.nav.stopService()
-
         self.onLayoutFinish.append(self.__layoutFinished)
         self.onFirstExecBegin.append(self.check_dependencies)
 

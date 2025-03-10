@@ -324,14 +324,6 @@ class XKlass_Vod_Categories(Screen):
         if debugs:
             print("*** refresh ***")
 
-        if cfg.backgroundsat.value:
-            self.delayTimer = eTimer()
-            try:
-                self.delayTimer_conn = self.delayTimer.timeout.connect(self.playOriginalChannel)
-            except:
-                self.delayTimer.callback.append(self.playOriginalChannel)
-            self.delayTimer.start(1000, True)
-
         self.level = glob.current_level
 
         if not glob.ChoiceBoxDialog:

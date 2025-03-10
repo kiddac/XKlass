@@ -158,6 +158,9 @@ class XKlass_Settings(ConfigListScreen, Screen, ProtectedScreen):
         self.cfg_vodcategoryorder = getConfigListEntry(_("Default VOD category sort order"), cfg.vodcategoryorder)
         self.cfg_vodstreamorder = getConfigListEntry(_("Default VOD stream sort order"), cfg.vodstreamorder)
 
+        self.cfg_seriescategoryorder = getConfigListEntry(_("Default Series category sort order"), cfg.seriescategoryorder)
+        self.cfg_seriesorder = getConfigListEntry(_("Default Series sort order"), cfg.seriesorder)
+
         self.cfg_adult = getConfigListEntry(_("XKlass parental control"), cfg.adult)
         self.cfg_adultpin = getConfigListEntry(_("XKlass parental pin"), cfg.adultpin)
         self.cfg_main = getConfigListEntry(_("Show in main menu") + _(" *Restart GUI Required"), cfg.main)
@@ -175,7 +178,6 @@ class XKlass_Settings(ConfigListScreen, Screen, ProtectedScreen):
         self.cfg_infobarpicons = getConfigListEntry(_("Show infobar picons"), cfg.infobarpicons)
         self.cfg_infobarcovers = getConfigListEntry(_("Show infobar posters"), cfg.infobarcovers)
         self.cfg_boot = getConfigListEntry(_("Auto start XKlass on boot") + _(" *Restart GUI Required"), cfg.boot)
-        self.cfg_backgroundsat = getConfigListEntry(_("Play satellite channel audio in background"), cfg.backgroundsat)
         self.cfg_speedtest = getConfigListEntry(_("Add speedtest plugin to main menu"), cfg.speedtest)
 
         self.org_main = cfg.main.value
@@ -220,7 +222,6 @@ class XKlass_Settings(ConfigListScreen, Screen, ProtectedScreen):
             self.cfg_infobarpicons,
             self.cfg_infobarcovers,
             self.cfg_boot,
-            self.cfg_backgroundsat,
             self.cfg_speedtest if InternetSpeedTest_installed is True or NetSpeedTest_installed is True else None
         ]
 
