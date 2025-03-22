@@ -176,6 +176,8 @@ cfg.introloop = ConfigYesNo(default=False)
 cfg.introvideoselection = ConfigSelection(choices=video_list)
 cfg.speedtest = ConfigYesNo(default=False)
 
+cfg.startmenuplaylists = ConfigYesNo(default=True)
+
 cfg.boot = ConfigYesNo(default=False)
 cfg.useragent = ConfigSelection(default="Enigma2 - XKlass Plugin", choices=useragents)
 cfg.lastplaylist = ConfigText()

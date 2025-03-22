@@ -179,6 +179,7 @@ class XKlass_Settings(ConfigListScreen, Screen, ProtectedScreen):
         self.cfg_infobarcovers = getConfigListEntry(_("Show infobar posters"), cfg.infobarcovers)
         self.cfg_boot = getConfigListEntry(_("Auto start XKlass on boot") + _(" *Restart GUI Required"), cfg.boot)
         self.cfg_speedtest = getConfigListEntry(_("Add speedtest plugin to main menu"), cfg.speedtest)
+        self.cfg_startmenuplaylists = getConfigListEntry(_("Show playlists on start menu"), cfg.startmenuplaylists)
 
         self.org_main = cfg.main.value
         self.org_wakeup = cfg.wakeup.value
@@ -221,6 +222,7 @@ class XKlass_Settings(ConfigListScreen, Screen, ProtectedScreen):
             self.cfg_channelcovers,
             self.cfg_infobarpicons,
             self.cfg_infobarcovers,
+            self.cfg_startmenuplaylists,
             self.cfg_boot,
             self.cfg_speedtest if InternetSpeedTest_installed is True or NetSpeedTest_installed is True else None
         ]

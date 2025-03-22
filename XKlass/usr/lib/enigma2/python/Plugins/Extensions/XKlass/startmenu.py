@@ -130,6 +130,9 @@ class XKlass_MainMenu(Screen):
         if debugs:
             print("*** switchList ***")
 
+        if not cfg.startmenuplaylists.value:
+            return
+
         self.toggle = not self.toggle
         instance1 = self["list"].master.master.instance
         instance2 = self["playlists"].master.master.instance
@@ -164,7 +167,6 @@ class XKlass_MainMenu(Screen):
         if debugs:
             print("*** start ***")
 
-        # print("*** start ***")
         if not checkinternet.check_internet():
             self.session.openWithCallback(self.quit, MessageBox, _("No internet."), type=MessageBox.TYPE_ERROR, timeout=5)
 
@@ -520,6 +522,9 @@ class XKlass_MainMenu(Screen):
         self["playlists"].setList(self.drawList2)
         self["playlists"].setIndex(glob.current_active_playlist_selection)
 
+        if not cfg.startmenuplaylists.value:
+            self["playlists"].hide()
+
     def buildPlalyistListEntry(self, index, name, url, activenum, maxnum):
         text = str(name) + "   " + _("Active:") + str(activenum) + " " + _("Max:") + str(maxnum)
         return (index, text, str(url))
@@ -844,7 +849,10 @@ class XKlass_MainMenu(Screen):
         self["background"].setText("")
         self.local_video_path = cfg.introvideoselection.value
         service = eServiceReference(4097, 0, self.local_video_path)
-        self.session.nav.playService(service)
+        try:
+            self.session.nav.playService(service)
+        except:
+            pass
 
     def onEOF(self):
         if debugs:
