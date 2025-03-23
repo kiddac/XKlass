@@ -523,7 +523,8 @@ class XKlass_MainMenu(Screen):
         self["playlists"].setIndex(glob.current_active_playlist_selection)
 
         if not cfg.startmenuplaylists.value:
-            self["playlists"].hide()
+            self.drawList2 = []
+            self["playlists"].setList(self.drawList2)
 
     def buildPlalyistListEntry(self, index, name, url, activenum, maxnum):
         text = str(name) + "   " + _("Active:") + str(activenum) + " " + _("Max:") + str(maxnum)

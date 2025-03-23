@@ -129,7 +129,6 @@ class XKlass_Settings(ConfigListScreen, Screen, ProtectedScreen):
                     or self.location != cfg.location.value:
 
                 self.changedFinished()
-        self.clear_caches()
         self.close()
 
     def changedFinished(self):
