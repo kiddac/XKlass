@@ -714,7 +714,8 @@ class XKlass_MainMenu(Screen):
 
         self.list.append(["", _("Add Playlist"), 9])
 
-        self.list.append(["", _("Manage Playlists"), 6])
+        if cfg.manageplaylists.value:
+            self.list.append(["", _("Manage Playlists"), 6])
 
         self.list.append(["", _("Global Settings"), 4])
 

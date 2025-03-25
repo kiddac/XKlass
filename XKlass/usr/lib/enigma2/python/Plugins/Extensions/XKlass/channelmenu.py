@@ -109,8 +109,9 @@ class XKlass_ChannelMenu(Screen):
         self.list.append([6, _("Playlist Settings")])
         if glob.current_list:
             self.list.append([7, _("Show/Hide Channels")])
-        self.list.append([8, _("Account Info")])
-        if len(self.playlists_all) > 1:
+        if cfg.sidemenuaccountinfo.value:
+            self.list.append([8, _("Account Info")])
+        if len(self.playlists_all) > 1 and cfg.sidemenumanageplaylists.value:
             self.list.append([10, _("Manage Playlists")])
         self.list.append([11, _("Add New Playlist")])
 

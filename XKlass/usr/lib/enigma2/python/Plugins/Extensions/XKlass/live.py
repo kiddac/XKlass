@@ -56,7 +56,7 @@ from enigma import eEPGCache, eServiceReference, eTimer
 from . import _
 from . import liveplayer
 from . import xklass_globals as glob
-from .plugin import cfg, common_path, dir_tmp, pythonVer, screenwidth, skin_directory, hasConcurrent, hasMultiprocessing
+from .plugin import cfg, common_path, dir_tmp, pythonVer, screenwidth, skin_directory, hasConcurrent, hasMultiprocessing, debugs
 from .xStaticText import StaticText
 
 # HTTPS twisted client hack
@@ -211,6 +211,8 @@ class XKlass_Live_Categories(Screen):
 
         self.original_active_playlist = glob.active_playlist
 
+        self.firstrun = True
+
         # buttons / keys
         self["key_red"] = StaticText(_("Back"))
         self["key_green"] = StaticText(_("OK"))
@@ -297,7 +299,8 @@ class XKlass_Live_Categories(Screen):
         self.setTitle(self.setup_title)
 
     def initGlobals(self):
-        # print("*** initglobals ***")
+        if debugs:
+            print("*** initglobals ***")
         self.host = glob.active_playlist["playlist_info"]["host"]
         self.username = glob.active_playlist["playlist_info"]["username"]
         self.password = glob.active_playlist["playlist_info"]["password"]
@@ -331,6 +334,8 @@ class XKlass_Live_Categories(Screen):
             glob.nextlist.append({"next_url": next_url, "index": 0, "level": self.level, "sort": self.sortText, "filter": ""})
 
     def playOriginalChannel(self):
+        if debugs:
+            print("*** playOriginalChannel ***")
         try:
             if glob.currentPlayingServiceRefString:
                 self.session.nav.playService(eServiceReference(glob.currentPlayingServiceRefString))
@@ -338,7 +343,9 @@ class XKlass_Live_Categories(Screen):
             print(e)
 
     def refresh(self):
-        # print("*** refresh ***")
+        if debugs:
+            print("*** refresh ***")
+
         self.level = glob.current_level
         self.xmltvdownloaded = False
 
@@ -362,7 +369,6 @@ class XKlass_Live_Categories(Screen):
                 self.reset()
             glob.active_playlist["data"]["live_streams"] = []
             sameplaylist = False
-
             self.initGlobals()
 
             if not glob.active_playlist["player_info"]["showlive"]:
@@ -372,7 +378,10 @@ class XKlass_Live_Categories(Screen):
                 self.original_active_playlist = glob.active_playlist
                 self.makeUrlList()
 
-        self.createSetup()
+        if self.firstrun or not sameplaylist:
+            self.firstrun = False
+            self.resetButtons()
+            self.createSetup()
 
         if sameplaylist:
             if self["main_list"].getCurrent():
@@ -380,7 +389,8 @@ class XKlass_Live_Categories(Screen):
             self.selectionChanged()
 
     def makeUrlList(self):
-        # print("*** makeurllist ***")
+        if debugs:
+            print("*** makeurllist ***")
         self.url_list = []
 
         player_api = str(glob.active_playlist["playlist_info"].get("player_api", ""))
@@ -398,6 +408,9 @@ class XKlass_Live_Categories(Screen):
         self.process_downloads()
 
     def download_url(self, url):
+        if debugs:
+            print("*** download_url ***")
+
         import requests
         index = url[1]
         response = None
@@ -446,7 +459,8 @@ class XKlass_Live_Categories(Screen):
         return index, response
 
     def process_downloads(self):
-        # print("*** process downloads ***")
+        if debugs:
+            print("*** process downloads ***")
         threads = min(len(self.url_list), 10)
 
         self.retry = 0
@@ -515,7 +529,8 @@ class XKlass_Live_Categories(Screen):
         self.writeJsonFile()
 
     def writeJsonFile(self):
-        # print("*** writejsonfile ***")
+        if debugs:
+            print("*** writejsonfile ***")
         with open(playlists_json, "r") as f:
             playlists_all = json.load(f)
 
@@ -525,7 +540,8 @@ class XKlass_Live_Categories(Screen):
             json.dump(playlists_all, f)
 
     def createSetup(self, data=None):
-        # print("*** createSetup ***")
+        if debugs:
+            print("*** createSetup ***")
         self["splash"].hide()
         self["x_title"].setText("")
         self["x_description"].setText("")
@@ -549,7 +565,8 @@ class XKlass_Live_Categories(Screen):
         self.buildLists()
 
     def buildLists(self):
-        # print("*** buildLists ***")
+        if debugs:
+            print("*** buildLists ***")
         if self.level == 1:
             self.buildList1()
         else:
@@ -559,7 +576,8 @@ class XKlass_Live_Categories(Screen):
         self.selectionChanged()
 
     def getCategories(self):
-        # print("*** getCategories **")
+        if debugs:
+            print("*** getCategories **")
         self.list1 = []
         self.prelist = []
 
@@ -588,8 +606,11 @@ class XKlass_Live_Categories(Screen):
         glob.originalChannelList1 = self.list1[:]
 
     def getLevel2(self):
-        # print("*** getLevel2 ***")
+        if debugs:
+            print("*** getLevel2 ***")
+
         response = ""
+
         if self.chosen_category == "favourites":
             response = glob.active_playlist["player_info"].get("livefavourites", [])
         elif self.chosen_category == "recents":
@@ -598,8 +619,8 @@ class XKlass_Live_Categories(Screen):
             response = self.downloadApiData(glob.nextlist[-1]["next_url"])
 
         index = 0
-
         self.list2 = []
+
         if response:
             for index, channel in enumerate(response):
                 name = str(channel.get("name", ""))
@@ -703,7 +724,8 @@ class XKlass_Live_Categories(Screen):
         glob.originalChannelList2 = self.list2[:]
 
     def downloadApiData(self, url):
-        # print("*** downloadApiData ***")
+        if debugs:
+            print("*** downloadApiData ***")
         retries = Retry(total=2, backoff_factor=1)
         adapter = HTTPAdapter(max_retries=retries)
 
@@ -726,7 +748,8 @@ class XKlass_Live_Categories(Screen):
                 self.session.openWithCallback(self.back, MessageBox, _("Server error or invalid link."), MessageBox.TYPE_ERROR, timeout=3)
 
     def xmltvCheckData(self):
-        # print("*** xmltvCheckData ***")
+        if debugs:
+            print("*** xmltvCheckData ***")
         safeName = re.sub(r'[\'\<\>\:\"\/\\\|\?\*\(\)\[\]]', "_", str(glob.active_playlist["playlist_info"]["name"]))
         safeName = re.sub(r" +", "_", safeName)  # Combine multiple spaces into one underscore
         safeName = re.sub(r"_+", "_", safeName)  # Replace multiple underscores with a single underscore
@@ -751,7 +774,8 @@ class XKlass_Live_Categories(Screen):
                 print(e)
 
     def buildList1(self):
-        # print("*** buildlist1 ***")
+        if debugs:
+            print("*** buildlist1 ***")
         self["key_epg"].setText("")
         self.hideEPG()
         self.xmltvdownloaded = False
@@ -769,7 +793,8 @@ class XKlass_Live_Categories(Screen):
             self["main_list"].setIndex(glob.nextlist[-1]["index"])
 
     def buildList2(self):
-        # print("*** buildlist2 ***")
+        if debugs:
+            print("*** buildlist2 ***")
         self.main_list = []
         self.epglist = []
         # index = 0, name = 1, stream_id = 2, stream_icon = 3, epg_channel_id = 4, added = 5, category_id = 6, custom_sid = 7, nowtime = 9
@@ -790,7 +815,8 @@ class XKlass_Live_Categories(Screen):
             self["main_list"].setIndex(glob.nextlist[-1]["index"])
 
     def resetButtons(self):
-        # print("*** buttons ***")
+        if debugs:
+            print("*** buttons ***")
         if glob.nextlist[-1]["filter"]:
             self["key_yellow"].setText("")
             self["key_blue"].setText(_("Reset Search"))
@@ -813,7 +839,8 @@ class XKlass_Live_Categories(Screen):
                 self["key_menu"].setText("")
 
     def stopStream(self):
-        # print("*** stop stream ***")
+        if debugs:
+            print("*** stop stream ***")
         current_playing_ref = glob.currentPlayingServiceRefString
         new_playing_ref = glob.newPlayingServiceRefString
 
@@ -825,7 +852,8 @@ class XKlass_Live_Categories(Screen):
             glob.newPlayingServiceRefString = current_playing_ref
 
     def selectionChanged(self):
-        # print("*** selectionchanged ***")
+        if debugs:
+            print("*** selectionchanged ***")
         current_item = self["main_list"].getCurrent()
         if current_item:
             channel_title = current_item[0]
@@ -876,9 +904,11 @@ class XKlass_Live_Categories(Screen):
             self["listposition"].setText("{}/{}".format(position, position_all))
             self["key_yellow"].setText("")
             self["key_blue"].setText("")
+            self.hideEPG()
 
     def downloadImage(self):
-        # print("*** downloadimage ***")
+        if debugs:
+            print("*** downloadimage ***")
         if self["main_list"].getCurrent():
             try:
                 for filename in ["original.png", "temp.png"]:
@@ -916,17 +946,20 @@ class XKlass_Live_Categories(Screen):
                 self.loadDefaultImage()
 
     def loadBlankImage(self, data=None):
-        # print("*** loadblankimage ***")
+        if debugs:
+            print("*** loadblankimage ***")
         if self["picon"].instance:
             self["picon"].instance.setPixmapFromFile(os.path.join(common_path, "picon_blank.png"))
 
     def loadDefaultImage(self, data=None):
-        # print("*** loaddefaultimage ***")
+        if debugs:
+            print("*** loaddefaultimage ***")
         if self["picon"].instance:
             self["picon"].instance.setPixmapFromFile(os.path.join(common_path, "picon.png"))
 
     def resizeImage(self, data=None):
-        # print("*** resizeImage ***")
+        if debugs:
+            print("*** resizeImage ***")
         current_item = self["main_list"].getCurrent()
         if current_item:
             original = os.path.join(dir_tmp, "temp.png")
@@ -978,37 +1011,43 @@ class XKlass_Live_Categories(Screen):
                 self.loadDefaultImage()
 
     def goUp(self):
-        # print("*** goup ***")
+        if debugs:
+            print("*** goup ***")
         instance = self.selectedlist.master.master.instance
         instance.moveSelection(instance.moveUp)
         self.selectionChanged()
 
     def goDown(self):
-        # print("*** godown ***")
+        if debugs:
+            print("*** godown ***")
         instance = self.selectedlist.master.master.instance
         instance.moveSelection(instance.moveDown)
         self.selectionChanged()
 
     def pageUp(self):
-        # print("*** pageup ***")
+        if debugs:
+            print("*** pageup ***")
         instance = self.selectedlist.master.master.instance
         instance.moveSelection(instance.pageUp)
         self.selectionChanged()
 
     def pageDown(self):
-        # print("*** pagedown ***")
+        if debugs:
+            print("*** pagedown ***")
         instance = self.selectedlist.master.master.instance
         instance.moveSelection(instance.pageDown)
         self.selectionChanged()
 
     # button 0
     def reset(self):
-        # print("*** reset ***")
+        if debugs:
+            print("*** reset ***")
         self.selectedlist.setIndex(0)
         self.selectionChanged()
 
     def sort(self):
-        # print("*** sort ***")
+        if debugs:
+            print("*** sort ***")
 
         current_sort = self["key_yellow"].getText()
         if not current_sort or current_sort == _("Reverse"):
@@ -1058,7 +1097,8 @@ class XKlass_Live_Categories(Screen):
         self.buildLists()
 
     def search(self, result=None):
-        # print("*** search ***")
+        if debugs:
+            print("*** search ***")
         if not self["key_blue"].getText():
             return
 
@@ -1074,7 +1114,8 @@ class XKlass_Live_Categories(Screen):
             self.session.openWithCallback(self.filterChannels, VirtualKeyBoard, title=_("Filter this category..."), text=self.searchString)
 
     def deleteRecent(self):
-        # print("*** deleterecent ***")
+        if debugs:
+            print("*** deleterecent ***")
         current_item = self["main_list"].getCurrent()
         if current_item:
             current_index = self["main_list"].getIndex()
@@ -1101,7 +1142,8 @@ class XKlass_Live_Categories(Screen):
             self.buildLists()
 
     def filterChannels(self, result=None):
-        # print("*** filterchannels ***")
+        if debugs:
+            print("*** filterchannels ***")
         activelist = []
         if result:
             self.filterresult = result
@@ -1127,7 +1169,8 @@ class XKlass_Live_Categories(Screen):
                 self.buildLists()
 
     def resetSearch(self):
-        # print("*** resetsearch ***")
+        if debugs:
+            print("*** resetsearch ***")
         self["key_blue"].setText(_("Search"))
         self["key_yellow"].setText(self.sortText)
 
@@ -1144,7 +1187,8 @@ class XKlass_Live_Categories(Screen):
         self.buildLists()
 
     def pinEntered(self, result=None):
-        # print("*** pinentered ***")
+        if debugs:
+            print("*** pinentered ***")
         if not result:
             self.pin = False
             self.session.open(MessageBox, _("Incorrect pin code."), type=MessageBox.TYPE_ERROR, timeout=5)
@@ -1160,7 +1204,8 @@ class XKlass_Live_Categories(Screen):
             return
 
     def parentalCheck(self):
-        # print("*** parentalcheck ***")
+        if debugs:
+            print("*** parentalcheck ***")
         self.pin = True
         nowtime = int(time.mktime(datetime.now().timetuple())) if pythonVer == 2 else int(datetime.timestamp(datetime.now()))
 
@@ -1184,7 +1229,9 @@ class XKlass_Live_Categories(Screen):
             self.next()
 
     def next(self):
-        # print("*** next ***")
+        if debugs:
+            print("*** next ***")
+
         if self["main_list"].getCurrent():
             current_index = self["main_list"].getIndex()
             glob.nextlist[-1]["index"] = current_index
@@ -1293,15 +1340,18 @@ class XKlass_Live_Categories(Screen):
                     self.createSetup()
 
     def setIndex(self, data=None):
-        # print("*** setindex ***")
+        if debugs:
+            print("*** setindex ***")
+
         if self["main_list"].getCurrent():
             self["main_list"].setIndex(glob.currentchannellistindex)
             self["epg_list"].setIndex(glob.currentchannellistindex)
             self.xmltvdownloaded = False
-            self.createSetup()
+            # self.createSetup()
 
     def back(self, data=None):
-        # print("*** back ***")
+        if debugs:
+            print("*** back ***")
 
         try:
             self.closeChoiceBoxDialog()
@@ -1337,7 +1387,8 @@ class XKlass_Live_Categories(Screen):
             self.buildLists()
 
     def favourite(self):
-        # print("*** favourite ***")
+        if debugs:
+            print("*** favourite ***")
         if not self["main_list"].getCurrent():
             return
 
@@ -1351,7 +1402,10 @@ class XKlass_Live_Categories(Screen):
                 favStream_id = fav["stream_id"]
                 break
 
-        self.list2[current_index][16] = not self.list2[current_index][16]
+        try:
+            self.list2[current_index][16] = not self.list2[current_index][16]
+        except:
+            pass
 
         if favExists:
             glob.active_playlist["player_info"]["livefavourites"] = [x for x in glob.active_playlist["player_info"]["livefavourites"] if str(x["stream_id"]) != str(favStream_id)]
@@ -1393,7 +1447,8 @@ class XKlass_Live_Categories(Screen):
         self.buildLists()
 
     def addEPG(self):
-        # print("*** addEPG ***")
+        if debugs:
+            print("*** addEPG ***")
         if self["main_list"].getCurrent():
             now = time.time() + (self.epgtimeshift * 3600)
 
@@ -1487,22 +1542,27 @@ class XKlass_Live_Categories(Screen):
                     print(e)
 
     def hideEPG(self):
-        # print("*** hideEPG ***")
+        if debugs:
+            print("*** hideEPG ***")
         self["epg_list"].setList([])
         self["picon"].hide()
         self["epg_bg"].hide()
+        self["main_title"].setText("")
         self["x_title"].setText("")
         self["x_description"].setText("")
         self["progress"].hide()
 
     def showEPG(self):
-        # print("*** showEPG ***")
-        self["picon"].show()
-        self["epg_bg"].show()
-        self["progress"].show()
+        if debugs:
+            print("*** showEPG ***")
+        if self["main_list"].getCurrent():
+            self["picon"].show()
+            self["epg_bg"].show()
+            self["progress"].show()
 
     def refreshEPGInfo(self):
-        # print("*** refreshEPG ***")
+        if debugs:
+            print("*** refreshEPG ***")
         current_item = self["epg_list"].getCurrent()
         if not current_item:
             return
@@ -1544,7 +1604,8 @@ class XKlass_Live_Categories(Screen):
             self["progress"].hide()
 
     def nownext(self):
-        # print("*** nownext ***")
+        if debugs:
+            print("*** nownext ***")
         current_item = self["main_list"].getCurrent()
         if not current_item:
             return
@@ -1580,7 +1641,8 @@ class XKlass_Live_Categories(Screen):
         return ""  # Return None if none of the formats match
 
     def shortEPG(self):
-        # print("*** shortEPG ***")
+        if debugs:
+            print("*** shortEPG ***")
         if self["main_list"].getCurrent():
             self.showingshortEPG = not self.showingshortEPG
 
@@ -1670,7 +1732,8 @@ class XKlass_Live_Categories(Screen):
                 self.buildLists()
 
     def displayShortEPG(self):
-        # print("*** displayshortEPG ***")
+        if debugs:
+            print("*** displayshortEPG ***")
         if self["epg_short_list"].getCurrent():
             title = str(self["epg_short_list"].getCurrent()[0])
             description = str(self["epg_short_list"].getCurrent()[3])
@@ -1680,7 +1743,8 @@ class XKlass_Live_Categories(Screen):
 
     # record button download video file
     def downloadStream(self, limitEvent=True):
-        # print("*** downloadstream ***")
+        if debugs:
+            print("*** downloadstream ***")
         from . import record
         current_index = self["main_list"].getIndex()
         begin = int(time.time())
@@ -1718,7 +1782,8 @@ class XKlass_Live_Categories(Screen):
         self.session.openWithCallback(self.RecordDateInputClosed, record.RecordDateInput, self.name, self.date, self.starttime, self.endtime)
 
     def RecordDateInputClosed(self, data=None):
-        # print("*** recorddateinputclosed ***")
+        if debugs:
+            print("*** recorddateinputclosed ***")
         if data:
             begin = data[1]
             end = data[2]
@@ -1769,7 +1834,8 @@ class XKlass_Live_Categories(Screen):
         return
 
     def downloadXMLTVdata(self):
-        # print("*** downloadxmltvdata ***")
+        if debugs:
+            print("*** downloadxmltvdata ***")
         if epgimporter is False:
             return
 
@@ -1795,7 +1861,8 @@ class XKlass_Live_Categories(Screen):
         print(("[EPG] download failed:", failure))
 
     def downloadComplete(self, data=None, filename=None):
-        # print("*** downloadcomplete ***")
+        if debugs:
+            print("*** downloadcomplete ***")
         channellist_all = []
         with open(filename, "r+b") as f:
             try:
@@ -1810,7 +1877,8 @@ class XKlass_Live_Categories(Screen):
         self.buildXMLTV()
 
     def buildXMLTV(self):
-        # print("*** buildxmltv ***")
+        if debugs:
+            print("*** buildxmltv ***")
         safeName = re.sub(r'[\'\<\>\:\"\/\\\|\?\*\(\)\[\]]', "_", str(glob.active_playlist["playlist_info"]["name"]))
         safeName = re.sub(r" +", "_", safeName)
         safeName = re.sub(r"_+", "_", safeName)
@@ -1920,19 +1988,22 @@ class XKlass_Live_Categories(Screen):
         # self.buildLists()
 
     def epgminus(self):
-        # print("*** epgminus ***")
+        if debugs:
+            print("*** epgminus ***")
         self.epgtimeshift -= 1
         if self.epgtimeshift <= 0:
             self.epgtimeshift = 0
         self.addEPG()
 
     def epgplus(self):
-        # print("*** epgplus ***")
+        if debugs:
+            print("*** epgplus ***")
         self.epgtimeshift += 1
         self.addEPG()
 
     def epgreset(self):
-        # print("*** epg reset ***")
+        if debugs:
+            print("*** epg reset ***")
         self.epgtimeshift = 0
         self.addEPG()
 

@@ -176,9 +176,12 @@ class XKlass_Settings(ConfigListScreen, Screen, ProtectedScreen):
         self.cfg_channelcovers = getConfigListEntry(_("Show Vod/Series posters"), cfg.channelcovers)
         self.cfg_infobarpicons = getConfigListEntry(_("Show infobar picons"), cfg.infobarpicons)
         self.cfg_infobarcovers = getConfigListEntry(_("Show infobar posters"), cfg.infobarcovers)
-        self.cfg_boot = getConfigListEntry(_("Auto start XKlass on boot") + _(" *Restart GUI Required"), cfg.boot)
-        self.cfg_speedtest = getConfigListEntry(_("Add speedtest plugin to main menu"), cfg.speedtest)
+        self.cfg_manageplaylists = getConfigListEntry(_("Show Manage Playlists on start menu"), cfg.manageplaylists)
+        self.cfg_speedtest = getConfigListEntry(_("Show Speedtest on start menu"), cfg.speedtest)
         self.cfg_startmenuplaylists = getConfigListEntry(_("Show playlists on start menu"), cfg.startmenuplaylists)
+        self.cfg_sidemenumanageplaylists = getConfigListEntry(_("Show Manage Playlists in popup menu"), cfg.sidemenumanageplaylists)
+        self.cfg_sidemenuaccountinfo = getConfigListEntry(_("Show Account Info in popup menu"), cfg.sidemenuaccountinfo)
+        self.cfg_boot = getConfigListEntry(_("Auto start XKlass on boot") + _(" *Restart GUI Required"), cfg.boot)
 
         self.org_main = cfg.main.value
         self.org_wakeup = cfg.wakeup.value
@@ -202,6 +205,9 @@ class XKlass_Settings(ConfigListScreen, Screen, ProtectedScreen):
             self.cfg_vodcategoryorder,
             self.cfg_vodstreamorder,
 
+            self.cfg_seriescategoryorder,
+            self.cfg_seriesorder,
+
             self.cfg_livepreview,
             self.cfg_stopstream,
 
@@ -221,9 +227,13 @@ class XKlass_Settings(ConfigListScreen, Screen, ProtectedScreen):
             self.cfg_channelcovers,
             self.cfg_infobarpicons,
             self.cfg_infobarcovers,
+            self.cfg_manageplaylists,
+            self.cfg_speedtest if InternetSpeedTest_installed is True or NetSpeedTest_installed is True else None,
             self.cfg_startmenuplaylists,
+            self.cfg_sidemenumanageplaylists,
+            self.cfg_sidemenuaccountinfo,
+
             self.cfg_boot,
-            self.cfg_speedtest if InternetSpeedTest_installed is True or NetSpeedTest_installed is True else None
         ]
 
         self.list = [entry for entry in config_entries if entry is not None]

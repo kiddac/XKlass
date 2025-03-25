@@ -194,6 +194,8 @@ class XKlass_Catchup_Categories(Screen):
 
         self.original_active_playlist = glob.active_playlist
 
+        self.firstrun = True
+
         # buttons / keys
         self["key_red"] = StaticText(_("Back"))
         self["key_green"] = StaticText(_("OK"))
@@ -332,7 +334,10 @@ class XKlass_Catchup_Categories(Screen):
                 self.original_active_playlist = glob.active_playlist
                 self.makeUrlList()
 
-        self.createSetup()
+        if self.firstrun or not sameplaylist:
+            self.firstrun = False
+            self.resetButtons()
+            self.createSetup()
 
         if sameplaylist:
             if self["main_list"].getCurrent():
