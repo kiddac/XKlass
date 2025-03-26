@@ -16,7 +16,6 @@ except ImportError:
 import requests
 from requests.adapters import HTTPAdapter, Retry
 
-
 # Enigma2 components
 from Components.ActionMap import ActionMap
 from Components.ConfigList import ConfigListScreen
@@ -202,10 +201,10 @@ class XKlass_AddServer(ConfigListScreen, Screen):
 
         username = self.usernameCfg.value.strip()
         password = self.passwordCfg.value.strip()
-        listtype = "m3u"
+        media_type = "m3u"
         output = self.outputCfg.value
 
-        playlistline = "{}/get.php?username={}&password={}&type={}&output={} #{}".format(host, username, password, listtype, output, self.name)
+        playlistline = "{}/get.php?username={}&password={}&type={}&output={} #{}".format(host, username, password, media_type, output, self.name)
         self.apiline = "{}/player_api.php?username={}&password={}".format(host, username, password)
 
         valid = self.checkline()
