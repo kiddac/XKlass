@@ -480,7 +480,7 @@ class XKlass_Catchup_Categories(Screen):
         playlists_all[glob.current_selection] = glob.active_playlist
 
         with open(playlists_json, "w") as f:
-            json.dump(playlists_all, f)
+            json.dump(playlists_all, f, indent=4)
 
     def createSetup(self, data=None):
         self["splash"].hide()

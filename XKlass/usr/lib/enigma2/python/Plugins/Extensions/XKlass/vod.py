@@ -515,7 +515,7 @@ class XKlass_Vod_Categories(Screen):
         playlists_all[glob.current_selection] = glob.active_playlist
 
         with open(playlists_json, "w") as f:
-            json.dump(playlists_all, f)
+            json.dump(playlists_all, f, indent=4)
 
     def createSetup(self, data=None):
         if debugs:
@@ -1911,7 +1911,7 @@ class XKlass_Vod_Categories(Screen):
                         break
 
             with open(playlists_json, "w") as f:
-                json.dump(self.playlists_all, f)
+                json.dump(self.playlists_all, f, indent=4)
 
             del self.list2[current_index]
 
@@ -2147,7 +2147,7 @@ class XKlass_Vod_Categories(Screen):
                     break
 
         with open(playlists_json, "w") as f:
-            json.dump(self.playlists_all, f)
+            json.dump(self.playlists_all, f, indent=4)
 
         self.buildLists()
 
@@ -2216,7 +2216,7 @@ class XKlass_Vod_Categories(Screen):
                     break
 
         with open(playlists_json, "w") as f:
-            json.dump(self.playlists_all, f)
+            json.dump(self.playlists_all, f, indent=4)
 
         if self.chosen_category == "favourites":
             del self.list2[current_index]
@@ -2293,7 +2293,7 @@ class XKlass_Vod_Categories(Screen):
                 downloads_all.append([_("Movie"), title, stream_url, "Not Started", 0, 0])
 
                 with open(downloads_json, "w") as f:
-                    json.dump(downloads_all, f)
+                    json.dump(downloads_all, f, indent=4)
 
                 self.session.openWithCallback(self.opendownloader, MessageBox, _(title) + "\n\n" + _("Added to download manager") + "\n\n" + _("Note recording acts as an open connection.") + "\n" + _("Do not record and play streams at the same time.") + "\n\n" + _("Open download manager?"))
 

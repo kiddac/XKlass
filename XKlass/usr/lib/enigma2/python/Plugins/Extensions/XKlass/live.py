@@ -537,7 +537,7 @@ class XKlass_Live_Categories(Screen):
         playlists_all[glob.current_selection] = glob.active_playlist
 
         with open(playlists_json, "w") as f:
-            json.dump(playlists_all, f)
+            json.dump(playlists_all, f, indent=4)
 
     def createSetup(self, data=None):
         if debugs:
@@ -1136,7 +1136,7 @@ class XKlass_Live_Categories(Screen):
                         break
 
             with open(playlists_json, "w") as f:
-                json.dump(self.playlists_all, f)
+                json.dump(self.playlists_all, f, indent=4)
 
             del self.list2[current_index]
             self.buildLists()
@@ -1439,7 +1439,7 @@ class XKlass_Live_Categories(Screen):
                     break
 
         with open(playlists_json, "w") as f:
-            json.dump(self.playlists_all, f)
+            json.dump(self.playlists_all, f, indent=4)
 
         if self.chosen_category == "favourites":
             del self.list2[current_index]

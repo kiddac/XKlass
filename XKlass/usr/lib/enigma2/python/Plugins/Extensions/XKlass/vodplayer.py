@@ -560,7 +560,7 @@ class XKlass_VodPlayer(
                     break
 
         with open(playlists_json, "w") as f:
-            json.dump(self.playlists_all, f)
+            json.dump(self.playlists_all, f, indent=4)
 
     def addWatchedList(self):
         stream_id = self.stream_id
@@ -590,7 +590,7 @@ class XKlass_VodPlayer(
                     break
 
         with open(playlists_json, "w") as f:
-            json.dump(self.playlists_all, f)
+            json.dump(self.playlists_all, f, indent=4)
 
     def playStream(self, servicetype, streamurl):
         if cfg.infobarcovers.value is True:

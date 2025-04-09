@@ -328,7 +328,7 @@ class XKlass_Playlists(Screen):
 
     def writeJsonFile(self):
         with open(playlists_json, "w") as f:
-            json.dump(self.playlists_all, f)
+            json.dump(self.playlists_all, f, indent=4)
         self.createSetup()
 
     def createSetup(self):
@@ -411,7 +411,7 @@ class XKlass_Playlists(Screen):
             for playlist in self.playlists_all:
                 playlist["data"]["fail_count"] = 0
             with open(playlists_json, "w") as f:
-                json.dump(self.playlists_all, f)
+                json.dump(self.playlists_all, f, indent=4)
 
     def buildListEntry(self, index, name, url, expires, status, active, activenum, maxc, maxnum):
         if status == _("Active"):
