@@ -55,7 +55,6 @@ from enigma import ePicLoad, eServiceReference, eTimer
 
 # Local imports
 from . import _
-from . import vodplayer
 from . import xklass_globals as glob
 from .plugin import (cfg, common_path, dir_tmp, downloads_json, pythonVer, screenwidth, skin_directory, hasConcurrent, hasMultiprocessing, debugs)
 from .xStaticText import StaticText
@@ -2586,6 +2585,7 @@ class XKlass_Series_Categories(Screen):
                     self.createSetup()
 
             elif self.level == 4:
+                from . import vodplayer
                 if self.list4:
                     self.storedepisode = self["main_list"].getCurrent()[18]
                     streamtype = glob.active_playlist["player_info"]["vodtype"]

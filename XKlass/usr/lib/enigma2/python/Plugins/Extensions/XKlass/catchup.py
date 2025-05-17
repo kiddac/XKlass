@@ -46,7 +46,6 @@ from enigma import eTimer, eServiceReference
 
 # Local application/library-specific imports
 from . import _
-from . import catchupplayer
 from . import xklass_globals as glob
 from .plugin import cfg, common_path, dir_tmp, downloads_json, pythonVer, screenwidth, skin_directory, hasConcurrent, hasMultiprocessing
 
@@ -1168,6 +1167,7 @@ class XKlass_Catchup_Categories(Screen):
     def playCatchup(self):
         current_main_list_item = self["main_list"].getCurrent()
         if current_main_list_item:
+
             next_url = current_main_list_item[3]
             stream = next_url.rpartition("/")[-1]
 
@@ -1177,11 +1177,11 @@ class XKlass_Catchup_Categories(Screen):
 
             playurl = "{}/timeshift/{}/{}/{}/{}/{}".format(self.host, self.username, self.password, duration, date, stream)
             if next_url and next_url != "None" and "/live/" in next_url:
+                from . import catchupplayer
                 streamtype = glob.active_playlist["player_info"]["vodtype"]
                 glob.catchupdata = [str(epg_short_list_current_item[0]), str(epg_short_list_current_item[3])]
                 self.session.openWithCallback(self.setIndex, catchupplayer.XKlass_CatchupPlayer, str(playurl), str(streamtype))
             else:
-                from Screens.MessageBox import MessageBox
                 self.session.open(MessageBox, _("Catchup error. No data for this slot"), MessageBox.TYPE_WARNING, timeout=5)
 
     def checkRedirect(self, url):

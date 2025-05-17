@@ -490,12 +490,11 @@ class XKlass_Playlists(Screen):
             glob.active_playlist = self.original_active_playlist
 
     def openUserInfo(self):
-        from . import serverinfo
-
         if self.list:
             current_playlist = glob.active_playlist
 
             if "user_info" in current_playlist and "auth" in current_playlist["user_info"] and str(current_playlist["user_info"]["auth"]) == "1":
+                from . import serverinfo
                 self.session.open(serverinfo.XKlass_UserInfo)
 
     def closePlaylists(self):

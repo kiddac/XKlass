@@ -54,7 +54,6 @@ from enigma import eEPGCache, eServiceReference, eTimer
 
 # Local application/library-specific imports
 from . import _
-from . import liveplayer
 from . import xklass_globals as glob
 from .plugin import cfg, common_path, dir_tmp, pythonVer, screenwidth, skin_directory, hasConcurrent, hasMultiprocessing, debugs
 from .xStaticText import StaticText
@@ -1285,6 +1284,7 @@ class XKlass_Live_Categories(Screen):
                     self.createSetup()
             else:
                 if self.list2:
+                    from . import liveplayer
                     glob.currentepglist = self.epglist[:]
 
                     if self.selectedlist == self["epg_short_list"]:

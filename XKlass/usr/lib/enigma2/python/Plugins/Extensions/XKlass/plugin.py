@@ -302,10 +302,10 @@ def mainmenu(menu_id, **kwargs):
         return []
 
 
-autoStartTimer = None
+xcAutoStartTimer = None
 
 
-class AutoStartTimer:
+class XCAutoStartTimer:
     def __init__(self, session):
         self.session = session
         self.timer = eTimer()
@@ -357,11 +357,11 @@ class AutoStartTimer:
 
 
 def autostart(reason, session=None, **kwargs):
-    global autoStartTimer
+    global xcAutoStartTimer
     if reason == 0:
         if session is not None:
-            if autoStartTimer is None:
-                autoStartTimer = AutoStartTimer(session)
+            if xcAutoStartTimer is None:
+                xcAutoStartTimer = XCAutoStartTimer(session)
     return
 
 
