@@ -1362,6 +1362,14 @@ class XKlass_Vod_Categories(Screen):
         if debugs:
             print("*** displayTMDB ***")
 
+        facts = []
+        duration = ""
+        certification = ""
+        release_date = ""
+        genre = ""
+        duration = ""
+        rating = "0"
+
         current_item = self["main_list"].getCurrent()
 
         if current_item and self.level == 2:
