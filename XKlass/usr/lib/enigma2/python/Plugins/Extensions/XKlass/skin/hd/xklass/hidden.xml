@@ -3,6 +3,14 @@
 	<ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XKlass/skin/hd/xklass/images/background-bokeh.png" alphatest="blend" position="0,0" size="1122,241" zPosition="1"/>
 	<widget source="session.VideoPicture" render="Pig" position="22,20" size="320,180" backgroundColor="#ff000000" transparent="1" zPosition="3"/>
 	<eLabel position="22,20" size="314,177" backgroundColor="#ff000000" zPosition="4"/>
+	<eLabel position="22,20" size="314,1" backgroundColor="#7577b2" zPosition="5" transparent="0"/>
+	<eLabel position="23,21" size="312,1" backgroundColor="#0c145a" zPosition="5" transparent="0"/>
+	<eLabel position="22,196" size="314,1" backgroundColor="#7577b2" zPosition="5" transparent="0"/>
+	<eLabel position="23,194" size="312,1" backgroundColor="#0c145a" zPosition="5" transparent="0"/>
+	<eLabel position="22,20" size="1,177" backgroundColor="#7577b2" zPosition="5" transparent="0"/>
+	<eLabel position="23,21" size="1,174" backgroundColor="#0c145a" zPosition="5" transparent="0"/>
+	<eLabel position="335,20" size="1,177" backgroundColor="#7577b2" zPosition="5" transparent="0"/>
+	<eLabel position="334,21" size="1,174" backgroundColor="#0c145a" zPosition="5" transparent="0"/>
 	<widget source="main_title" render="Label" position="360,20" size="666,28" font="xklassregular;18" foregroundColor="#ffffff" backgroundColor="#751f7a" valign="top" halign="left" noWrap="1" transparent="1" zPosition="3"/>
 	<widget source="global.CurrentTime" render="Label" position="952,20" size="300,28" font="xklassregular;18" foregroundColor="#ffffff" backgroundColor="#71354a" valign="top" halign="right" transparent="1" zPosition="3">
 		<convert type="ClockToText">Format:%H:%M | %A %-d %b</convert>

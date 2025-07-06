@@ -262,11 +262,13 @@ if not os.path.isfile(cfg.downloads_json.value):
         f.close()
 
 # try and override epgimport settings
+"""
 try:
     config.plugins.epgimport.import_onlybouquet.value = False
     config.plugins.epgimport.import_onlybouquet.save()
 except Exception as e:
     print(e)
+    """
 
 if os.path.isdir("/usr/lib/enigma2/python/Plugins/Extensions/InternetSpeedTest"):
     InternetSpeedTest_installed = True
@@ -282,7 +284,7 @@ else:
 
 def main(session, **kwargs):
 
-    epgfolder = '/etc/enigma2/xklass/epg/*/*.xml'
+    epgfolder = os.path.join(cfg.epglocation.value, '*', '*.xml')
 
     for file_path in glob.glob(epgfolder):
         try:

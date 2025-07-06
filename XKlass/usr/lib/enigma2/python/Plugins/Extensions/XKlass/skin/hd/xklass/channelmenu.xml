@@ -4,7 +4,7 @@
 	<widget source="list" render="Listbox" position="22,60" size="320,672" foregroundColor="#ffffff" foregroundColorSelected="#ffffff" backgroundColor="#0c145a" backgroundColorSelected="#494f83" selectionPixmap="/usr/lib/enigma2/python/Plugins/Extensions/XKlass/skin/hd/xklass/images/list-selected.png" backgroundPixmap="/usr/lib/enigma2/python/Plugins/Extensions/XKlass/skin/hd/common/blank.png" scrollbarMode="showNever" enableWrapAround="1" transparent="1" zPosition="2">
 		<convert type="TemplatedMultiContent">{"template": [
 			MultiContentEntryText(pos=(0, 0), size=(48, 48), font=1, color = 0x00ffffff, color_sel = 0x00ffffff, backcolor_sel = None, flags = RT_HALIGN_CENTER|RT_VALIGN_CENTER|RT_WRAP, text = 2),
-			MultiContentEntryText(pos=(50, 0), size=(260, 48), font=0, color = 0x00ffffff, color_sel = 0x00ffffff, backcolor_sel = None, flags = RT_HALIGN_LEFT|RT_VALIGN_CENTER|RT_WRAP, text = 1),	
+			MultiContentEntryText(pos=(50, 0), size=(260, 48), font=0, color = 0x00ffffff, color_sel = 0x00ffffff, backcolor_sel = None, flags = RT_HALIGN_LEFT|RT_VALIGN_CENTER|RT_WRAP, text = 1),
 			],
 			"fonts": [gFont("xklassregular", 18), gFont("klass", 32)],
 			"itemHeight": 48,

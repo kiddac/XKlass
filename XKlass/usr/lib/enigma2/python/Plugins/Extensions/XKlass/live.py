@@ -7,7 +7,6 @@ from __future__ import division
 import base64
 import codecs
 import json
-import math
 import os
 import re
 import tempfile
@@ -211,6 +210,8 @@ class XKlass_Live_Categories(Screen):
         self.original_active_playlist = glob.active_playlist
 
         self.firstrun = True
+
+        self.timerimage = eTimer()
 
         # buttons / keys
         self["key_red"] = StaticText(_("Back"))
@@ -863,7 +864,7 @@ class XKlass_Live_Categories(Screen):
             position = current_index + 1
             position_all = len(self.pre_list) + len(self.main_list) if self.level == 1 else len(self.main_list)
             page = (position - 1) // self.itemsperpage + 1
-            page_all = int(math.ceil(position_all // self.itemsperpage) + 1)
+            page_all = (position_all + self.itemsperpage - 1) // self.itemsperpage
 
             self["page"].setText(_("Page: ") + "{}/{}".format(page, page_all))
             self["listposition"].setText("{}/{}".format(position, position_all))
@@ -881,18 +882,18 @@ class XKlass_Live_Categories(Screen):
                     else:
                         self.refreshEPGInfo()
 
-                    self.timerimage = eTimer()
+                if cfg.channelpicons.value:
                     try:
                         self.timerimage.stop()
                     except:
                         pass
 
-                if cfg.channelpicons.value:
                     try:
                         self.timerimage.callback.append(self.downloadImage)
                     except:
                         self.timerimage_conn = self.timerimage.timeout.connect(self.downloadImage)
                     self.timerimage.start(250, True)
+
         else:
             position = 0
             position_all = 0
@@ -936,9 +937,9 @@ class XKlass_Live_Categories(Screen):
 
                     if scheme == "https" and sslverify:
                         sniFactory = SNIFactory(domain)
-                        downloadPage(desc_image, temp, sniFactory, timeout=5).addCallback(self.resizeImage).addErrback(self.loadDefaultImage)
+                        downloadPage(desc_image, temp, sniFactory, timeout=2).addCallback(self.resizeImage).addErrback(self.loadDefaultImage)
                     else:
-                        downloadPage(desc_image, temp, timeout=5).addCallback(self.resizeImage).addErrback(self.loadDefaultImage)
+                        downloadPage(desc_image, temp, timeout=2).addCallback(self.resizeImage).addErrback(self.loadDefaultImage)
                 except Exception:
                     self.loadDefaultImage()
             else:
@@ -1049,7 +1050,7 @@ class XKlass_Live_Categories(Screen):
             print("*** sort ***")
 
         current_sort = self["key_yellow"].getText()
-        if not current_sort or current_sort == _("Reverse"):
+        if not current_sort:
             return
 
         activelist = self.list1 if self.level == 1 else self.list2
@@ -1325,7 +1326,12 @@ class XKlass_Live_Categories(Screen):
                                 else:
                                     channel[17] = False
 
-                            self.buildLists()
+                            if self.chosen_category == "favourites":
+                                self.main_list = [buildLiveStreamList(x[0], x[1], x[2], x[3], x[15], x[16], x[17], x[18]) for x in self.list2 if x[16] is True]
+                            else:
+                                self.main_list = [buildLiveStreamList(x[0], x[1], x[2], x[3], x[15], x[16], x[17], x[18]) for x in self.list2 if x[18] is False]
+
+                            self["main_list"].setList(self.main_list)
 
                         else:
                             for channel in self.list2:
@@ -1334,7 +1340,12 @@ class XKlass_Live_Categories(Screen):
                                 else:
                                     channel[17] = False
 
-                            self.buildLists()
+                            if self.chosen_category == "favourites":
+                                self.main_list = [buildLiveStreamList(x[0], x[1], x[2], x[3], x[15], x[16], x[17], x[18]) for x in self.list2 if x[16] is True]
+                            else:
+                                self.main_list = [buildLiveStreamList(x[0], x[1], x[2], x[3], x[15], x[16], x[17], x[18]) for x in self.list2 if x[18] is False]
+
+                            self["main_list"].setList(self.main_list)
 
                             try:
                                 self.session.nav.stopService()
@@ -1368,6 +1379,8 @@ class XKlass_Live_Categories(Screen):
     def back(self, data=None):
         if debugs:
             print("*** back ***")
+
+        self.chosen_category = ""
 
         try:
             self.closeChoiceBoxDialog()

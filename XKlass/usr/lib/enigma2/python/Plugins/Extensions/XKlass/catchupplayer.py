@@ -488,6 +488,8 @@ class XKlass_CatchupPlayer(
 
         self.setup_title = _("Catch Up")
 
+        self.timerimage = eTimer()
+
         self["actions"] = ActionMap(["XKlassActions"], {
             "cancel": self.back,
             "red": self.back,
@@ -530,7 +532,16 @@ class XKlass_CatchupPlayer(
             glob.newPlayingServiceRefString = currently_playing_ref.toString()
 
         if cfg.infobarpicons.value is True:
-            self.downloadImage()
+            try:
+                self.timerimage.stop()
+            except:
+                pass
+
+            try:
+                self.timerimage.callback.append(self.downloadImage)
+            except:
+                self.timerimage_conn = self.timerimage.timeout.connect(self.downloadImage)
+            self.timerimage.start(250, True)
 
         self.timerCache = eTimer()
         try:
@@ -565,9 +576,9 @@ class XKlass_CatchupPlayer(
 
                 if scheme == "https" and sslverify:
                     sniFactory = SNIFactory(domain)
-                    downloadPage(desc_image, temp, sniFactory, timeout=5).addCallback(self.resizeImage).addErrback(self.loadDefaultImage)
+                    downloadPage(desc_image, temp, sniFactory, timeout=2).addCallback(self.resizeImage).addErrback(self.loadDefaultImage)
                 else:
-                    downloadPage(desc_image, temp, timeout=5).addCallback(self.resizeImage).addErrback(self.loadDefaultImage)
+                    downloadPage(desc_image, temp, timeout=2).addCallback(self.resizeImage).addErrback(self.loadDefaultImage)
             except:
                 self.loadDefaultImage()
         else:
