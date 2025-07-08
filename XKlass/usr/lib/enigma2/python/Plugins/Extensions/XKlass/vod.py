@@ -934,11 +934,6 @@ class XKlass_Vod_Categories(Screen):
             if self.level == 2:
                 self.timerVOD = eTimer()
                 try:
-                    self.timerVOD.stop()
-                except:
-                    pass
-
-                try:
                     self.timerVOD.callback.append(self.downloadVodInfo)
                 except:
                     self.timerVOD_conn = self.timerVOD.timeout.connect(self.downloadVodInfo)
@@ -1312,7 +1307,7 @@ class XKlass_Vod_Categories(Screen):
                                 except:
                                     pass
 
-                                self.updateList2()
+                                self.buildVod()
                                 break  # Stop after first match
 
                             elif video.get("site") == "YouTube" and video.get("type") == "Clip" and "key" in video:
@@ -1322,7 +1317,7 @@ class XKlass_Vod_Categories(Screen):
                                 except:
                                     pass
 
-                                self.updateList2()
+                                self.buildVod()
                                 break  # Stop after first match
 
                     def get_certification(data, language_code):

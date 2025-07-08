@@ -695,18 +695,9 @@ class XKlass_Catchup_Categories(Screen):
             self.loadBlankImage()
 
             if self.level == 2:
-                self.timerimage = eTimer()
-                try:
-                    self.timerimage.stop()
-                except:
-                    pass
 
                 if cfg.channelpicons.value:
-                    try:
-                        self.timerimage.stop()
-                    except:
-                        pass
-
+                    self.timerimage = eTimer()
                     try:
                         self.timerimage.callback.append(self.downloadImage)
                     except:

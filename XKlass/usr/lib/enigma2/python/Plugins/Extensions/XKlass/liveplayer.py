@@ -433,8 +433,6 @@ class XKlass_StreamPlayer(
 
         self.setup_title = _("TV")
 
-        self.timerimage = eTimer()
-
         self["actions"] = ActionMap(["XKlassActions"], {
             "cancel": self.back,
             "stop": self.back,
@@ -740,12 +738,9 @@ class XKlass_StreamPlayer(
         if currently_playing_ref:
             glob.newPlayingServiceRef = currently_playing_ref
             glob.newPlayingServiceRefString = currently_playing_ref.toString()
-        if cfg.infobarpicons.value is True:
-            try:
-                self.timerimage.stop()
-            except:
-                pass
 
+        if cfg.infobarpicons.value is True:
+            self.timerimage = eTimer()
             try:
                 self.timerimage.callback.append(self.downloadImage)
             except:
@@ -754,11 +749,6 @@ class XKlass_StreamPlayer(
 
         # clear cache
         self.timerCache = eTimer()
-        try:
-            self.timerCache.stop()
-        except:
-            pass
-
         try:
             self.timerCache.callback.append(clear_caches)
         except:

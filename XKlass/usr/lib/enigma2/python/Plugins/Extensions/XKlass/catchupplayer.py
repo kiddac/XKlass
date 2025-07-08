@@ -488,8 +488,6 @@ class XKlass_CatchupPlayer(
 
         self.setup_title = _("Catch Up")
 
-        self.timerimage = eTimer()
-
         self["actions"] = ActionMap(["XKlassActions"], {
             "cancel": self.back,
             "red": self.back,
@@ -532,11 +530,7 @@ class XKlass_CatchupPlayer(
             glob.newPlayingServiceRefString = currently_playing_ref.toString()
 
         if cfg.infobarpicons.value is True:
-            try:
-                self.timerimage.stop()
-            except:
-                pass
-
+            self.timerimage = eTimer()
             try:
                 self.timerimage.callback.append(self.downloadImage)
             except:

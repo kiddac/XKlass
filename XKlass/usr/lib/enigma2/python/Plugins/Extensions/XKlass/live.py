@@ -211,8 +211,6 @@ class XKlass_Live_Categories(Screen):
 
         self.firstrun = True
 
-        self.timerimage = eTimer()
-
         # buttons / keys
         self["key_red"] = StaticText(_("Back"))
         self["key_green"] = StaticText(_("OK"))
@@ -883,10 +881,7 @@ class XKlass_Live_Categories(Screen):
                         self.refreshEPGInfo()
 
                 if cfg.channelpicons.value:
-                    try:
-                        self.timerimage.stop()
-                    except:
-                        pass
+                    self.timerimage = eTimer()
 
                     try:
                         self.timerimage.callback.append(self.downloadImage)
