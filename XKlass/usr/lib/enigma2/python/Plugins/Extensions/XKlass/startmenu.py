@@ -173,8 +173,14 @@ class XKlass_MainMenu(Screen):
         self["playlists"].master.master.instance.setSelectionEnable(0)
 
         if not self.playlists_all:
-            self.addServer()
-            self.close()
+            if cfg.introvideo.value:
+                self.playVideo()
+            else:
+                self["background"].setText("True")
+
+            self["splash"].hide()
+            self.createSetupOptions()
+            # self.close()
         else:
             self.delayedDownload()
 
@@ -683,40 +689,42 @@ class XKlass_MainMenu(Screen):
             except Exception as e:
                 print(e)
 
-        show_live = glob.active_playlist["player_info"].get("showlive", False)
-        show_vod = glob.active_playlist["player_info"].get("showvod", False)
-        show_series = glob.active_playlist["player_info"].get("showseries", False)
-        show_catchup = glob.active_playlist["player_info"].get("showcatchup", False)
+        if self.playlists_all:
+            show_live = glob.active_playlist["player_info"].get("showlive", False)
+            show_vod = glob.active_playlist["player_info"].get("showvod", False)
+            show_series = glob.active_playlist["player_info"].get("showseries", False)
+            show_catchup = glob.active_playlist["player_info"].get("showcatchup", False)
 
-        content = glob.active_playlist["data"]["live_streams"]
+            content = glob.active_playlist["data"]["live_streams"]
 
-        has_catchup = any(str(item.get("tv_archive", "0")) == "1" for item in content if "tv_archive" in item)
-        has_custom_sids = any(item.get("custom_sid", False) for item in content if "custom_sid" in item)
+            has_catchup = any(str(item.get("tv_archive", "0")) == "1" for item in content if "tv_archive" in item)
+            has_custom_sids = any(item.get("custom_sid", False) for item in content if "custom_sid" in item)
 
-        glob.active_playlist["data"]["live_streams"] = []
+            glob.active_playlist["data"]["live_streams"] = []
 
-        if has_custom_sids:
-            glob.active_playlist["data"]["customsids"] = True
+            if has_custom_sids:
+                glob.active_playlist["data"]["customsids"] = True
 
-        if has_catchup:
-            glob.active_playlist["data"]["catchup"] = True
+            if has_catchup:
+                glob.active_playlist["data"]["catchup"] = True
 
-        if show_live and glob.active_playlist["data"]["live_categories"]:
-            self.list.append(["", _("Live TV"), 0])
+            if show_live and glob.active_playlist["data"]["live_categories"]:
+                self.list.append(["", _("Live TV"), 0])
 
-        if show_vod and glob.active_playlist["data"]["vod_categories"]:
-            self.list.append(["", _("Movies"), 1])
+            if show_vod and glob.active_playlist["data"]["vod_categories"]:
+                self.list.append(["", _("Movies"), 1])
 
-        if show_series and glob.active_playlist["data"]["series_categories"]:
-            self.list.append(["", _("Series"), 2])
+            if show_series and glob.active_playlist["data"]["series_categories"]:
+                self.list.append(["", _("Series"), 2])
 
-        if show_catchup and glob.active_playlist["data"]["catchup"]:
-            self.list.append(["", _("Catch Up TV"), 3])
+            if show_catchup and glob.active_playlist["data"]["catchup"]:
+                self.list.append(["", _("Catch Up TV"), 3])
 
         self.list.append(["", _("Add Playlist"), 9])
 
-        if cfg.manageplaylists.value:
-            self.list.append(["", _("Manage Playlists"), 6])
+        if self.playlists_all:
+            if cfg.manageplaylists.value:
+                self.list.append(["", _("Manage Playlists"), 6])
 
         self.list.append(["", _("Global Settings"), 4])
 
@@ -732,14 +740,15 @@ class XKlass_MainMenu(Screen):
         self.drawList = [self.buildListEntry(x[0], x[1], x[2]) for x in self.list]
         self["list"].setList(self.drawList)
 
-        playlistindex = glob.active_playlist["playlist_info"]["index"]
-        try:
-            self.playlists_all[playlistindex] = glob.active_playlist
-        except:
-            glob.active_playlist["playlist_info"]["index"] = 0
-            self.playlists_all[0] = glob.active_playlist
+        if self.playlists_all:
+            playlistindex = glob.active_playlist["playlist_info"]["index"]
+            try:
+                self.playlists_all[playlistindex] = glob.active_playlist
+            except:
+                glob.active_playlist["playlist_info"]["index"] = 0
+                self.playlists_all[0] = glob.active_playlist
 
-        self.writeJsonFile()
+            self.writeJsonFile()
 
     def buildListEntry(self, index, title, num):
         return index, str(title), num
@@ -758,7 +767,8 @@ class XKlass_MainMenu(Screen):
 
         current_entry = self["list"].getCurrent()
 
-        glob.current_selection = glob.active_playlist["playlist_info"]["index"]
+        if self.playlists_all:
+            glob.current_selection = glob.active_playlist["playlist_info"]["index"]
 
         if current_entry:
             index = current_entry[2]
@@ -816,7 +826,7 @@ class XKlass_MainMenu(Screen):
 
     def mainSettings(self):
         from . import settings
-        self.session.openWithCallback(self.reload, settings.XKlass_Settings)
+        self.session.openWithCallback(self.noreload, settings.XKlass_Settings)
 
     def downloadManager(self):
         from . import downloadmanager
@@ -828,7 +838,7 @@ class XKlass_MainMenu(Screen):
 
     def addServer(self):
         from . import server
-        self.session.openWithCallback(self.quit, server.XKlass_AddServer)
+        self.session.openWithCallback(self.noreload, server.XKlass_AddServer)
 
     def quit(self, data=None):
         self.playOriginalChannel()
@@ -914,7 +924,7 @@ class XKlass_MainMenu(Screen):
         else:
             self["background"].setText("True")
 
-        if self.original_active_playlist != glob.active_playlist:
+        if self.playlists_all and self.original_active_playlist != glob.active_playlist:
             self.original_active_playlist = glob.active_playlist
             self["splash"].show()
             self["background"] = StaticText("")
@@ -922,3 +932,7 @@ class XKlass_MainMenu(Screen):
 
         else:
             self.createSetupOptions()
+
+    def noreload(self):
+        self.playlists_all = loadfiles.process_files()
+        self.start()

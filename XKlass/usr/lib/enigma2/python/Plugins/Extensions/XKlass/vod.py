@@ -847,48 +847,48 @@ class XKlass_Vod_Categories(Screen):
             if "info" in content and content["info"]:
                 self.tmdbresults = content["info"]
 
-                if "name" not in self.tmdbresults and "movie_data" in content and content["movie_data"]:
-                    self.tmdbresults["name"] = content["movie_data"]["name"]
+                movie_data = content.get("movie_data") or {}
 
-            cover = self.tmdbresults.get("cover_big") or self.tmdbresults.get("movie_image", "")
+                if "name" not in self.tmdbresults and movie_data:
+                    self.tmdbresults["name"] = movie_data.get("name", "")
 
-            if cover and cover.startswith("http"):
-                cover = cover.replace(r"\/", "/")
+                self.tmdbresults["description"] = self.tmdbresults.get("description") or self.tmdbresults.get("plot", "")
 
-                if cover == "https://image.tmdb.org/t/p/w600_and_h900_bestv2" or cover == "https://image.tmdb.org/t/p/w500":
+                cover = self.tmdbresults.get("cover_big") or self.tmdbresults.get("movie_image", "")
+                if cover and cover.startswith("http"):
+                    cover = cover.replace(r"\/", "/")
+                    if cover in [
+                        "https://image.tmdb.org/t/p/w600_and_h900_bestv2",
+                        "https://image.tmdb.org/t/p/w500"
+                    ]:
+                        cover = ""
+                    elif "image.tmdb.org/t/p/" in cover:
+                        dimensions = cover.partition("/p/")[2].partition("/")[0]
+                        width = screenwidth.width()
+                        new_dim = "w200" if width <= 1280 else "w300" if width <= 1920 else "w400"
+                        cover = cover.replace(dimensions, new_dim)
+                else:
                     cover = ""
+                self.tmdbresults["cover_big"] = cover
 
-                elif cover.startswith("https://image.tmdb.org/t/p/") or cover.startswith("http://image.tmdb.org/t/p/"):
-                    dimensions = cover.partition("/p/")[2].partition("/")[0]
-                    if screenwidth.width() <= 1280:
-                        cover = cover.replace(dimensions, "w200")
-                    elif screenwidth.width() <= 1920:
-                        cover = cover.replace(dimensions, "w300")
-                    else:
-                        cover = cover.replace(dimensions, "w400")
-            else:
-                cover = ""
+                duration = self.tmdbresults.get("duration")
+                if duration:
+                    try:
+                        hours, minutes, seconds = map(int, duration.split(':'))
+                        self.tmdbresults["originalduration"] = hours * 60 + minutes
+                        self.tmdbresults["duration"] = "{}h {}m".format(hours, minutes)
+                    except:
+                        print("Invalid duration format.")
 
-            self.tmdbresults["cover_big"] = cover
-
-            if "duration" in self.tmdbresults:
-                duration = self.tmdbresults["duration"]
-                try:
-                    hours, minutes, seconds = map(int, duration.split(':'))
-                    total_minutes = hours * 60 + minutes
-                    self.tmdbresults["originalduration"] = total_minutes
-                    self.tmdbresults["duration"] = "{}h {}m".format(hours, minutes)
-                except:
-                    print("Invalid duration format.")
-
-            if "backdrop_path" in self.tmdbresults:
-                if isinstance(self.tmdbresults["backdrop_path"], list) and self.tmdbresults["backdrop_path"]:
-                    self.tmdbresults["backdrop_path"] = self.tmdbresults["backdrop_path"][0]
+                backdrop = self.tmdbresults.get("backdrop_path")
+                if isinstance(backdrop, list) and backdrop:
+                    self.tmdbresults["backdrop_path"] = backdrop[0]
                 else:
                     self.tmdbresults["backdrop_path"] = self.tmdbresults["backdrop_path"]
 
-            if "genre" in self.tmdbresults and self.tmdbresults["genre"]:
-                self.tmdbresults["genre"] = ' / '.join(self.tmdbresults["genre"].split(', '))
+                genre = self.tmdbresults.get("genre")
+                if genre:
+                    self.tmdbresults["genre"] = ' / '.join(genre.split(', '))
 
             if cfg.TMDB.value is True:
                 self.getTMDB()
