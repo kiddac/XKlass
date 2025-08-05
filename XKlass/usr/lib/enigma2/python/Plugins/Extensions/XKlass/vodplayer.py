@@ -357,9 +357,6 @@ class IPTVInfoBarPVRState:
                 cb(state_summary, speed_summary, statusicon_summary)
 
 
-skin_path = os.path.join(skin_directory, cfg.skin.value)
-
-
 class XKlassCueSheetSupport:
     ENABLE_RESUME_SUPPORT = False
 
@@ -476,6 +473,7 @@ class XKlass_VodPlayer(
         self.originalservicetype = self.servicetype
         self.stream_id = stream_id
 
+        skin_path = os.path.join(skin_directory, cfg.skin.value)
         skin = os.path.join(skin_path, "vodplayer.xml")
         with open(skin, "r") as f:
             self.skin = f.read()
