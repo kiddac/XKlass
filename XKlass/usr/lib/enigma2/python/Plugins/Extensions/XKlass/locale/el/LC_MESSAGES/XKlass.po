@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: XKlass\n"
 "POT-Creation-Date: 2025-07-06 12:55+0100\n"
-"PO-Revision-Date: 2025-07-07 22:31+0300\n"
+"PO-Revision-Date: 2025-08-28 19:04+0300\n"
 "Last-Translator: \n"
 "Language-Team: giorbak\n"
 "Language: el\n"
@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.2\n"
+"X-Generator: Poedit 3.7\n"
 "X-Poedit-Basepath: ../../..\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-SearchPath-0: .\n"
@@ -362,11 +362,11 @@ msgstr "Διαγραφή"
 
 #: live.py:1609 live.py:1649 live.py:1658
 msgid "Next Info"
-msgstr "Πληροφορίες επόμενου"
+msgstr "Επόμενο EPG"
 
 #: live.py:1653
 msgid "Now Info"
-msgstr "Πληροφορίες τρέχοντος"
+msgstr "Τρέχον EPG"
 
 #: live.py:1858 liveplayer.py:623
 msgid "Recording Timer Set."
