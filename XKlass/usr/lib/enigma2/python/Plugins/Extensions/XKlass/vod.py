@@ -76,6 +76,29 @@ hdr = {
     'Accept-Encoding': 'gzip, deflate'
 }
 
+
+if pythonVer == 3:
+    superscript_to_normal = str.maketrans(
+        '⁰¹²³⁴⁵⁶⁷⁸⁹ᵃᵇᶜᵈᵉᶠᵍʰⁱʲᵏˡᵐⁿᵒᵖʳˢᵗᵘᵛʷˣʸᶻ'
+        'ᴬᴮᴰᴱᴳᴴᴵᴶᴷᴸᴹᴺᴼᴾᴿᵀᵁⱽᵂ⁺⁻⁼⁽⁾',
+        '0123456789abcdefghijklmnoprstuvwxyz'
+        'ABDEGHIJKLMNOPRTUVW+-=()'
+    )
+
+
+def normalize_superscripts(text):
+    return text.translate(superscript_to_normal)
+
+
+def clean_names(streams):
+    """Clean 'name' and 'category_name' fields in each stream entry."""
+    for item in streams:
+        for field in ("name", "category_name"):
+            if field in item and isinstance(item[field], str):
+                item[field] = normalize_superscripts(item[field])
+    return streams
+
+
 playlists_json = cfg.playlists_json.value
 
 
@@ -756,7 +779,10 @@ class XKlass_Vod_Categories(Screen):
 
                 if response.status_code == requests.codes.ok:
                     try:
-                        return response.json()
+                        if pythonVer == 3:
+                            return clean_names(response.json())
+                        else:
+                            return response.json()
                     except ValueError:
                         print("JSON decoding failed.")
                         return None

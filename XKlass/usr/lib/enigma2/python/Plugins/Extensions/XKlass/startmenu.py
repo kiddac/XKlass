@@ -31,7 +31,7 @@ from Components.config import configfile
 from . import _
 from . import xklass_globals as glob
 from . import processfiles as loadfiles
-from .plugin import cfg, downloads_json, hasConcurrent, hasMultiprocessing, pythonFull, skin_directory, version, InternetSpeedTest_installed, NetSpeedTest_installed, debugs
+from .plugin import cfg, downloads_json, hasConcurrent, hasMultiprocessing, pythonFull, skin_directory, version, InternetSpeedTest_installed, NetSpeedTest_installed, debugs, pythonVer
 from .xStaticText import StaticText
 from . import checkinternet
 
@@ -39,6 +39,29 @@ hdr = {
     'User-Agent': str(cfg.useragent.value),
     'Accept-Encoding': 'gzip, deflate'
 }
+
+
+if pythonVer == 3:
+    superscript_to_normal = str.maketrans(
+        '⁰¹²³⁴⁵⁶⁷⁸⁹ᵃᵇᶜᵈᵉᶠᵍʰⁱʲᵏˡᵐⁿᵒᵖʳˢᵗᵘᵛʷˣʸᶻ'
+        'ᴬᴮᴰᴱᴳᴴᴵᴶᴷᴸᴹᴺᴼᴾᴿᵀᵁⱽᵂ⁺⁻⁼⁽⁾',
+        '0123456789abcdefghijklmnoprstuvwxyz'
+        'ABDEGHIJKLMNOPRTUVW+-=()'
+    )
+
+
+def normalize_superscripts(text):
+    return text.translate(superscript_to_normal)
+
+
+def clean_names(streams):
+    """Clean 'name' and 'category_name' fields in each stream entry."""
+    for item in streams:
+        for field in ("name", "category_name"):
+            if field in item and isinstance(item[field], str):
+                item[field] = normalize_superscripts(item[field])
+    return streams
+
 
 playlists_json = cfg.playlists_json.value
 
@@ -296,6 +319,9 @@ class XKlass_MainMenu(Screen):
                 if 'application/json' in content_type:
                     try:
                         response = r.json()
+                        if pythonVer == 3:
+                            response = clean_names(response)
+
                     except ValueError as e:
                         print("Error decoding JSON:", e, url)
                         return index, None
