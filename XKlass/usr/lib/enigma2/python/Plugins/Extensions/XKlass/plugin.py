@@ -47,7 +47,7 @@ with open("/usr/lib/enigma2/python/Plugins/Extensions/XKlass/version.txt", "r") 
 screenwidth = getDesktop(0).size()
 
 dir_etc = "/etc/enigma2/xklass/"
-dir_tmp = "/tmp/xklass/"
+dir_tmp = "/etc/enigma2/xklass/tmp/"
 dir_plugins = "/usr/lib/enigma2/python/Plugins/Extensions/XKlass/"
 dir_videos = "/usr/lib/enigma2/python/Plugins/Extensions/XKlass/video/"
 
@@ -239,8 +239,11 @@ if not os.path.exists(dir_etc):
     os.makedirs(dir_etc)
 
 # delete temporary folder and contents
+if os.path.exists("/tmp/xklass/"):
+    shutil.rmtree("/tmp/xklass/")
+
 if os.path.exists(dir_tmp):
-    shutil.rmtree("/tmp/xklass")
+    shutil.rmtree("/etc/enigma2/xklass/tmp/")
 
 # create temporary folder for downloaded files
 if not os.path.exists(dir_tmp):

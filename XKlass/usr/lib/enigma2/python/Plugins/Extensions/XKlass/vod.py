@@ -10,7 +10,6 @@ import os
 import re
 import shutil
 import subprocess
-import tarfile
 import time
 from itertools import cycle, islice
 import zlib
@@ -821,7 +820,7 @@ class XKlass_Vod_Categories(Screen):
             self.main_list = [buildVodStreamList(x[0], x[1], x[2], x[3], x[4], x[5], x[6], x[7], x[8], x[10], x[11], x[12]) for x in self.list2 if x[10] is False]
         self["main_list"].setList(self.main_list)
 
-        self.showVod()
+        # self.showVod()
 
         if self["main_list"].getCurrent():
             self["main_list"].setIndex(glob.nextlist[-1]["index"])
@@ -1332,7 +1331,6 @@ class XKlass_Vod_Categories(Screen):
                         for video in self.tmdbdetails["videos"]["results"]:
                             if video.get("site") == "YouTube" and video.get("type") == "Trailer" and "key" in video:
                                 try:
-                                    print("*** adding trailer id ***", video["key"])
                                     self.list2[current_index][12] = str(video["key"])
                                 except:
                                     pass
@@ -1342,7 +1340,6 @@ class XKlass_Vod_Categories(Screen):
 
                             elif video.get("site") == "YouTube" and video.get("type") == "Clip" and "key" in video:
                                 try:
-                                    print("*** adding clip id ***", video["key"])
                                     self.list2[current_index][12] = str(video["key"])
                                 except:
                                     pass
@@ -1812,30 +1809,51 @@ class XKlass_Vod_Categories(Screen):
             return
 
         try:
+            # Get final size from vod_backdrop instance
             bd_width, bd_height = self["vod_backdrop"].instance.size().width(), self["vod_backdrop"].instance.size().height()
-            bd_size = [bd_width, bd_height]
+            bd_size = (bd_width, bd_height)
 
-            bg_size = [int(bd_width * 1.5), int(bd_height * 1.5)]
-
+            # Load and process the source image
             im = Image.open(preview)
             if im.mode != "RGBA":
                 im = im.convert("RGBA")
 
+            # Backward-compatible resampling method selection
             try:
-                im.thumbnail(bd_size, Image.Resampling.LANCZOS)
-            except:
-                im.thumbnail(bd_size, Image.ANTIALIAS)
+                # New versions (Pillow >= 9.1.0)
+                resample_method = Image.Resampling.LANCZOS
+            except AttributeError:
+                try:
+                    # Older versions (Pillow 2.0+)
+                    resample_method = Image.LANCZOS
+                except AttributeError:
+                    # Very old versions (pre-2.0)
+                    resample_method = Image.ANTIALIAS
 
-            background = Image.open(os.path.join(self.skin_path, "images/background-plain.png")).convert('RGBA')
-            bg = background.crop((bg_size[0] - bd_width, 0, bg_size[0], bd_height))
-            bg.save(os.path.join(dir_tmp, "backdrop2.png"), compress_level=0)
-            mask = Image.open(os.path.join(skin_directory, "common/mask.png")).convert('RGBA')
-            offset = (bg.size[0] - im.size[0], 0)
-            bg.paste(im, offset, mask)
-            bg.save(os.path.join(dir_tmp, "backdrop.png"), compress_level=0)
+            # Resize image
+            im.thumbnail(bd_size, resample_method)
 
-            output = os.path.join(dir_tmp, "backdrop.png")
+            # Load and resize mask with same resampling method
+            mask = Image.open(os.path.join(skin_directory, "common/mask2.png"))
+            if mask.mode != "RGBA":
+                mask = mask.convert("RGBA")
+            mask = mask.resize(im.size, resample_method)
 
+            # Create transparent background
+            background = Image.new('RGBA', bd_size, (0, 0, 0, 0))
+
+            # Calculate position (center horizontally)
+            x_offset = (bd_width - im.width) // 2
+            y_offset = 0
+
+            # Paste with mask for gradient transparency
+            background.paste(im, (x_offset, y_offset), mask)
+
+            # Save result
+            output = os.path.join(dir_tmp, "background.png")
+            background.save(output, "PNG")
+
+            # Update backdrop
             if self["vod_backdrop"].instance:
                 self["vod_backdrop"].instance.setPixmapFromFile(output)
                 self["vod_backdrop"].show()
@@ -2552,7 +2570,7 @@ class XKlass_Vod_Categories(Screen):
                 self.session.open(MessageBox, _("No trailer found."), type=MessageBox.TYPE_INFO, timeout=5)
                 return
 
-            download_dir = "/tmp/"
+            download_dir = dir_tmp
             video_file = "video_{}.mp4".format(trailer_id)
             audio_file = "audio_{}.mp4".format(trailer_id)
             output_file = "output_{}.mkv".format(trailer_id)
@@ -2606,10 +2624,10 @@ class XKlass_Vod_Categories(Screen):
         if debugs:
             print("*** trailer_cleanup ***")
 
-        for file in os.listdir("/tmp/"):
+        for file in os.listdir(dir_tmp):
             if file.startswith("video_") or file.startswith("audio_") or file.startswith("output_"):
                 try:
-                    os.remove(os.path.join("/tmp/", file))
+                    os.remove(os.path.join(dir_tmp, file))
                 except:
                     pass
 
@@ -2729,20 +2747,34 @@ def check_and_install_pytubefix():
         else:
             print("pytubefix version is %s, expected %s. Reinstalling..." % (installed_version, expected_version))
 
+    # Ensure temporary directory exists
+    if not os.path.exists(dir_tmp):
+        try:
+            os.makedirs(dir_tmp)
+            print("Created temporary directory:", dir_tmp)
+        except Exception as e:
+            print("Failed to create temporary directory:", str(e))
+            return False
+
     # Download the correct tarball version
     response = requests.get(url)
 
     if response.status_code == 200:
-        tarball_path = "/tmp/pytubefix-%s.tar.gz" % expected_version
+        tarball_path = os.path.join(dir_tmp, "pytubefix-%s.tar.gz" % expected_version)
         with open(tarball_path, "wb") as f:
             f.write(response.content)
 
         print("Tarball downloaded successfully at", tarball_path)
 
-        with tarfile.open(tarball_path, "r:gz") as tar:
-            tar.extractall(path="/tmp/")
+        try:
+            import tarfile
+            with tarfile.open(tarball_path, "r:gz") as tar:
+                tar.extractall(path=dir_tmp)
+        except Exception as e:
+            print("Failed to extract tarball:", str(e))
+            return False
 
-        extracted_path = "/tmp/pytubefix-%s/pytubefix" % expected_version
+        extracted_path = os.path.join(dir_tmp, "pytubefix-%s" % expected_version, "pytubefix")
         print("Checking if extracted pytubefix folder exists at", extracted_path)
 
         if os.path.exists(extracted_path):
@@ -2753,6 +2785,18 @@ def check_and_install_pytubefix():
 
                 shutil.copytree(extracted_path, pytubefix_path)
                 print("pytubefix installed successfully at", pytubefix_path)
+
+                # Cleanup temporary files
+                try:
+                    if os.path.exists(tarball_path):
+                        os.remove(tarball_path)
+                    extracted_root = os.path.join(dir_tmp, "pytubefix-%s" % expected_version)
+                    if os.path.exists(extracted_root):
+                        shutil.rmtree(extracted_root)
+                    print("Cleaned up temporary files")
+                except Exception as e:
+                    print("Cleanup failed:", str(e))
+
                 return True
             except Exception as e:
                 print("Failed to copy pytubefix:", str(e))
