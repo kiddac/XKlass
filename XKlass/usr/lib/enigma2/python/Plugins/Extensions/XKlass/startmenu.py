@@ -444,7 +444,7 @@ class XKlass_MainMenu(Screen):
             print("*** writeJsonFile ***")
 
         with open(playlists_json, "w") as f:
-            json.dump(self.playlists_all, f, indent=4)
+            json.dump(self.playlists_all, f)
 
     def createSetupPlaylists(self):
         if debugs:
@@ -493,7 +493,7 @@ class XKlass_MainMenu(Screen):
                 for playlist in self.playlists_all:
                     playlist["data"]["fail_count"] = 0
                 with open(playlists_json, "w") as f:
-                    json.dump(self.playlists_all, f, indent=4)
+                    json.dump(self.playlists_all, f)
 
         self.drawList2 = [self.buildPlalyistListEntry(x[0], x[1], x[2], x[3], x[4]) for x in self.list2]
 

@@ -97,7 +97,7 @@ class DataDownloader:
         try:
             json_data = json.loads(result)  # No need to decode again, as it's already a string
             with open(filepath, 'w') as json_file:
-                json.dump(json_data, json_file, indent=4)
+                json.dump(json_data, json_file)
 
             callback(json_data)
 

@@ -544,7 +544,7 @@ class XKlass_Series_Categories(Screen):
         playlists_all[glob.current_selection] = glob.active_playlist
 
         with open(playlists_json, "w") as f:
-            json.dump(playlists_all, f, indent=4)
+            json.dump(playlists_all, f)
 
     def createSetup(self, data=None):
         if debugs:
@@ -677,6 +677,9 @@ class XKlass_Series_Categories(Screen):
         ])
 
         for index, item in enumerate(currentCategoryList, start=len(self.prelist)):
+            if not isinstance(item, dict):
+                continue
+
             category_name = item.get("category_name", "No category")
             category_id = item.get("category_id", "999999")
             hidden = category_id in currentHidden
@@ -2696,7 +2699,7 @@ class XKlass_Series_Categories(Screen):
                     break
 
         with open(playlists_json, "w") as f:
-            json.dump(self.playlists_all, f, indent=4)
+            json.dump(self.playlists_all, f)
 
         self.buildLists()
 
@@ -2776,7 +2779,7 @@ class XKlass_Series_Categories(Screen):
                     break
 
         with open(playlists_json, "w") as f:
-            json.dump(self.playlists_all, f, indent=4)
+            json.dump(self.playlists_all, f)
 
         if self.level == 2:
             self.createSetup()
@@ -2873,7 +2876,7 @@ class XKlass_Series_Categories(Screen):
                 downloads_all.append([_("Series"), title, stream_url, "Not Started", 0, 0, description, duration, channel, timestamp])
 
                 with open(downloads_json, "w") as f:
-                    json.dump(downloads_all, f, indent=4)
+                    json.dump(downloads_all, f)
 
                 self.session.openWithCallback(self.opendownloader, MessageBox, _(title) + "\n\n" + _("Added to download manager") + "\n\n" + _("Note recording acts as an open connection.") + "\n" + _("Do not record and play streams at the same time.") + "\n\n" + _("Open download manager?"))
 

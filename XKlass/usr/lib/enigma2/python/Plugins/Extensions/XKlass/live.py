@@ -557,7 +557,7 @@ class XKlass_Live_Categories(Screen):
         playlists_all[glob.current_selection] = glob.active_playlist
 
         with open(playlists_json, "w") as f:
-            json.dump(playlists_all, f, indent=4)
+            json.dump(playlists_all, f)
 
     def createSetup(self, data=None):
         if debugs:
@@ -618,6 +618,9 @@ class XKlass_Live_Categories(Screen):
         ])
 
         for index, item in enumerate(currentCategoryList, start=len(self.prelist)):
+            if not isinstance(item, dict):
+                continue
+
             category_name = item.get("category_name", "No category")
             category_id = item.get("category_id", "999999")
             hidden = category_id in currentHidden
@@ -1156,7 +1159,7 @@ class XKlass_Live_Categories(Screen):
                         break
 
             with open(playlists_json, "w") as f:
-                json.dump(self.playlists_all, f, indent=4)
+                json.dump(self.playlists_all, f)
 
             del self.list2[current_index]
             self.buildLists()
@@ -1494,7 +1497,7 @@ class XKlass_Live_Categories(Screen):
                     break
 
         with open(playlists_json, "w") as f:
-            json.dump(self.playlists_all, f, indent=4)
+            json.dump(self.playlists_all, f)
 
         if self.chosen_category == "favourites":
             del self.list2[current_index]
