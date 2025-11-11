@@ -1567,7 +1567,6 @@ class XKlass_Series_Categories(Screen):
         if debugs:
             print("*** processTMDBDetails ***")
 
-        self.repeatcount = 0
         response = ""
 
         self.tmdbresults = {}
@@ -1740,6 +1739,7 @@ class XKlass_Series_Categories(Screen):
                     if "tagline" in self.tmdbdetails and self.tmdbdetails["tagline"].strip():
                         self.tmdbresults["tagline"] = str(self.tmdbdetails["tagline"])
 
+                    self.repeatcount = 0
                     self.displayTMDB()
 
     def displayTMDB(self):
@@ -2827,7 +2827,8 @@ class XKlass_Series_Categories(Screen):
         # self["vod_cover"].hide()
         # self["vod_logo"].hide()
         # self["vod_backdrop"].hide()
-        self["main_title"].setText("")
+        if self.level == 3 or self.level == 4:
+            self["main_title"].setText("")
         self["x_title"].setText("")
         self["x_description"].setText("")
         self["tagline"].setText("")
