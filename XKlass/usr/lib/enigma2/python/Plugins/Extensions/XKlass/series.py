@@ -1077,8 +1077,6 @@ class XKlass_Series_Categories(Screen):
 
                         if "container_extension" in item:
                             container_extension = item["container_extension"]
-                            if container_extension == "vod":
-                                container_extension = "mp4"
 
                         if "episode_num" in item:
                             episode_num = item["episode_num"]
