@@ -18,6 +18,11 @@ except ImportError:
     from httplib import HTTPConnection
     HTTPConnection.debuglevel = 0
 
+try:
+    from urllib.parse import unquote
+except ImportError:
+    from urllib import unquote
+
 # Third-party imports
 import requests
 from requests.adapters import HTTPAdapter, Retry
@@ -47,9 +52,6 @@ hdr = {
     'Accept-Encoding': 'gzip, deflate'
 }
 
-playlist_file = cfg.playlist_file.value
-playlists_json = cfg.playlists_json.value
-
 
 class XKlass_Playlists(Screen):
     ALLOW_SUSPEND = True
@@ -65,6 +67,9 @@ class XKlass_Playlists(Screen):
 
         with open(skin, "r") as f:
             self.skin = f.read()
+
+        self.playlist_file = cfg.playlist_file.value
+        self.playlists_json = cfg.playlists_json.value
 
         self.setup_title = _("Manage Playlists")
 
@@ -119,15 +124,15 @@ class XKlass_Playlists(Screen):
         self.playlists_all = []
 
         # check if playlists.json file exists in specified location
-        if os.path.isfile(playlists_json):
-            with open(playlists_json, "r") as f:
+        if os.path.isfile(self.playlists_json):
+            with open(self.playlists_json, "r") as f:
                 try:
                     self.playlists_all = json.load(f)
                     self.playlists_all.sort(key=lambda e: e["playlist_info"]["index"], reverse=False)
                 except:
-                    os.remove(playlists_json)
+                    os.remove(self.playlists_json)
 
-        if self.playlists_all and os.path.isfile(playlist_file) and os.path.getsize(playlist_file) > 0:
+        if self.playlists_all and os.path.isfile(self.playlist_file) and os.path.getsize(self.playlist_file) > 0:
             self.delayedDownload()
         else:
             self.close()
@@ -328,8 +333,8 @@ class XKlass_Playlists(Screen):
         self.writeJsonFile()
 
     def writeJsonFile(self):
-        with open(playlists_json, "w") as f:
-            json.dump(self.playlists_all, f)
+        with open(self.playlists_json, "w") as f:
+            json.dump(self.playlists_all, f, indent=4)
         self.createSetup()
 
     def createSetup(self):
@@ -411,8 +416,8 @@ class XKlass_Playlists(Screen):
             self.session.open(MessageBox, _("You have dead playlists that are slowing down loading.\n\nPress Yellow button to soft delete dead playlists"), MessageBox.TYPE_WARNING)
             for playlist in self.playlists_all:
                 playlist["data"]["fail_count"] = 0
-            with open(playlists_json, "w") as f:
-                json.dump(self.playlists_all, f)
+            with open(self.playlists_json, "w") as f:
+                json.dump(self.playlists_all, f, indent=4)
 
     def buildListEntry(self, index, name, url, expires, status, active, activenum, maxc, maxnum):
         if status == _("Active"):
@@ -447,13 +452,19 @@ class XKlass_Playlists(Screen):
             if answer is None:
                 self.session.openWithCallback(self.deleteServer, MessageBox, _("Delete selected playlist?"))
             elif answer:
-                with open(playlist_file, "r+") as f:
+                with open(self.playlist_file, "r+") as f:
                     lines = f.readlines()
                     f.seek(0)
                     f.truncate()
+
+                    username = str(self.currentplaylist["playlist_info"]["username"])
+                    username_unquote = unquote(username)
+
                     for line in lines:
-                        if str(self.currentplaylist["playlist_info"]["domain"]) in line and "username=" + str(self.currentplaylist["playlist_info"]["username"]) in line:
+                        if (str(self.currentplaylist["playlist_info"]["domain"]) in line
+                                and (("username=" + username) in line or ("username=" + username_unquote) in line)):
                             line = "#%s" % line
+
                         f.write(line)
                 x = 0
                 for playlist in self.playlists_all:
@@ -513,7 +524,7 @@ class XKlass_Playlists(Screen):
         oldchannelfiles = pythonglob.glob("/etc/epgimport/xklass.*.channels.xml")
 
         try:
-            with open(playlists_json, "r") as f:
+            with open(self.playlists_json, "r") as f:
                 self.playlists_all = json.load(f)
         except:
             self.playlists_all = []

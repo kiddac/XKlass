@@ -87,9 +87,6 @@ def clean_names(streams):
     return streams
 
 
-playlists_json = cfg.playlists_json.value
-
-
 class XKlass_Series_Categories(Screen):
     ALLOW_SUSPEND = True
 
@@ -111,6 +108,8 @@ class XKlass_Series_Categories(Screen):
 
         with codecs.open(skin, "r", encoding="utf-8") as f:
             self.skin = f.read()
+
+        self.playlists_json = cfg.playlists_json.value
 
         self.setup_title = _("Series Categories")
 
@@ -538,13 +537,13 @@ class XKlass_Series_Categories(Screen):
         if debugs:
             print("*** writejsonfile ***")
 
-        with open(playlists_json, "r") as f:
+        with open(self.playlists_json, "r") as f:
             playlists_all = json.load(f)
 
         playlists_all[glob.current_selection] = glob.active_playlist
 
-        with open(playlists_json, "w") as f:
-            json.dump(playlists_all, f)
+        with open(self.playlists_json, "w") as f:
+            json.dump(playlists_all, f, indent=4)
 
     def createSetup(self, data=None):
         if debugs:
@@ -835,14 +834,6 @@ class XKlass_Series_Categories(Screen):
                 self.list2.append([index, str(name), str(series_id), str(cover), str(plot), str(cast), str(director), str(genre), str(releaseDate), str(rating), str(last_modified), str(next_url), str(tmdb), hidden, str(year), str(backdrop_path), favourite])
 
         glob.originalChannelList2 = self.list2[:]
-
-        """
-        else:
-            if not self.chosen_category == "favourites":
-                self.session.open(MessageBox, _("No series found in this category."), type=MessageBox.TYPE_ERROR, timeout=5)
-            else:
-                self.session.open(MessageBox, _("No Favourites added."), type=MessageBox.TYPE_ERROR, timeout=5)
-                """
 
     def getSeasons(self):
         if debugs:
@@ -1188,7 +1179,7 @@ class XKlass_Series_Categories(Screen):
 
         self.main_list = []
 
-        # 0 index, 1 name, 2 series_id, 3, cover, 4 plot, 5 cast, 6 director, 7 genre, 8 releasedate, 9 last modified, 10 rating, 11 backdrop_path, 12 tmdb, 13 year, 14 next url, 15 hidden
+        # 0 index, 1 name, 2 series_id, 3 cover, 4 plot, 5 cast, 6 director, 7 genre, 8 releaseDate, 9 rating, 10 last_modified, 11 next_url, 12 tmdb, 13 hidden, 14 year, 15 backdrop, 16 favourite
         self.main_list = [buildSeriesTitlesList(x[0], x[1], x[2], x[3], x[4], x[5], x[6], x[7], x[8], x[9], x[10], x[11], x[12], x[13], x[14], x[15], x[16]) for x in self.list2 if not x[13]]
         self["main_list"].setList(self.main_list)
 
@@ -2605,8 +2596,8 @@ class XKlass_Series_Categories(Screen):
                     self.createSetup()
 
             elif self.level == 4:
-                from . import vodplayer
                 if self.list4:
+                    from . import vodplayer
                     self.storedepisode = self["main_list"].getCurrent()[18]
                     streamtype = glob.active_playlist["player_info"]["vodtype"]
                     next_url = self["main_list"].getCurrent()[3]
@@ -2692,11 +2683,11 @@ class XKlass_Series_Categories(Screen):
             else:
                 watched_list.append(current_id)
 
-        with open(playlists_json, "r") as f:
+        with open(self.playlists_json, "r") as f:
             try:
                 self.playlists_all = json.load(f)
             except:
-                os.remove(playlists_json)
+                os.remove(self.playlists_json)
                 return
 
             for i, playlist in enumerate(self.playlists_all):
@@ -2708,16 +2699,15 @@ class XKlass_Series_Categories(Screen):
                     self.playlists_all[i] = glob.active_playlist
                     break
 
-        with open(playlists_json, "w") as f:
-            json.dump(self.playlists_all, f)
+        with open(self.playlists_json, "w") as f:
+            json.dump(self.playlists_all, f, indent=4)
 
         self.buildLists()
 
     def favourite(self):
         if debugs:
             print("*** favourite ***")
-
-        print("*** self.level ***", self.level)
+            print("*** self.level ***", self.level)
 
         if not self["main_list"].getCurrent():
             return
@@ -2773,23 +2763,22 @@ class XKlass_Series_Categories(Screen):
 
             glob.active_playlist["player_info"]["seriesfavourites"].insert(0, newfavourite)
 
-        with open(playlists_json, "r") as f:
+        with open(self.playlists_json, "r") as f:
             try:
                 self.playlists_all = json.load(f)
             except:
-                os.remove(playlists_json)
+                os.remove(self.playlists_json)
                 self.playlists_all = []
 
         if self.playlists_all:
             for playlists in self.playlists_all:
                 if (playlists["playlist_info"]["domain"] == glob.active_playlist["playlist_info"]["domain"]
-                        and playlists["playlist_info"]["username"] == glob.active_playlist["playlist_info"]["username"]
-                        and playlists["playlist_info"]["password"] == glob.active_playlist["playlist_info"]["password"]):
+                        and playlists["playlist_info"]["username"] == glob.active_playlist["playlist_info"]["username"]):
                     playlists.update(glob.active_playlist)
                     break
 
-        with open(playlists_json, "w") as f:
-            json.dump(self.playlists_all, f)
+        with open(self.playlists_json, "w") as f:
+            json.dump(self.playlists_all, f, indent=4)
 
         if self.level == 2:
             self.createSetup()
@@ -2887,7 +2876,7 @@ class XKlass_Series_Categories(Screen):
                 downloads_all.append([_("Series"), title, stream_url, "Not Started", 0, 0, description, duration, channel, timestamp])
 
                 with open(downloads_json, "w") as f:
-                    json.dump(downloads_all, f)
+                    json.dump(downloads_all, f, indent=4)
 
                 self.session.openWithCallback(self.opendownloader, MessageBox, _(title) + "\n\n" + _("Added to download manager") + "\n\n" + _("Note recording acts as an open connection.") + "\n" + _("Do not record and play streams at the same time.") + "\n\n" + _("Open download manager?"))
 

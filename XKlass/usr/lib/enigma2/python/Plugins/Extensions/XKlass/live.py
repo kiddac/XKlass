@@ -76,8 +76,6 @@ if sslverify:
                 ClientTLSOptions(self.hostname, ctx)
             return ctx
 
-playlists_json = cfg.playlists_json.value
-
 
 # png hack
 def mycall(self, cid, pos, length):
@@ -134,7 +132,6 @@ hdr = {
     'Accept-Encoding': 'gzip, deflate'
 }
 
-
 if pythonVer == 3:
     superscript_to_normal = str.maketrans(
         '⁰¹²³⁴⁵⁶⁷⁸⁹ᵃᵇᶜᵈᵉᶠᵍʰⁱʲᵏˡᵐⁿᵒᵖʳˢᵗᵘᵛʷˣʸᶻ'
@@ -174,6 +171,7 @@ class XKlass_Live_Categories(Screen):
         with codecs.open(skin, "r", encoding="utf-8") as f:
             self.skin = f.read()
 
+        self.playlists_json = cfg.playlists_json.value
         self.setup_title = _("Live Categories")
         self.main_title = _("Live TV")
         self["main_title"] = StaticText(self.main_title)
@@ -551,13 +549,13 @@ class XKlass_Live_Categories(Screen):
     def writeJsonFile(self):
         if debugs:
             print("*** writejsonfile ***")
-        with open(playlists_json, "r") as f:
+        with open(self.playlists_json, "r") as f:
             playlists_all = json.load(f)
 
         playlists_all[glob.current_selection] = glob.active_playlist
 
-        with open(playlists_json, "w") as f:
-            json.dump(playlists_all, f)
+        with open(self.playlists_json, "w") as f:
+            json.dump(playlists_all, f, indent=4)
 
     def createSetup(self, data=None):
         if debugs:
@@ -1143,23 +1141,24 @@ class XKlass_Live_Categories(Screen):
         if current_item:
             current_index = self["main_list"].getIndex()
 
-            with open(playlists_json, "r") as f:
+            with open(self.playlists_json, "r") as f:
                 try:
                     self.playlists_all = json.load(f)
                 except Exception:
-                    os.remove(playlists_json)
+                    os.remove(self.playlists_json)
 
             del glob.active_playlist["player_info"]['liverecents'][current_index]
             self.hideEPG()
 
             if self.playlists_all:
                 for idx, playlists in enumerate(self.playlists_all):
-                    if playlists["playlist_info"]["domain"] == glob.active_playlist["playlist_info"]["domain"] and playlists["playlist_info"]["username"] == glob.active_playlist["playlist_info"]["username"] and playlists["playlist_info"]["password"] == glob.active_playlist["playlist_info"]["password"]:
+                    if (playlists["playlist_info"]["domain"] == glob.active_playlist["playlist_info"]["domain"]
+                            and playlists["playlist_info"]["username"] == glob.active_playlist["playlist_info"]["username"]):
                         self.playlists_all[idx] = glob.active_playlist
                         break
 
-            with open(playlists_json, "w") as f:
-                json.dump(self.playlists_all, f)
+            with open(self.playlists_json, "w") as f:
+                json.dump(self.playlists_all, f, indent=4)
 
             del self.list2[current_index]
             self.buildLists()
@@ -1436,7 +1435,6 @@ class XKlass_Live_Categories(Screen):
         if not glob.nextlist:
             self.stopStream()
             self.close()
-
         else:
             self["x_title"].setText("")
             self["x_description"].setText("")
@@ -1487,23 +1485,22 @@ class XKlass_Live_Categories(Screen):
             glob.active_playlist["player_info"]["livefavourites"].insert(0, newfavourite)
             # self.hideEPG()
 
-        with open(playlists_json, "r") as f:
+        with open(self.playlists_json, "r") as f:
             try:
                 self.playlists_all = json.load(f)
             except Exception as e:
                 print("Error loading playlists JSON:", e)
-                os.remove(playlists_json)
+                os.remove(self.playlists_json)
 
         if self.playlists_all:
             for playlists in self.playlists_all:
                 if (playlists["playlist_info"]["domain"] == glob.active_playlist["playlist_info"]["domain"]
-                        and playlists["playlist_info"]["username"] == glob.active_playlist["playlist_info"]["username"]
-                        and playlists["playlist_info"]["password"] == glob.active_playlist["playlist_info"]["password"]):
+                        and playlists["playlist_info"]["username"] == glob.active_playlist["playlist_info"]["username"]):
                     playlists.update(glob.active_playlist)
                     break
 
-        with open(playlists_json, "w") as f:
-            json.dump(self.playlists_all, f)
+        with open(self.playlists_json, "w") as f:
+            json.dump(self.playlists_all, f, indent=4)
 
         if self.chosen_category == "favourites":
             del self.list2[current_index]
@@ -1995,6 +1992,7 @@ class XKlass_Live_Categories(Screen):
                 tree.write(sourcefile)
         except Exception as e:
             print(e)
+            return
 
         try:
             with open(sourcefile, "r+") as f:

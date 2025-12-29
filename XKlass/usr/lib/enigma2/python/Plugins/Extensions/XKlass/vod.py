@@ -58,7 +58,6 @@ from . import xklass_globals as glob
 from .plugin import (cfg, common_path, dir_tmp, downloads_json, pythonVer, screenwidth, skin_directory, hasConcurrent, hasMultiprocessing, debugs)
 from .xStaticText import StaticText
 
-
 if os.path.exists("/var/lib/dpkg/status"):
     DreamOS = True
 else:
@@ -98,9 +97,6 @@ def clean_names(streams):
     return streams
 
 
-playlists_json = cfg.playlists_json.value
-
-
 class XKlass_Vod_Categories(Screen):
     ALLOW_SUSPEND = True
 
@@ -120,14 +116,10 @@ class XKlass_Vod_Categories(Screen):
         self.skin_path = os.path.join(skin_directory, cfg.skin.value)
         skin = os.path.join(self.skin_path, "vod_categories.xml")
 
-        # for other skins that have a skinny scrollbar
-        """
-        if os.path.exists("/var/lib/dpkg/status"):
-            skin = os.path.join(self.skin_path, "DreamOS/vod_categories.xml")
-            """
-
         with codecs.open(skin, "r", encoding="utf-8") as f:
             self.skin = f.read()
+
+        self.playlists_json = cfg.playlists_json.value
 
         self.setup_title = _("Vod Categories")
 
@@ -254,12 +246,14 @@ class XKlass_Vod_Categories(Screen):
             self.coverLoad_conn = self.coverLoad.PictureData.connect(self.DecodeCover)
 
         self.backdropLoad = ePicLoad()
+
         try:
             self.backdropLoad.PictureData.get().append(self.DecodeBackdrop)
         except:
             self.backdropLoad_conn = self.backdropLoad.PictureData.connect(self.DecodeBackdrop)
 
         self.logoLoad = ePicLoad()
+
         try:
             self.logoLoad.PictureData.get().append(self.DecodeLogo)
         except:
@@ -529,13 +523,13 @@ class XKlass_Vod_Categories(Screen):
         if debugs:
             print("*** writeJsonFile ***")
 
-        with open(playlists_json, "r") as f:
+        with open(self.playlists_json, "r") as f:
             playlists_all = json.load(f)
 
         playlists_all[glob.current_selection] = glob.active_playlist
 
-        with open(playlists_json, "w") as f:
-            json.dump(playlists_all, f)
+        with open(self.playlists_json, "w") as f:
+            json.dump(playlists_all, f, indent=4)
 
     def createSetup(self, data=None):
         if debugs:
@@ -667,7 +661,6 @@ class XKlass_Vod_Categories(Screen):
             self["key_epg"].setText("TMDB")
         else:
             self["key_epg"].setText("IMDB")
-
         response = ""
 
         if self.chosen_category == "favourites":
@@ -761,7 +754,6 @@ class XKlass_Vod_Categories(Screen):
                     glob.active_playlist["player_info"]["vodfavourites"] = []
 
                 self.list2.append([index, str(name), str(stream_id), str(cover), str(added), str(rating), str(next_url), favourite, container_extension, year, hidden, tmdb, str(trailer)])
-
         glob.originalChannelList2 = self.list2[:]
 
     def downloadApiData(self, url):
@@ -954,10 +946,6 @@ class XKlass_Vod_Categories(Screen):
             self["page"].setText(_("Page: ") + "{}/{}".format(page, page_all))
             self["listposition"].setText("{}/{}".format(position, position_all))
             self["main_title"].setText("{}: {}".format(self.main_title, channel_title))
-
-            # self["vod_cover"].hide()
-            # self["vod_logo"].hide()
-            # self["vod_backdrop"].hide()
 
             if self.level == 2:
                 self.timerVOD = eTimer()
@@ -1985,23 +1973,24 @@ class XKlass_Vod_Categories(Screen):
         if current_item:
             current_index = self["main_list"].getIndex()
 
-            with open(playlists_json, "r") as f:
+            with open(self.playlists_json, "r") as f:
                 try:
                     self.playlists_all = json.load(f)
                 except Exception:
-                    os.remove(playlists_json)
+                    os.remove(self.playlists_json)
 
             del glob.active_playlist["player_info"]['vodrecents'][current_index]
             self.hideVod()
 
             if self.playlists_all:
                 for idx, playlists in enumerate(self.playlists_all):
-                    if playlists["playlist_info"]["domain"] == glob.active_playlist["playlist_info"]["domain"] and playlists["playlist_info"]["username"] == glob.active_playlist["playlist_info"]["username"] and playlists["playlist_info"]["password"] == glob.active_playlist["playlist_info"]["password"]:
+                    if (playlists["playlist_info"]["domain"] == glob.active_playlist["playlist_info"]["domain"]
+                            and playlists["playlist_info"]["username"] == glob.active_playlist["playlist_info"]["username"]):
                         self.playlists_all[idx] = glob.active_playlist
                         break
 
-            with open(playlists_json, "w") as f:
-                json.dump(self.playlists_all, f)
+            with open(self.playlists_json, "w") as f:
+                json.dump(self.playlists_all, f, indent=4)
 
             del self.list2[current_index]
 
@@ -2240,11 +2229,11 @@ class XKlass_Vod_Categories(Screen):
             else:
                 watched_list.append(current_id)
 
-        with open(playlists_json, "r") as f:
+        with open(self.playlists_json, "r") as f:
             try:
                 self.playlists_all = json.load(f)
             except:
-                os.remove(playlists_json)
+                os.remove(self.playlists_json)
                 return
 
             for i, playlist in enumerate(self.playlists_all):
@@ -2256,8 +2245,8 @@ class XKlass_Vod_Categories(Screen):
                     self.playlists_all[i] = glob.active_playlist
                     break
 
-        with open(playlists_json, "w") as f:
-            json.dump(self.playlists_all, f)
+        with open(self.playlists_json, "w") as f:
+            json.dump(self.playlists_all, f, indent=4)
 
         self.buildLists()
 
@@ -2309,24 +2298,23 @@ class XKlass_Vod_Categories(Screen):
 
             glob.active_playlist["player_info"]["vodfavourites"].insert(0, newfavourite)
 
-        with open(playlists_json, "r") as f:
+        with open(self.playlists_json, "r") as f:
             try:
                 self.playlists_all = json.load(f)
             except Exception as e:
                 print("Error loading playlists JSON:", e)
-                os.remove(playlists_json)
+                os.remove(self.playlists_json)
                 self.playlists_all = []
 
         if self.playlists_all:
             for playlists in self.playlists_all:
                 if (playlists["playlist_info"]["domain"] == glob.active_playlist["playlist_info"]["domain"]
-                        and playlists["playlist_info"]["username"] == glob.active_playlist["playlist_info"]["username"]
-                        and playlists["playlist_info"]["password"] == glob.active_playlist["playlist_info"]["password"]):
+                        and playlists["playlist_info"]["username"] == glob.active_playlist["playlist_info"]["username"]):
                     playlists.update(glob.active_playlist)
                     break
 
-        with open(playlists_json, "w") as f:
-            json.dump(self.playlists_all, f)
+        with open(self.playlists_json, "w") as f:
+            json.dump(self.playlists_all, f, indent=4)
 
         if self.chosen_category == "favourites":
             del self.list2[current_index]
@@ -2410,7 +2398,7 @@ class XKlass_Vod_Categories(Screen):
                 downloads_all.append([_("Movie"), title, stream_url, "Not Started", 0, 0, description, duration, channel, timestamp])
 
                 with open(downloads_json, "w") as f:
-                    json.dump(downloads_all, f)
+                    json.dump(downloads_all, f, indent=4)
 
                 self.session.openWithCallback(self.opendownloader, MessageBox, _(title) + "\n\n" + _("Added to download manager") + "\n\n" + _("Note recording acts as an open connection.") + "\n" + _("Do not record and play streams at the same time.") + "\n\n" + _("Open download manager?"))
 
