@@ -8,10 +8,9 @@ import os
 import re
 
 try:
-    from urllib.parse import urlparse, parse_qs, quote, unquote
+    from urllib.parse import urlparse, parse_qs
 except ImportError:
     from urlparse import urlparse, parse_qs
-    from urllib import quote, unquote
 
 # Local application/library-specific imports
 from .plugin import cfg
@@ -127,17 +126,6 @@ def process_files():
             username = query["username"][0].strip()
             password = query["password"][0].strip()
 
-            # Make username/password URL-safe (Twisted rejects non-ASCII URIs)
-            try:
-                username = quote(username.decode("utf-8").encode("utf-8"), safe="")
-            except Exception:
-                username = quote(username, safe="")
-
-            try:
-                password = quote(password.decode("utf-8").encode("utf-8"), safe="")
-            except Exception:
-                password = quote(password, safe="")
-
             if "type" in query:
                 media_type = query["type"][0].strip()
             else:
@@ -175,9 +163,11 @@ def process_files():
             for playlist in playlists_all:
                 # Extra check in case playlists.txt details have been amended
                 if ("domain" in playlist["playlist_info"]
-                        and "username" in playlist["playlist_info"]):
+                        and "username" in playlist["playlist_info"]
+                        and "password" in playlist["playlist_info"]):
                     if (playlist["playlist_info"]["domain"] == domain
-                            and playlist["playlist_info"]["username"] == username):
+                            and playlist["playlist_info"]["username"] == username
+                            and playlist["playlist_info"]["password"] == password):
 
                         playlist_exists = True
 
@@ -301,13 +291,14 @@ def process_files():
     for playlist in playlists_all:
         for line in lines:
             if not line.startswith("#"):
-                username = str(playlist["playlist_info"]["username"])
-                username_unquote = unquote(username)
-
                 if (str(playlist["playlist_info"]["domain"]) in line
-                        and (("username=" + username) in line or ("username=" + username_unquote) in line)):
+                        and "username=" + str(playlist["playlist_info"]["username"]) in line
+                        and "password=" + str(playlist["playlist_info"]["password"]) in line):
                     new_list.append(playlist)
                     break
+
+    for index, playlist in enumerate(new_list):
+        playlist["playlist_info"]["index"] = index  # Or index + 1 if you want to start from 1
 
     playlists_all = new_list
 
