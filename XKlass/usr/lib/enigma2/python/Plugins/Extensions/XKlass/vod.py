@@ -126,6 +126,8 @@ class XKlass_Vod_Categories(Screen):
         self.main_title = _("Movies")
         self["main_title"] = StaticText(self.main_title)
 
+        self.group_title = ""
+
         self.main_list = []
         self["main_list"] = List(self.main_list, enableWrapAround=True)
 
@@ -945,7 +947,19 @@ class XKlass_Vod_Categories(Screen):
 
             self["page"].setText(_("Page: ") + "{}/{}".format(page, page_all))
             self["listposition"].setText("{}/{}".format(position, position_all))
-            self["main_title"].setText("{}: {}".format(self.main_title, channel_title))
+
+            parts = []
+
+            if self.main_title:
+                parts.append(self.main_title)
+
+            if self.group_title:
+                parts.append(self.group_title)
+
+            if channel_title:
+                parts.append(channel_title)
+
+            self["main_title"].setText(": ".join(parts))
 
             if self.level == 2:
                 self.timerVOD = eTimer()
@@ -2118,6 +2132,7 @@ class XKlass_Vod_Categories(Screen):
             if self.level == 1:
                 if self.list1:
                     category_id = self["main_list"].getCurrent()[3]
+                    self.group_title = self["main_list"].getCurrent()[0]
 
                     next_url = "{0}&action=get_vod_streams&category_id={1}".format(self.player_api, category_id)
                     self.chosen_category = ""
@@ -2164,7 +2179,7 @@ class XKlass_Vod_Categories(Screen):
 
         if self["main_list"].getCurrent():
             self["main_list"].setIndex(glob.currentchannellistindex)
-            self.createSetup()
+            # self.createSetup()
 
     def back(self, data=None):
         if debugs:
@@ -2178,6 +2193,7 @@ class XKlass_Vod_Categories(Screen):
             print(e)
 
         if self.level == 2:
+            self.group_title = ""
             try:
                 self.timerVOD.stop()
             except:
@@ -2413,7 +2429,7 @@ class XKlass_Vod_Categories(Screen):
             return
         else:
             from . import downloadmanager
-            self.session.openWithCallback(self.createSetup, downloadmanager.XKlass_DownloadManager)
+            self.session.openWithCallback(self.setIndex, downloadmanager.XKlass_DownloadManager)
 
     def imdb(self):
         if debugs:

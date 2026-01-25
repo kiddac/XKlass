@@ -1050,7 +1050,7 @@ class XKlass_Catchup_Categories(Screen):
     def setIndex(self, data=None):
         if self["main_list"].getCurrent():
             self["main_list"].setIndex(glob.currentchannellistindex)
-            self.createSetup()
+            # self.createSetup()
 
     def back(self, data=None):
         try:
@@ -1179,7 +1179,7 @@ class XKlass_Catchup_Categories(Screen):
             return
         else:
             from . import downloadmanager
-            self.session.openWithCallback(self.createSetup, downloadmanager.XKlass_DownloadManager)
+            self.session.openWithCallback(self.setIndex, downloadmanager.XKlass_DownloadManager)
 
     def failed(self, data=None):
         if data:
