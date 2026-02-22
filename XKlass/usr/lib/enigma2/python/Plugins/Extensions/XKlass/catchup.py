@@ -7,10 +7,9 @@ from __future__ import division
 import base64
 import codecs
 import json
-# import math
 import os
-import re
 import time
+import tempfile
 from datetime import datetime, timedelta
 from itertools import cycle, islice
 
@@ -28,7 +27,7 @@ except ImportError:
 
 # Third-party imports
 import requests
-from PIL import Image, ImageFile, PngImagePlugin
+from PIL import Image
 from requests.adapters import HTTPAdapter, Retry
 from twisted.web.client import downloadPage
 
@@ -73,55 +72,6 @@ if sslverify:
 
 playlists_json = cfg.playlists_json.value
 
-
-# png hack
-def mycall(self, cid, pos, length):
-    if cid.decode("ascii") == "tRNS":
-        return self.chunk_TRNS(pos, length)
-    else:
-        return getattr(self, "chunk_" + cid.decode("ascii"))(pos, length)
-
-
-def mychunk_TRNS(self, pos, length):
-    i16 = PngImagePlugin.i16
-    _simple_palette = re.compile(b"^\xff*\x00\xff*$")
-    s = ImageFile._safe_read(self.fp, length)
-    if self.im_mode == "P":
-        if _simple_palette.match(s):
-            i = s.find(b"\0")
-            if i >= 0:
-                self.im_info["transparency"] = i
-        else:
-            self.im_info["transparency"] = s
-    elif self.im_mode in ("1", "L", "I"):
-        self.im_info["transparency"] = i16(s)
-    elif self.im_mode == "RGB":
-        self.im_info["transparency"] = i16(s), i16(s, 2), i16(s, 4)
-    return s
-
-
-if pythonVer != 2:
-    PngImagePlugin.ChunkStream.call = mycall
-    PngImagePlugin.PngStream.chunk_TRNS = mychunk_TRNS
-
-_initialized = 0
-
-
-def _mypreinit():
-    global _initialized
-    if _initialized >= 1:
-        return
-    try:
-        from . import MyPngImagePlugin
-        assert MyPngImagePlugin
-    except ImportError:
-        pass
-
-    _initialized = 1
-
-
-Image.preinit = _mypreinit
-
 epgimporter = os.path.isdir("/usr/lib/enigma2/python/Plugins/Extensions/EPGImport")
 
 hdr = {
@@ -144,7 +94,6 @@ def normalize_superscripts(text):
 
 
 def clean_names(streams):
-    """Clean 'name' and 'category_name' fields in each stream entry."""
     for item in streams:
         for field in ("name", "category_name"):
             if field in item and isinstance(item[field], str):
@@ -225,6 +174,22 @@ class XKlass_Catchup_Categories(Screen):
         self["key_epg"] = StaticText("")
         self["key_menu"] = StaticText("")
 
+        self._px_more = LoadPixmap(os.path.join(common_path, "more.png"))
+
+        # Cached assets / constants (speed & memory)
+        if screenwidth.width() == 2560:
+            self.picon_size = (294, 176)
+        elif screenwidth.width() > 1280:
+            self.picon_size = (220, 130)
+        else:
+            self.picon_size = (147, 88)
+
+        self.adult_keywords = set([
+            "adult", "+18", "18+", "18 rated", "xxx", "sex", "porn",
+            "voksen", "volwassen", "aikuinen", "Erwachsene", "dorosly",
+            "взрослый", "vuxen", "£дорослий"
+        ])
+
         self["category_actions"] = ActionMap(["XKlassActions"], {
             "cancel": self.back,
             "red": self.back,
@@ -279,6 +244,12 @@ class XKlass_Catchup_Categories(Screen):
         except Exception as e:
             print(e)
 
+        self.timerImage = eTimer()
+        try:
+            self.timerImage.callback.append(self.downloadImage)
+        except:
+            self.timerImage_conn = self.timerImage.timeout.connect(self.downloadImage)
+
         self.initGlobals()
 
         self.onLayoutFinish.append(self.__layoutFinished)
@@ -290,6 +261,14 @@ class XKlass_Catchup_Categories(Screen):
 
     def __layoutFinished(self):
         self.setTitle(self.setup_title)
+
+    def _stopTimerImage(self):
+        # Stop any scheduled timer fire
+        try:
+            if self.timerImage:
+                self.timerImage.stop()
+        except:
+            pass
 
     def initGlobals(self):
         self.host = glob.active_playlist["playlist_info"]["host"]
@@ -386,7 +365,7 @@ class XKlass_Catchup_Categories(Screen):
         index = url[1]
         response = None
 
-        retries = Retry(total=2, backoff_factor=1)
+        retries = Retry(total=1, backoff_factor=1)
         adapter = HTTPAdapter(max_retries=retries)
 
         with requests.Session() as http:
@@ -623,7 +602,7 @@ class XKlass_Catchup_Categories(Screen):
         glob.originalChannelList2 = self.list2[:]
 
     def downloadApiData(self, url):
-        retries = Retry(total=2, backoff_factor=1)
+        retries = Retry(total=1, backoff_factor=1)
         adapter = HTTPAdapter(max_retries=retries)
 
         with requests.Session() as http:
@@ -651,11 +630,11 @@ class XKlass_Catchup_Categories(Screen):
         self["picon"].hide()
 
         if self["key_blue"].getText() != _("Reset Search"):
-            self.pre_list = [buildCategoryList(x[0], x[1], x[2], x[3]) for x in self.prelist if not x[3]]
+            self.pre_list = [buildCategoryList(x[0], x[1], x[2], x[3], self._px_more) for x in self.prelist if not x[3]]
         else:
             self.pre_list = []
 
-        self.main_list = [buildCategoryList(x[0], x[1], x[2], x[3]) for x in self.list1 if not x[3]]
+        self.main_list = [buildCategoryList(x[0], x[1], x[2], x[3], self._px_more) for x in self.list1 if not x[3]]
 
         self["main_list"].setList(self.pre_list + self.main_list)
 
@@ -663,7 +642,7 @@ class XKlass_Catchup_Categories(Screen):
             self["main_list"].setIndex(glob.nextlist[-1]["index"])
 
     def buildList2(self):
-        self.main_list = [buildCatchupStreamList(x[0], x[1], x[2], x[3], x[4], x[5], x[6], x[13]) for x in self.list2 if not x[13]]
+        self.main_list = [buildCatchupStreamList(x[0], x[1], x[2], x[3], x[4], x[5], x[6], x[13], self._px_more) for x in self.list2 if not x[13]]
         self["main_list"].setList(self.main_list)
         self["picon"].show()
 
@@ -720,15 +699,9 @@ class XKlass_Catchup_Categories(Screen):
             self.loadBlankImage()
 
             if self.level == 2:
-
                 if cfg.channelpicons.value:
-                    self.timerimage = eTimer()
-                    try:
-                        self.timerimage.callback.append(self.downloadImage)
-                    except:
-                        self.timerimage_conn = self.timerimage.timeout.connect(self.downloadImage)
-                    self.timerimage.start(250, True)
-
+                    self._stopTimerImage()
+                    self.timerImage.start(250, True)
         else:
             position = 0
             position_all = 0
@@ -741,41 +714,98 @@ class XKlass_Catchup_Categories(Screen):
             self["key_blue"].setText("")
 
     def downloadImage(self):
-        if self["main_list"].getCurrent():
-            try:
-                for filename in ["original.png", "temp.png"]:
-                    file_path = os.path.join(dir_tmp, filename)
-                    if os.path.exists(file_path):
-                        os.remove(file_path)
-            except Exception:
-                pass
+        if not self["main_list"].getCurrent():
+            self.loadDefaultImage()
+            return
 
+        # Clear immediately so previous image doesn't remain if new fails
+        self.loadBlankImage()
+
+        # bump request id so stale callbacks can be ignored (zap protection)
+        try:
+            self._picon_req_id += 1
+        except:
+            self._picon_req_id = 1
+
+        req_id = self._picon_req_id
+
+        desc_image = ""
+        try:
+            desc_image = self["main_list"].getCurrent()[5]
+        except:
             desc_image = ""
+
+        if not desc_image or desc_image == "n/A":
+            self.loadDefaultImage()
+            return
+
+        fd = None
+        temp = None
+
+        try:
+            fd, temp = tempfile.mkstemp(prefix="xst_live_picon_", suffix=".png", dir=dir_tmp)
             try:
-                desc_image = self["main_list"].getCurrent()[5]
+                os.close(fd)
             except:
                 pass
 
-            if desc_image and desc_image != "n/A":
-                temp = os.path.join(dir_tmp, "temp.png")
+            parsed = urlparse(desc_image)
+            domain = parsed.hostname
+            scheme = parsed.scheme
 
+            url = desc_image
+            if pythonVer == 3:
                 try:
-                    parsed = urlparse(desc_image)
-                    domain = parsed.hostname
-                    scheme = parsed.scheme
+                    url = desc_image.encode()
+                except:
+                    url = desc_image
 
-                    if pythonVer == 3:
-                        desc_image = desc_image.encode()
+            def _cleanup_temp():
+                try:
+                    if temp and os.path.exists(temp):
+                        os.remove(temp)
+                except:
+                    pass
 
-                    if scheme == "https" and sslverify:
-                        sniFactory = SNIFactory(domain)
-                        downloadPage(desc_image, temp, sniFactory, timeout=2).addCallback(self.resizeImage).addErrback(self.loadDefaultImage)
-                    else:
-                        downloadPage(desc_image, temp, timeout=2).addCallback(self.resizeImage).addErrback(self.loadDefaultImage)
-                except Exception:
-                    self.loadDefaultImage()
-            else:
+            def _ok(_data=None):
+                # ignore stale callback if user moved again
+                if getattr(self, "_picon_req_id", 0) != req_id:
+                    _cleanup_temp()
+                    return
+
+                self.resizeImage(temp, req_id=req_id)
+
+            def _err(_failure=None):
+                if getattr(self, "_picon_req_id", 0) != req_id:
+                    _cleanup_temp()
+                    return
+
+                _cleanup_temp()
                 self.loadDefaultImage()
+
+            if scheme == "https" and sslverify:
+                sniFactory = SNIFactory(domain)
+                d = downloadPage(url, temp, sniFactory, timeout=2)
+            else:
+                d = downloadPage(url, temp, timeout=2)
+
+            d.addCallback(_ok)
+            d.addErrback(_err)
+
+        except Exception:
+            try:
+                if fd:
+                    os.close(fd)
+            except:
+                pass
+
+            try:
+                if temp and os.path.exists(temp):
+                    os.remove(temp)
+            except:
+                pass
+
+            self.loadDefaultImage()
 
     def loadBlankImage(self, data=None):
         if self["picon"].instance:
@@ -785,55 +815,53 @@ class XKlass_Catchup_Categories(Screen):
         if self["picon"].instance:
             self["picon"].instance.setPixmapFromFile(os.path.join(common_path, "picon.png"))
 
-    def resizeImage(self, data=None):
-        current_item = self["main_list"].getCurrent()
-        if current_item:
-            original = os.path.join(dir_tmp, "temp.png")
+    def resizeImage(self, original, req_id=None, data=None):
+        if req_id is not None and getattr(self, "_picon_req_id", 0) != req_id:
+            try:
+                if original and os.path.exists(original):
+                    os.remove(original)
+            except:
+                pass
+            return
 
-            # Determine the target size based on screen width
-            if screenwidth.width() == 2560:
-                size = [294, 176]
-            elif screenwidth.width() > 1280:
-                size = [220, 130]
-            else:
-                size = [147, 88]
+        size = self.picon_size
+        if os.path.exists(original):
+            im = None
+            try:
+                im = Image.open(original)
+                if im.mode != "RGBA":
+                    im = im.convert("RGBA")
 
-            if os.path.exists(original):
                 try:
-                    im = Image.open(original)
+                    im.thumbnail(size, Image.Resampling.LANCZOS)
+                except:
+                    im.thumbnail(size, Image.ANTIALIAS)
 
-                    # Convert to RGBA if not already
-                    if im.mode != "RGBA":
-                        im = im.convert("RGBA")
+                bg = Image.new("RGBA", size, (255, 255, 255, 0))
+                left = (size[0] - im.size[0]) // 2
+                top = (size[1] - im.size[1]) // 2
+                bg.paste(im, (left, top), mask=im)
+                bg.save(original, "PNG")
 
-                    # Resize image with Lanczos resampling if available, otherwise use ANTIALIAS
-                    try:
-                        im.thumbnail(size, Image.Resampling.LANCZOS)
-                    except:
-                        im.thumbnail(size, Image.ANTIALIAS)
+                if self["picon"].instance:
+                    self["picon"].instance.setPixmapFromFile(original)
 
-                    # Create blank RGBA image
-                    bg = Image.new("RGBA", size, (255, 255, 255, 0))
-
-                    # Calculate position for centering
-                    left = (size[0] - im.size[0]) // 2
-                    top = (size[1] - im.size[1]) // 2
-
-                    # Paste resized image onto blank image
-                    bg.paste(im, (left, top), mask=im)
-
-                    # Save as PNG
-                    bg.save(original, "PNG")
-
-                    # Set pixmap for picon instance
-                    if self["picon"].instance:
-                        self["picon"].instance.setPixmapFromFile(original)
-
-                except Exception as e:
-                    print("Error resizing image:", e)
-                    self.loadDefaultImage()
-            else:
+            except Exception as e:
+                print("Error resizing image:", e)
                 self.loadDefaultImage()
+            finally:
+                if im is not None:
+                    try:
+                        im.close()
+                    except:
+                        pass
+
+            try:
+                os.remove(original)
+            except:
+                pass
+        else:
+            self.loadDefaultImage()
 
     def goUp(self):
         instance = self.selectedlist.master.master.instance
@@ -981,11 +1009,6 @@ class XKlass_Catchup_Categories(Screen):
         nowtime = int(time.mktime(datetime.now().timetuple())) if pythonVer == 2 else int(datetime.timestamp(datetime.now()))
 
         if self.level == 1 and self["main_list"].getCurrent():
-            adult_keywords = {
-                "adult", "+18", "18+", "18 rated", "xxx", "sex", "porn",
-                "voksen", "volwassen", "aikuinen", "Erwachsene", "dorosly",
-                "взрослый", "vuxen", "£дорослий"
-            }
 
             current_title = str(self["main_list"].getCurrent()[0])
 
@@ -995,7 +1018,7 @@ class XKlass_Catchup_Categories(Screen):
             elif "sport" in current_title.lower():
                 glob.adultChannel = False
 
-            elif any(keyword in current_title.lower() for keyword in adult_keywords):
+            elif any(keyword in current_title.lower() for keyword in self.adult_keywords):
                 glob.adultChannel = True
 
             else:
@@ -1053,6 +1076,7 @@ class XKlass_Catchup_Categories(Screen):
             # self.createSetup()
 
     def back(self, data=None):
+        self._stopTimerImage()
         try:
             self.closeChoiceBoxDialog()
         except Exception as e:
@@ -1189,7 +1213,6 @@ class XKlass_Catchup_Categories(Screen):
     def playCatchup(self):
         current_main_list_item = self["main_list"].getCurrent()
         if current_main_list_item:
-
             next_url = current_main_list_item[3]
             stream = next_url.rpartition("/")[-1]
 
@@ -1207,7 +1230,7 @@ class XKlass_Catchup_Categories(Screen):
                 self.session.open(MessageBox, _("Catchup error. No data for this slot"), MessageBox.TYPE_WARNING, timeout=5)
 
     def checkRedirect(self, url):
-        retries = Retry(total=3, backoff_factor=1)
+        retries = Retry(total=1, backoff_factor=1)
         adapter = HTTPAdapter(max_retries=retries)
 
         with requests.Session() as http:
@@ -1246,7 +1269,7 @@ class XKlass_Catchup_Categories(Screen):
         url = "{}{}".format(self.simpledatatable, stream_id)
         url = self.checkRedirect(url)
 
-        retries = Retry(total=3, backoff_factor=1)
+        retries = Retry(total=1, backoff_factor=1)
         adapter = HTTPAdapter(max_retries=retries)
 
         with requests.Session() as http:
@@ -1381,14 +1404,12 @@ class XKlass_Catchup_Categories(Screen):
         self.showChoiceBoxDialog()
 
 
-def buildCategoryList(index, title, category_id, hidden):
-    png = LoadPixmap(os.path.join(common_path, "more.png"))
-    return (title, png, index, category_id, hidden)
+def buildCategoryList(index, title, category_id, hidden, px_more=None):
+    return (title, px_more, index, category_id, hidden)
 
 
-def buildCatchupStreamList(index, title, stream_id, stream_icon, epg_channel_id, added, next_url, hidden):
-    png = LoadPixmap(os.path.join(common_path, "more.png"))
-    return (title, png, index, next_url, stream_id, stream_icon, epg_channel_id, added, hidden)
+def buildCatchupStreamList(index, title, stream_id, stream_icon, epg_channel_id, added, next_url, hidden, px_more=None):
+    return (title, px_more, index, next_url, stream_id, stream_icon, epg_channel_id, added, hidden)
 
 
 def buildCatchupEPGListEntry(title, date_all, time_all, description, start, duration, index):

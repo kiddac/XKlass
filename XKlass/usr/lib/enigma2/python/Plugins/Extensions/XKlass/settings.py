@@ -1,10 +1,12 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-# Standard library imports
 import os
 
-# Enigma2 components
+from . import _
+from .plugin import cfg, skin_directory, InternetSpeedTest_installed, NetSpeedTest_installed
+from .xStaticText import StaticText
+
 from Components.ActionMap import ActionMap
 from Components.ConfigList import ConfigListScreen
 from Components.Pixmap import Pixmap
@@ -22,11 +24,6 @@ from Screens.LocationBox import LocationBox
 from Screens.MessageBox import MessageBox
 from Screens.Screen import Screen
 from Tools.BoundFunction import boundFunction
-
-# Local application/library-specific imports
-from . import _
-from .plugin import cfg, skin_directory, InternetSpeedTest_installed, NetSpeedTest_installed
-from .xStaticText import StaticText
 
 
 class ProtectedScreen:
@@ -57,6 +54,7 @@ class XKlass_Settings(ConfigListScreen, Screen, ProtectedScreen):
             ProtectedScreen.__init__(self)
 
         self.session = session
+
         skin_path = os.path.join(skin_directory, cfg.skin.value)
         skin = os.path.join(skin_path, "settings.xml")
         if os.path.exists("/var/lib/dpkg/status"):
@@ -129,6 +127,7 @@ class XKlass_Settings(ConfigListScreen, Screen, ProtectedScreen):
                     or self.location != cfg.location.value:
 
                 self.changedFinished()
+        self.clear_caches()
         self.close()
 
     def changedFinished(self):
@@ -144,21 +143,13 @@ class XKlass_Settings(ConfigListScreen, Screen, ProtectedScreen):
     def initConfig(self):
         self.cfg_skin = getConfigListEntry(_("Select skin"), cfg.skin)
         self.cfg_useragent = getConfigListEntry(_("Select fake web user-agent"), cfg.useragent)
-
         self.cfg_location = getConfigListEntry(_("playlists.txt location") + _(" *Restart GUI Required"), cfg.location)
         self.cfg_epglocation = getConfigListEntry(_("EPG download location"), cfg.epglocation)
         self.cfg_downloadlocation = getConfigListEntry(_("VOD download folder"), cfg.downloadlocation)
         self.cfg_livetype = getConfigListEntry(_("Default LIVE stream type"), cfg.livetype)
         self.cfg_vodtype = getConfigListEntry(_("Default VOD/SERIES stream type"), cfg.vodtype)
-
         self.cfg_livepreview = getConfigListEntry(_("Preview LIVE streams in mini tv"), cfg.livepreview)
         self.cfg_stopstream = getConfigListEntry(_("Stop stream on back button"), cfg.stopstream)
-
-        self.cfg_vodcategoryorder = getConfigListEntry(_("Default VOD category sort order"), cfg.vodcategoryorder)
-        self.cfg_vodstreamorder = getConfigListEntry(_("Default VOD stream sort order"), cfg.vodstreamorder)
-
-        self.cfg_seriescategoryorder = getConfigListEntry(_("Default Series category sort order"), cfg.seriescategoryorder)
-        self.cfg_seriesorder = getConfigListEntry(_("Default Series sort order"), cfg.seriesorder)
 
         self.cfg_adult = getConfigListEntry(_("XKlass parental control"), cfg.adult)
         self.cfg_adultpin = getConfigListEntry(_("XKlass parental pin"), cfg.adultpin)
@@ -190,6 +181,12 @@ class XKlass_Settings(ConfigListScreen, Screen, ProtectedScreen):
         self.epg_location = cfg.epglocation.value
         self.downloadlocation = cfg.downloadlocation.value
 
+        self.cfg_vodcategoryorder = getConfigListEntry(_("Default VOD category sort order"), cfg.vodcategoryorder)
+        self.cfg_vodstreamorder = getConfigListEntry(_("Default VOD stream sort order"), cfg.vodstreamorder)
+
+        self.cfg_seriescategoryorder = getConfigListEntry(_("Default Series category sort order"), cfg.seriescategoryorder)
+        self.cfg_seriesorder = getConfigListEntry(_("Default Series sort order"), cfg.seriesorder)
+
         self.createSetup()
 
     def createSetup(self):
@@ -201,16 +198,12 @@ class XKlass_Settings(ConfigListScreen, Screen, ProtectedScreen):
             self.cfg_downloadlocation,
             self.cfg_livetype,
             self.cfg_vodtype,
-
             self.cfg_vodcategoryorder,
             self.cfg_vodstreamorder,
-
             self.cfg_seriescategoryorder,
             self.cfg_seriesorder,
-
             self.cfg_livepreview,
             self.cfg_stopstream,
-
             self.cfg_wakeup,
             self.cfg_TMDB,
             self.cfg_TMDBLanguage2 if cfg.TMDB.value else None,
@@ -232,8 +225,7 @@ class XKlass_Settings(ConfigListScreen, Screen, ProtectedScreen):
             self.cfg_startmenuplaylists,
             self.cfg_sidemenumanageplaylists,
             self.cfg_sidemenuaccountinfo,
-
-            self.cfg_boot,
+            self.cfg_boot
         ]
 
         self.list = [entry for entry in config_entries if entry is not None]
@@ -330,7 +322,6 @@ class XKlass_Settings(ConfigListScreen, Screen, ProtectedScreen):
             print(e)
 
     def openDirectoryBrowserCB(self, config_entry):
-
         def callback(path):
             if path is not None:
                 config_entry.setValue(path)

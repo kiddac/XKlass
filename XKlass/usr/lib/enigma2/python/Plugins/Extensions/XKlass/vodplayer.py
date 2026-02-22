@@ -7,7 +7,7 @@ from __future__ import division
 
 import json
 import os
-import re
+import tempfile
 from itertools import cycle, islice
 
 try:
@@ -23,7 +23,6 @@ except ImportError:
     HTTPConnection.debuglevel = 0
 
 # Third-party imports
-from PIL import Image, ImageFile, PngImagePlugin
 from twisted.web.client import downloadPage
 
 # Enigma2 components
@@ -94,57 +93,6 @@ if sslverify:
                 ClientTLSOptions(self.hostname, ctx)
             return ctx
 
-
-# png hack
-def mycall(self, cid, pos, length):
-    if cid.decode("ascii") == "tRNS":
-        return self.chunk_TRNS(pos, length)
-    else:
-        return getattr(self, "chunk_" + cid.decode("ascii"))(pos, length)
-
-
-def mychunk_TRNS(self, pos, length):
-    i16 = PngImagePlugin.i16
-    _simple_palette = re.compile(b"^\xff*\x00\xff*$")
-    s = ImageFile._safe_read(self.fp, length)
-    if self.im_mode == "P":
-        if _simple_palette.match(s):
-            i = s.find(b"\0")
-            if i >= 0:
-                self.im_info["transparency"] = i
-        else:
-            self.im_info["transparency"] = s
-    elif self.im_mode in ("1", "L", "I"):
-        self.im_info["transparency"] = i16(s)
-    elif self.im_mode == "RGB":
-        self.im_info["transparency"] = i16(s), i16(s, 2), i16(s, 4)
-    return s
-
-
-if pythonVer != 2:
-    PngImagePlugin.ChunkStream.call = mycall
-    PngImagePlugin.PngStream.chunk_TRNS = mychunk_TRNS
-
-
-_initialized = 0
-
-
-def _mypreinit():
-    global _initialized
-    if _initialized >= 1:
-        return
-    try:
-        from . import MyPngImagePlugin
-        assert MyPngImagePlugin
-    except ImportError:
-        pass
-
-    _initialized = 1
-
-
-Image.preinit = _mypreinit
-
-
 VIDEO_ASPECT_RATIO_MAP = {
     0: "4:3 Letterbox",
     1: "4:3 PanScan",
@@ -170,15 +118,6 @@ if os.path.exists("/usr/bin/exteplayer3"):
 if os.path.exists("/usr/bin/apt-get"):
     streamtypelist.append("8193")
     vodstreamtypelist.append("8193")
-
-
-def clear_caches():
-    try:
-        with open("/proc/sys/vm/drop_caches", "w") as drop_caches:
-            drop_caches.write("1\n2\n3\n")
-    except IOError:
-        pass
-
 
 playlists_json = cfg.playlists_json.value
 
@@ -513,7 +452,43 @@ class XKlass_VodPlayer(
             "ok": self.refreshInfobar,
         }, -2)
 
+        self.timerRecent = eTimer()
+        try:
+            self.timerRecent.callback.append(self.addRecentVodList)
+        except:
+            self.timerRecent_conn = self.timerRecent.timeout.connect(self.addRecentVodList)
+
+        self.timerWatched = eTimer()
+        try:
+            self.timerWatched.callback.append(self.addWatchedList)
+        except:
+            self.timerWatched_conn = self.timerWatched.timeout.connect(self.addWatchedList)
+
         self.onFirstExecBegin.append(boundFunction(self.playStream, self.servicetype, self.streamurl))
+
+    def _stopTimer(self, name):
+        t = getattr(self, name, None)
+        if t:
+            try:
+                t.stop()
+            except:
+                pass
+
+    def _cleanupTimer(self, name):
+        t = getattr(self, name, None)
+        if t:
+            try:
+                t.stop()
+            except:
+                pass
+            try:
+                t.callback[:] = []
+            except:
+                pass
+        try:
+            setattr(self, name, None)
+        except:
+            pass
 
     def refreshInfobar(self):
         IPTVInfoBarShowHide.OkPressed(self)
@@ -546,11 +521,17 @@ class XKlass_VodPlayer(
         if len(glob.active_playlist["player_info"]["vodrecents"]) >= 20:
             glob.active_playlist["player_info"]["vodrecents"].pop(0)
 
-        with open(playlists_json, "r") as f:
+        self.playlists_all = []
+        if os.path.exists(playlists_json):
             try:
-                self.playlists_all = json.load(f)
+                with open(playlists_json, "r") as f:
+                    self.playlists_all = json.load(f) or []
             except:
-                os.remove(playlists_json)
+                try:
+                    os.remove(playlists_json)
+                except:
+                    pass
+                self.playlists_all = []
 
         if self.playlists_all:
             for index, playlists in enumerate(self.playlists_all):
@@ -576,11 +557,17 @@ class XKlass_VodPlayer(
             if stream_id not in glob.active_playlist["player_info"]["serieswatched"]:
                 glob.active_playlist["player_info"]["serieswatched"].append(stream_id)
 
-        with open(playlists_json, "r") as f:
+        self.playlists_all = []
+        if os.path.exists(playlists_json):
             try:
-                self.playlists_all = json.load(f)
+                with open(playlists_json, "r") as f:
+                    self.playlists_all = json.load(f) or []
             except:
-                os.remove(playlists_json)
+                try:
+                    os.remove(playlists_json)
+                except:
+                    pass
+                self.playlists_all = []
 
         if self.playlists_all:
             for index, playlists in enumerate(self.playlists_all):
@@ -596,6 +583,12 @@ class XKlass_VodPlayer(
             json.dump(self.playlists_all, f, indent=4)
 
     def playStream(self, servicetype, streamurl):
+        self._stopTimer("timerRecent")
+        self._stopTimer("timerWatched")
+
+        if not streamurl:
+            return
+
         if cfg.infobarcovers.value is True:
             self.downloadImage()
 
@@ -627,110 +620,172 @@ class XKlass_VodPlayer(
             glob.newPlayingServiceRef = self.session.nav.getCurrentlyPlayingServiceReference()
             glob.newPlayingServiceRefString = self.session.nav.getCurrentlyPlayingServiceReference().toString()
 
-            self.timerCache = eTimer()
-            try:
-                self.timerCache.callback.append(clear_caches)
-            except:
-                self.timerCache_conn = self.timerCache.timeout.connect(clear_caches)
-            self.timerCache.start(5 * 60 * 1000, False)
-
             if glob.categoryname == "vod":
-                self.timerRecent = eTimer()
-                try:
-                    self.timerRecent.callback.append(self.addRecentVodList)
-                except:
-                    self.timerRecent_conn = self.timerRecent.timeout.connect(self.addRecentVodList)
                 self.timerRecent.start(5 * 60 * 1000, True)
 
-            self.timerWatched = eTimer()
-            try:
-                self.timerWatched.callback.append(self.addWatchedList)
-            except:
-                self.timerWatched_conn = self.timerWatched.timeout.connect(self.addWatchedList)
             self.timerWatched.start(15 * 60 * 1000, True)
+
+    def loadDefaultImage(self, data=None):
+        if self["cover"].instance:
+            self["cover"].instance.setPixmapFromFile(
+                os.path.join(skin_directory, "common/cover.png")
+            )
 
     def downloadImage(self):
         self.loadDefaultImage()
+
         try:
-            os.remove(os.path.join(dir_tmp, "cover.jpg"))
+            self._cover_req_id += 1
         except:
-            pass
+            self._cover_req_id = 1
+
+        req_id = self._cover_req_id
 
         desc_image = ""
         try:
             desc_image = glob.currentchannellist[glob.currentchannellistindex][5]
         except:
-            pass
+            desc_image = ""
 
-        # print("*** desc image ***", desc_image)
-        if desc_image and desc_image != "n/A":
-            temp = os.path.join(dir_tmp, "cover.jpg")
+        if not desc_image or desc_image == "n/A":
+            return
+
+        fd = None
+        temp = None
+
+        try:
+            fd, temp = tempfile.mkstemp(prefix="xst_cover_", suffix=".jpg", dir=dir_tmp)
             try:
-                parsed = urlparse(desc_image)
-                domain = parsed.hostname
-                scheme = parsed.scheme
-
-                if pythonVer == 3:
-                    desc_image = desc_image.encode()
-
-                if scheme == "https" and sslverify:
-                    sniFactory = SNIFactory(domain)
-                    downloadPage(desc_image, temp, sniFactory, timeout=5).addCallback(self.resizeImage).addErrback(self.loadDefaultImage)
-                else:
-                    downloadPage(desc_image, temp, timeout=5).addCallback(self.resizeImage).addErrback(self.loadDefaultImage)
+                os.close(fd)
             except:
+                pass
+
+            self._cover_tmp = temp
+
+            parsed = urlparse(desc_image)
+            domain = parsed.hostname
+            scheme = parsed.scheme
+
+            url = desc_image
+            if pythonVer == 3:
+                try:
+                    url = desc_image.encode()
+                except:
+                    url = desc_image
+
+            def _cleanup_temp():
+                try:
+                    if temp and os.path.exists(temp):
+                        os.remove(temp)
+                except:
+                    pass
+
+            def _ok(_data=None):
+                if getattr(self, "_cover_req_id", 0) != req_id:
+                    _cleanup_temp()
+                    return
+
+                self.resizeImage(temp, req_id=req_id)
+
+            def _err(_failure=None):
+                if getattr(self, "_cover_req_id", 0) != req_id:
+                    _cleanup_temp()
+                    return
+
+                _cleanup_temp()
                 self.loadDefaultImage()
-        else:
+
+            if scheme == "https" and sslverify:
+                sniFactory = SNIFactory(domain)
+                d = downloadPage(url, temp, sniFactory, timeout=5)
+            else:
+                d = downloadPage(url, temp, timeout=5)
+
+            d.addCallback(_ok)
+            d.addErrback(_err)
+
+        except:
+            try:
+                if fd:
+                    os.close(fd)
+            except:
+                pass
+
+            try:
+                if temp and os.path.exists(temp):
+                    os.remove(temp)
+            except:
+                pass
+
             self.loadDefaultImage()
 
-    def loadDefaultImage(self, data=None):
-        if self["cover"].instance:
-            self["cover"].instance.setPixmapFromFile(os.path.join(skin_directory, "common/cover.png"))
+    def resizeImage(self, preview, req_id=None, data=None):
+        if not self["cover"].instance:
+            return
 
-    def resizeImage(self, data=None):
-        if self["cover"].instance:
-            preview = os.path.join(dir_tmp, "cover.jpg")
+        self._cover_preview = preview
+        self._cover_preview_req_id = req_id
 
-            if screenwidth.width() == 2560:
-                width = 293
-                height = 440
-            elif screenwidth.width() > 1280:
-                width = 220
-                height = 330
-            else:
-                width = 147
-                height = 220
+        if screenwidth.width() == 2560:
+            width = 293
+            height = 440
+        elif screenwidth.width() > 1280:
+            width = 220
+            height = 330
+        else:
+            width = 147
+            height = 220
+
+        self.PicLoad.setPara([width, height, 1, 1, 0, 1, "FF000000"])
+
+        if self.PicLoad.startDecode(preview):
+            self.PicLoad = ePicLoad()
+            try:
+                self.PicLoad.PictureData.get().append(self.DecodePicture)
+            except:
+                self.PicLoad_conn = self.PicLoad.PictureData.connect(self.DecodePicture)
 
             self.PicLoad.setPara([width, height, 1, 1, 0, 1, "FF000000"])
-
-            if self.PicLoad.startDecode(preview):
-                # if this has failed, then another decode is probably already in progress
-                # throw away the old picload and try again immediately
-                self.PicLoad = ePicLoad()
-                try:
-                    self.PicLoad.PictureData.get().append(self.DecodePicture)
-                except:
-                    self.PicLoad_conn = self.PicLoad.PictureData.connect(self.DecodePicture)
-                self.PicLoad.setPara([width, height, 1, 1, 0, 1, "FF000000"])
-                self.PicLoad.startDecode(preview)
+            self.PicLoad.startDecode(preview)
 
     def DecodePicture(self, PicInfo=None):
+        preview = getattr(self, "_cover_preview", None)
+        preview_req_id = getattr(self, "_cover_preview_req_id", None)
+        current_req_id = getattr(self, "_cover_req_id", None)
+
         ptr = self.PicLoad.getData()
-        if ptr is not None:
+        if (ptr is not None and self["cover"].instance and
+                preview_req_id == current_req_id):
             self["cover"].instance.setPixmap(ptr)
             self["cover"].instance.show()
 
+        try:
+            if preview and os.path.exists(preview):
+                os.remove(preview)
+        except:
+            pass
+
+        try:
+            if getattr(self, "_cover_tmp", None) == preview:
+                self._cover_tmp = None
+        except:
+            pass
+
+        try:
+            self._cover_preview = None
+            self._cover_preview_req_id = None
+        except:
+            pass
+
     def back(self):
+        self._cleanupTimer("timerRecent")
+        self._cleanupTimer("timerWatched")
+
         glob.nextlist[-1]["index"] = glob.currentchannellistindex
         try:
             setResumePoint(self.session)
         except Exception as e:
             print(e)
-
-        try:
-            self.timerCache.stop()
-        except:
-            pass
 
         try:
             self.session.nav.stopService()
@@ -739,6 +794,13 @@ class XKlass_VodPlayer(
 
         try:
             self.session.nav.playService(eServiceReference(glob.currentPlayingServiceRefString))
+        except:
+            pass
+
+        try:
+            tmp = getattr(self, "_cover_tmp", None)
+            if tmp and os.path.exists(tmp):
+                os.remove(tmp)
         except:
             pass
 

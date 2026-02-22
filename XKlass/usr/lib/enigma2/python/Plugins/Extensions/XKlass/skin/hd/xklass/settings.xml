@@ -24,5 +24,5 @@
 	<widget source="key_green" render="Pixmap" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XKlass/skin/hd/common/key_green.png" position="518,687" size="25,25" alphatest="blend" zPosition="2"/>
 	<widget source="key_green" render="Label" position="550,680" size="150,40" font="xklassregular;16" foregroundColor="#ffffff" backgroundColor="#0a3162" valign="center" transparent="1" noWrap="1" zPosition="2"/>
 	<widget name="VKeyIcon" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XKlass/skin/hd/common/key_text.png" position="1062,687" size="25,25" alphatest="blend" transparent="1" zPosition="2"/>
-	<widget name="HelpWindow" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XKlass/skin/hd/common/vkey_icon.png" position="0,0" zPosition="1" size="1280,720" transparent="1" alphatest="on"/>
+	<widget name="HelpWindow" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XKlass/skin/hd/common/vkey_icon.png" position="0,0" zPosition="1" size="1280,720" transparent="1" alphatest="blend"/>
 </screen>

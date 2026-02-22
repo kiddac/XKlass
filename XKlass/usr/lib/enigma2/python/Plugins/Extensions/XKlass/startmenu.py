@@ -355,7 +355,7 @@ class XKlass_MainMenu(Screen):
         index = url[1]
         response = None
 
-        retries = Retry(total=2, backoff_factor=1)
+        retries = Retry(total=1, backoff_factor=1)
         adapter = HTTPAdapter(max_retries=retries)
 
         with requests.Session() as http:

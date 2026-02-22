@@ -82,6 +82,7 @@ class XKlass_Update:
         self.mode = mode
         self.session = session
         self.urllist = []
+
         if not self.check_recordings_in_progress():
             self.process_json_file()
 
@@ -105,7 +106,7 @@ class XKlass_Update:
             pass
 
     def check_redirect(self, url):
-        retries = Retry(total=3, backoff_factor=1)
+        retries = Retry(total=1, backoff_factor=1)
         adapter = HTTPAdapter(max_retries=retries)
 
         with requests.Session() as http:

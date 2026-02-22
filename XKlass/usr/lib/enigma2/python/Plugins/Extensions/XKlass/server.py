@@ -248,7 +248,7 @@ class XKlass_AddServer(ConfigListScreen, Screen):
     def checkline(self):
         valid = False
 
-        retries = Retry(total=2, backoff_factor=1)
+        retries = Retry(total=1, backoff_factor=1)
         adapter = HTTPAdapter(max_retries=retries)
 
         with requests.Session() as http:
