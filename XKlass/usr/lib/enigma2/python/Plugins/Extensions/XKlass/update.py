@@ -71,7 +71,6 @@ def get_time_utc(timestring, fdateparse):
 
 hdr = {
     'User-Agent': str(cfg.useragent.value),
-    'Accept-Encoding': 'gzip, deflate'
 }
 
 playlists_json = cfg.playlists_json.value

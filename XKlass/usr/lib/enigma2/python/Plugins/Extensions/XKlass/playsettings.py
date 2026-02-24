@@ -333,7 +333,7 @@ class XKlass_Settings(ConfigListScreen, Screen):
             try:
                 with open(self.playlists_json) as f:
                     playlists_all = json.load(f)
-            except json.JSONDecodeError as e:
+            except ValueError as e:
                 print("Error loading playlists:", e)
                 os.remove(self.playlists_json)
         return playlists_all

@@ -26,14 +26,14 @@ class DataDownloader:
                 self.data_download_deferred = self.agent.request(
                     b'GET',
                     searchurl,
-                    Headers({'User-Agent': [b"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"]}),
+                    Headers({'User-Agent': [b"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36"]}),
                     None
                 )
             else:
                 self.data_download_deferred = self.agent.request(
                     'GET',
                     searchurl,
-                    Headers({'User-Agent': ["Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"]}),
+                    Headers({'User-Agent': ["Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36"]}),
                     None
                 )
 

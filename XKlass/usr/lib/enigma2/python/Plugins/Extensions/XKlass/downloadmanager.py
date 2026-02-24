@@ -52,7 +52,6 @@ from .Task import Task, Job
 
 hdr = {
     'User-Agent': str(cfg.useragent.value),
-    'Accept-Encoding': 'gzip, deflate'
 }
 
 ui = False
@@ -464,10 +463,20 @@ class XKlass_DownloadManager(Screen):
                         if self.session.nav.getCurrentlyPlayingServiceReference():
                             self.session.nav.stopService()
 
-                cmd = "wget -U 'Enigma2 - XKlass Plugin' -c '%s' -O '%s%s'" % (url, shortpath, filename)
+                cmd = "wget -U '%s' -c '%s' -O '%s%s'" % (
+                    cfg.useragent.value,
+                    url,
+                    shortpath,
+                    filename
+                )
 
                 if "https" in str(url):
-                    cmd = "wget --no-check-certificate -U 'Enigma2 - XKlass Plugin' -c '%s' -O '%s%s'" % (url, shortpath, filename)
+                    cmd = "wget --no-check-certificate -U '%s' -c '%s' -O '%s%s'" % (
+                        cfg.useragent.value,
+                        url,
+                        shortpath,
+                        filename
+                    )
 
                 try:
                     JobManager.AddJob(downloadJob(self, cmd, path, filmtitle), onFail=self.fail)

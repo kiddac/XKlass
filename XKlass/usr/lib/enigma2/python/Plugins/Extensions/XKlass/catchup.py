@@ -76,7 +76,6 @@ epgimporter = os.path.isdir("/usr/lib/enigma2/python/Plugins/Extensions/EPGImpor
 
 hdr = {
     'User-Agent': str(cfg.useragent.value),
-    'Accept-Encoding': 'gzip, deflate'
 }
 
 
@@ -393,7 +392,7 @@ class XKlass_Catchup_Categories(Screen):
                         # Attempt to parse the HTML body as JSON
                         response_text = r.text
                         response = json.loads(response_text)
-                    except json.JSONDecodeError as e:
+                    except ValueError as e:
                         print("Error decoding JSON from HTML content:", e, url)
                         return index, None
 

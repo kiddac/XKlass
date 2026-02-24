@@ -72,7 +72,6 @@ except:
 
 hdr = {
     'User-Agent': str(cfg.useragent.value),
-    'Accept-Encoding': 'gzip, deflate'
 }
 
 
@@ -670,7 +669,7 @@ class XKlass_Vod_Categories(Screen):
                         # Attempt to parse the HTML body as JSON
                         response_text = r.text
                         response = json.loads(response_text)
-                    except json.JSONDecodeError as e:
+                    except ValueError as e:
                         print("Error decoding JSON from HTML content:", e, url)
                         return index, None
 
@@ -1825,7 +1824,7 @@ class XKlass_Vod_Categories(Screen):
         self.cover_download_deferred = self.agent.request(
             b'GET',
             desc_image.encode(),
-            Headers({'User-Agent': [b"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"]})
+            Headers({'User-Agent': [b"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36"]})
         )
 
         self.cover_download_deferred.addCallback(self.coverResponse, req_id)
@@ -1840,7 +1839,7 @@ class XKlass_Vod_Categories(Screen):
         self.cover_download_deferred = self.agent.request(
             b'GET',
             url.encode(),
-            Headers({'User-Agent': [b"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"]})
+            Headers({'User-Agent': [b"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36"]})
         )
         self.cover_download_deferred.addCallback(self.coverFromUrlResponse, req_id)
         self.cover_download_deferred.addErrback(self.coverError, req_id)
@@ -1976,7 +1975,7 @@ class XKlass_Vod_Categories(Screen):
         self.logo_download_deferred = self.agent.request(
             b'GET',
             logo_image.encode(),
-            Headers({'User-Agent': [b"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"]})
+            Headers({'User-Agent': [b"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36"]})
         )
         self.logo_download_deferred.addCallback(self.logoResponse, req_id)
         self.logo_download_deferred.addErrback(self.logoError, req_id)
@@ -2108,7 +2107,7 @@ class XKlass_Vod_Categories(Screen):
         self.backdrop_download_deferred = self.agent.request(
             b'GET',
             backdrop_image.encode(),
-            Headers({'User-Agent': [b"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"]})
+            Headers({'User-Agent': [b"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36"]})
         )
 
         self.backdrop_download_deferred.addCallback(self.backdropResponse, req_id)

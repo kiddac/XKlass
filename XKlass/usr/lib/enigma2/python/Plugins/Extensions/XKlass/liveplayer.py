@@ -300,7 +300,6 @@ class IPTVInfoBarPVRState:
 
 hdr = {
     'User-Agent': str(cfg.useragent.value),
-    'Accept-Encoding': 'gzip, deflate'
 }
 
 
