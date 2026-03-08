@@ -195,7 +195,7 @@ try:
 except:
     pass
 
-cfg.epglocation = ConfigDirectory(default=os.path.join(epg_base, "xklass", "epg") + "/")
+cfg.epglocation = ConfigDirectory(default=epg_base)
 cfg.location = ConfigDirectory(default=dir_etc)
 cfg.main = ConfigYesNo(default=True)
 cfg.livepreview = ConfigYesNo(default=True)

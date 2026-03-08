@@ -96,7 +96,6 @@ def normalize_superscripts(text):
 
 
 def clean_names(streams):
-    """Clean 'name' and 'category_name' fields in each stream entry."""
     for item in streams:
         for field in ("name", "category_name"):
             if field in item and isinstance(item[field], str):
@@ -351,7 +350,7 @@ class XKlass_Live_Categories(Screen):
         self.p_series_categories_url = str(self.player_api) + "&action=get_series_categories"
         self.p_live_streams_url = str(self.player_api) + "&action=get_live_streams"
 
-        epglocation = str(cfg.epglocation.value)
+        epglocation = os.path.join(str(cfg.epglocation.value).rstrip("/"), "iptv-epg")
         self.epgfolder = os.path.join(epglocation, str(self.name))
         self.epgjsonfile = os.path.join(self.epgfolder, "epg.json")
         self._epg_json_cache = None
