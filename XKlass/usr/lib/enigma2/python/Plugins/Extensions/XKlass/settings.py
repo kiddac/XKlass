@@ -180,6 +180,7 @@ class XKlass_Settings(ConfigListScreen, Screen, ProtectedScreen):
         self.cfg_sidemenumanageplaylists = getConfigListEntry(_("Show Manage Playlists in popup menu"), cfg.sidemenumanageplaylists)
         self.cfg_sidemenuaccountinfo = getConfigListEntry(_("Show Account Info in popup menu"), cfg.sidemenuaccountinfo)
         self.cfg_boot = getConfigListEntry(_("Auto start XKlass on boot") + _(" *Restart GUI Required"), cfg.boot)
+        self.cfg_ar_id_player = getConfigListEntry(_("Default screen aspect ratio"), cfg.ar_id_player)
 
         self.org_main = cfg.main.value
         self.org_wakeup = cfg.wakeup.value
@@ -201,6 +202,7 @@ class XKlass_Settings(ConfigListScreen, Screen, ProtectedScreen):
             self.cfg_location,
             self.cfg_epglocation,
             self.cfg_downloadlocation,
+            self.cfg_ar_id_player,
             self.cfg_livetype,
             self.cfg_vodtype,
             self.cfg_vodcategoryorder,

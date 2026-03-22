@@ -402,6 +402,12 @@ class XKlass_CatchupPlayer(
 
         IPTVInfoBarPVRState.__init__(self, PVRState, True)
 
+        self.ar_id_player = 6
+        try:
+            self.ar_id_player = int(cfg.ar_id_player.value)
+        except Exception:
+            self.ar_id_player = 2
+
         if cfg.subs.value is True:
             SubsSupport.__init__(self, searchSupport=True, embeddedSupport=True)
             SubsSupportStatus.__init__(self)
@@ -425,8 +431,6 @@ class XKlass_CatchupPlayer(
         self["statusicon"] = MultiPixmap()
         self["PTSSeekBack"] = Pixmap()
         self["PTSSeekPointer"] = Pixmap()
-
-        self.ar_id_player = 0
 
         self.setup_title = _("Catch Up")
 
@@ -508,6 +512,8 @@ class XKlass_CatchupPlayer(
 
         if cfg.infobarpicons.value is True:
             self.timerImage.start(250, True)
+
+        self.setAspectRatio(self.ar_id_player)
 
     def downloadImage(self):
         # Clear picon immediately on zap so previous one doesn't remain if new fails
@@ -674,6 +680,12 @@ class XKlass_CatchupPlayer(
         nextStreamType = islice(cycle(vodstreamtypelist), currentindex + 1, None)
         self.servicetype = int(next(nextStreamType))
         self.playStream(self.servicetype, self.streamurl)
+
+    def setAspectRatio(self, ar_index):
+        try:
+            eAVSwitch.getInstance().setAspectRatio(int(ar_index))
+        except Exception as e:
+            print("[XStreamity] setAspectRatio failed: %s" % e)
 
     def nextARfunction(self):
         self.ar_id_player += 1
