@@ -856,7 +856,7 @@ class XKlass_VodPlayer(
         try:
             eAVSwitch.getInstance().setAspectRatio(int(ar_index))
         except Exception as e:
-            print("[XStreamity] setAspectRatio failed: %s" % e)
+            print("[XKlass] setAspectRatio failed: %s" % e)
 
     def nextARfunction(self):
         self.ar_id_player += 1
